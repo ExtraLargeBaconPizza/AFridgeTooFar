@@ -6,15 +6,15 @@ import android.content.res.Resources;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import java.util.Objects;
+
 public class Helpers
 {
     public static String removeLastCharacter(String inputString)
     {
         if ((!inputString.equals("")) && (inputString.length() > 0))
         {
-            String outputString = inputString.substring(0, inputString.length() - 1);
-
-            return outputString;
+            return inputString.substring(0, inputString.length() - 1);
         }
         else
         {
@@ -30,7 +30,10 @@ public class Helpers
         {
             InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            if (imm != null)
+            {
+                imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
         }
     }
 

@@ -22,7 +22,7 @@ public class PlaceApi
         try
         {
             StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/autocomplete/json?");
-            sb.append("input=" + input);
+            sb.append("input=").append(input);
             sb.append("&key=AIzaSyCCsgmb-3SsAt7eQxSucG1vktfKBKeW9sM");
 
             URL url = new URL(sb.toString());

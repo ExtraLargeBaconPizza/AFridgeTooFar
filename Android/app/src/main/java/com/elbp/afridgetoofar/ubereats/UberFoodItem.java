@@ -42,7 +42,7 @@ public class UberFoodItem extends UberBase
 
     private void handleAddToOrderButton(String html)
     {
-        // TODO @jim - there are some cases where the fooditem options are all out of stock, but it doesnt show on the main menu. we'll need to navigate back somehow
+        // TODO @jim - there are some cases where the fooditem options are all out of stock, but it doesn't show on the main menu. we'll need to navigate back somehow
 
         String strFind = "http://www.w3.org/2000/svg";
         String strFind2 = "Add";

@@ -6,7 +6,7 @@ public abstract class UberBase
 {
     public UberBase(UberActivity uberEatsActivity, WebView webView)
     {
-        this.uberEatsActivity = uberEatsActivity;
+        this.uberActivity = uberEatsActivity;
         this.webView = webView;
     }
 
@@ -35,24 +35,24 @@ public abstract class UberBase
     {
         String javascriptFunction = "javascript: (function(){var elem = document.getElementsByTagName('a'); for(var i=0; i < elem.length; i++){ var t = elem[i].innerHTML; if(t != '' && t.includes('" + linkKeyword + "')){ elem[i].click(); }}})();";
 
-        uberEatsActivity.webViewLoadUrl(javascriptFunction);
+        uberActivity.webViewLoadUrl(javascriptFunction);
     }
 
     protected void clickButtonByKeyword(String buttonKeyword)
     {
         String javascriptFunction = "javascript: (function(){var elem = document.getElementsByTagName('button'); for(var i=0; i < elem.length; i++){ var t = elem[i].innerHTML; if(t != '' && t.includes('" + buttonKeyword + "')){ elem[i].click(); }}})();";
 
-        uberEatsActivity.webViewLoadUrl(javascriptFunction);
+        uberActivity.webViewLoadUrl(javascriptFunction);
     }
 
     protected void clickElementById(String elementId)
     {
         String javascriptFunction = "javascript: (function(){ document.getElementById('" + elementId + "').click(); })();";
 
-        uberEatsActivity.webViewLoadUrl(javascriptFunction);
+        uberActivity.webViewLoadUrl(javascriptFunction);
     }
 
 
-    protected UberActivity uberEatsActivity;
+    protected UberActivity uberActivity;
     protected WebView webView;
 }

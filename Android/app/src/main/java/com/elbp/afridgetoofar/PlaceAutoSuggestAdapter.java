@@ -31,7 +31,7 @@ public class PlaceAutoSuggestAdapter extends ArrayAdapter implements Filterable
     @Override
     public Filter getFilter()
     {
-        Filter filter = new Filter()
+        return new Filter()
         {
             @Override
             protected FilterResults performFiltering(CharSequence constraint)

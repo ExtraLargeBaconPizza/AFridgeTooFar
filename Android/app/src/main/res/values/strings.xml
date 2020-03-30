@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">A Fridge Too Far</string>
+    <string name="UBER_EATS">UBER EATS</string>
+    <string name="Uber_Eats">Uber Eats</string>
+    <string name="foodora">foodora</string>
 </resources>

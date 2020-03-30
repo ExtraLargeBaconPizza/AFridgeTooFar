@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity
     {
         new Handler().postDelayed(() ->
         {
-            // TODO - @jim determine which was clicked
+            // TODO - @jim determine which app was clicked
             startActivity(new Intent(MainActivity.this, UberActivity.class));
 
             overridePendingTransition(R.anim.nav_forward_enter, R.anim.nav_forward_exit);

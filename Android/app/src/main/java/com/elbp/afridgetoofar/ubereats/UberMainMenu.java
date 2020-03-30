@@ -67,14 +67,11 @@ public class UberMainMenu extends UberBase
 
         int random = (int) (Math.random() * restaurantCount);
 
-        _restaurantUrl = uberEatsActivity.uberEatsUrl + restaurants.get(random);
+        String _restaurantUrl = UberActivity.uberEatsUrl + restaurants.get(random);
         _restaurantUrl = Helpers.removeLastCharacter(_restaurantUrl);
 
         AppState.setUberEatsAppState(UberAppState.RestaurantMenuLoading);
 
-        uberEatsActivity.webViewLoadUrl(_restaurantUrl);
+        uberActivity.webViewLoadUrl(_restaurantUrl);
     }
-
-
-    private String _restaurantUrl = "";
 }

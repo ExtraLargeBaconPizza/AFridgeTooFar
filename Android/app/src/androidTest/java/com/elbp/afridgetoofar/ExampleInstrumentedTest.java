@@ -24,6 +24,6 @@ public class ExampleInstrumentedTest
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
 
-        assertEquals("com.elbp.justorderwhatever", appContext.getPackageName());
+        assertEquals("com.elbp.afridgetoofar", appContext.getPackageName());
     }
 }

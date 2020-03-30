@@ -42,7 +42,7 @@ public class UberActivity extends AppCompatActivity
                 _uberEatsMainMenu.onDocumentComplete();
                 break;
             case RestaurantMenuLoading:
-                _uberEatsRestuarantMenu.onDocumentComplete();
+                _uberEatsRestaurantMenu.onDocumentComplete();
                 break;
             case FoodItemLoading:
                 _uberEatsFoodItem.onDocumentComplete();
@@ -67,7 +67,7 @@ public class UberActivity extends AppCompatActivity
         _uberEatsInitial = new UberInitial(this, _webView);
         _uberEatsDeliveryDetails = new UberDeliveryDetails(this, _webView);
         _uberEatsMainMenu = new UberMainMenu(this, _webView);
-        _uberEatsRestuarantMenu = new UberRestaurantMenu(this, _webView);
+        _uberEatsRestaurantMenu = new UberRestaurantMenu(this, _webView);
         _uberEatsFoodItem = new UberFoodItem(this, _webView);
         _uberEatsStartNewOrder = new UberStartNewOrder(this, _webView);
     }
@@ -80,7 +80,7 @@ public class UberActivity extends AppCompatActivity
         _webView.setWebViewClient(new UberWebViewClient(this));
         _webView.setWebChromeClient(new WebChromeClient());
 
-        // @jim the follow two lines remove ubereats cookies
+        // @jim the follow two lines remove uber eats cookies
         CookieManager.getInstance().removeAllCookies(null);
         CookieManager.getInstance().flush();
 
@@ -93,7 +93,7 @@ public class UberActivity extends AppCompatActivity
     private UberInitial _uberEatsInitial;
     private UberDeliveryDetails _uberEatsDeliveryDetails;
     private UberMainMenu _uberEatsMainMenu;
-    private UberRestaurantMenu _uberEatsRestuarantMenu;
+    private UberRestaurantMenu _uberEatsRestaurantMenu;
     private UberFoodItem _uberEatsFoodItem;
     private UberStartNewOrder _uberEatsStartNewOrder;
 }

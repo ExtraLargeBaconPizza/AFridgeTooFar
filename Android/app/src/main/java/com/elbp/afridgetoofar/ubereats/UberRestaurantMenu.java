@@ -47,7 +47,7 @@ public class UberRestaurantMenu extends UberBase
                 foodItem.id = foodItemCount;
                 foodItem.href = href;
 
-                // Sometimes the last few hrefs don't have a $. This means the loop can go out of bounds.
+                // Sometimes the last few href's don't have a $. This means the loop can go out of bounds.
                 // We need to limit the bounds of the while loop so we don't exceed them and have an
                 // exception thrown
                 int limitBoundsIndex = html.length() - 10;
@@ -76,7 +76,7 @@ public class UberRestaurantMenu extends UberBase
 
                 // verify this is a food item by ensuring it has a price and does not begin with a period
                 // It could potentially have a period at the start due to the limitBoundsIndex issue
-                if (!foodItem.price.equals("") && foodItem.price.charAt(0) != '.' && !foodItem.href.contains(uberEatsActivity.uberEatsUrl) && !foodItem.href.contains("menu"))
+                if (!foodItem.price.equals("") && foodItem.price.charAt(0) != '.' && !foodItem.href.contains(UberActivity.uberEatsUrl) && !foodItem.href.contains("menu"))
                 {
                     // check for sold out or unavailable first
                     int farthestIndex = Math.min(fromIndex + 1000, html.length());
@@ -120,13 +120,13 @@ public class UberRestaurantMenu extends UberBase
     {
         FoodItem foodItem = _foodItems.get(5);
 
-        _foodItemUrl = uberEatsActivity.uberEatsUrl + foodItem.href;
+        _foodItemUrl = UberActivity.uberEatsUrl + foodItem.href;
 
         _foodItemUrl = Helpers.removeLastCharacter(_foodItemUrl);
 
         AppState.setUberEatsAppState(UberAppState.FoodItemLoading);
 
-        uberEatsActivity.webViewLoadUrl(_foodItemUrl);
+        uberActivity.webViewLoadUrl(_foodItemUrl);
     }
 
     // Select food items that will be added to cart
@@ -182,7 +182,7 @@ public class UberRestaurantMenu extends UberBase
     {
         if (_cartSelectionIndex < _cartItems.size())
         {
-            _foodItemUrl = uberEatsActivity.uberEatsUrl + _cartItems.get(_cartSelectionIndex).href;
+            _foodItemUrl = UberActivity.uberEatsUrl + _cartItems.get(_cartSelectionIndex).href;
 
             _foodItemUrl = Helpers.removeLastCharacter(_foodItemUrl);
 
@@ -190,7 +190,7 @@ public class UberRestaurantMenu extends UberBase
 
             AppState.setUberEatsAppState(UberAppState.FoodItemLoading);
 
-            uberEatsActivity.webViewLoadUrl(_foodItemUrl);
+            uberActivity.webViewLoadUrl(_foodItemUrl);
         }
         else
         {
@@ -199,7 +199,7 @@ public class UberRestaurantMenu extends UberBase
     }
 
 
-    private class FoodItem
+    private static class FoodItem
     {
         int id;
         String href;

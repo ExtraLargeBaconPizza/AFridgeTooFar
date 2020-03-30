@@ -59,7 +59,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:onClick="appClicked"
             android:padding="10dp"
-            android:text="Uber Eats"
+            android:text="@string/Uber_Eats"
             style="@style/appSelectionTextView" />
 
         <TextView
@@ -95,7 +95,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:onClick="appClicked"
             android:padding="10dp"
-            android:text="foodora"
+            android:text="@string/foodora"
             style="@style/appSelectionTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
