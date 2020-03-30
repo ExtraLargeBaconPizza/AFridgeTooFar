@@ -1,0 +1,43 @@
+<resources>
+
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="lightTitleTextView">
+        <item name="android:textSize">30sp</item>
+        <item name="fontFamily">@font/helveticaneue</item>
+        <item name="android:textColor">@color/grayE</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAlignment">textEnd</item>
+    </style>
+
+    <style name="darkTitleTextView" parent="lightTitleTextView">
+        <item name="android:textColor">@color/gray2</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="autoCompleteTextView">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/helveticaneue</item>
+        <item name="android:textColor">@color/grayE</item>
+        <item name="android:textColorHighlight">@color/gray4</item>
+        <item name="android:textColorHint">@color/grayE</item>
+        <item name="backgroundTint">@color/grayE</item>
+    </style>
+
+    <style name="autoCompleteTextViewTheme">
+        <item name="colorControlNormal">@color/grayE</item>
+        <item name="colorControlActivated">@color/grayE</item>
+        <item name="colorControlHighlight">@color/grayE</item>
+    </style>
+
+    <style name="appSelectionTextView">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/helveticaneue</item>
+        <item name="android:textColor">@color/grayE</item>
+        <item name="android:textAlignment">viewEnd</item>
+    </style>
+
+</resources>
