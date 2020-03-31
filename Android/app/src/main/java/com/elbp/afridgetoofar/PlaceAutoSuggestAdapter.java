@@ -62,8 +62,6 @@ public class PlaceAutoSuggestAdapter extends ArrayAdapter implements Filterable
                 }
             }
         };
-
-        return filter;
     }
 
     public String getMainText(int pos)

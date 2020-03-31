@@ -52,6 +52,13 @@ public abstract class UberBase
         uberActivity.webViewLoadUrl(javascriptFunction);
     }
 
+    protected void test(String elementId)
+    {
+        String javascriptFunction = "javascript: (function(){ alert(document.getElementById('" + elementId + "').select()); })();";
+
+        uberActivity.webViewLoadUrl(javascriptFunction);
+    }
+
 
     protected UberActivity uberActivity;
     protected WebView webView;

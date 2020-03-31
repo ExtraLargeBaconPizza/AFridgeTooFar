@@ -3,10 +3,12 @@ package com.elbp.afridgetoofar.ubereats;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
+import android.widget.TextView;
 
 import com.elbp.afridgetoofar.R;
 
@@ -21,6 +23,18 @@ public class UberActivity extends AppCompatActivity
         setContentView(R.layout.activity_searching);
 
         init();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        finish();
+        return;
+    }
+
+    public static void updateAppStateTextView(UberAppState appState)
+    {
+        _appStateTextView.setText("\nCurrent AppState: " + appState);
     }
 
     public void webViewLoadUrl(String url)
@@ -42,7 +56,7 @@ public class UberActivity extends AppCompatActivity
                 _uberEatsMainMenu.onDocumentComplete();
                 break;
             case RestaurantMenuLoading:
-                _uberEatsRestaurantMenu.onDocumentComplete();
+//                _uberEatsRestaurantMenu.onDocumentComplete();
                 break;
             case FoodItemLoading:
                 _uberEatsFoodItem.onDocumentComplete();
@@ -55,15 +69,44 @@ public class UberActivity extends AppCompatActivity
 
     private void init()
     {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        initIsDebugMode();
+
+        if (!_isDebugMode)
+        {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+        }
+
+        initViews();
 
         initWebView();
 
         initUberEats();
     }
 
+    private void initIsDebugMode()
+    {
+        Bundle extras = getIntent().getExtras();
+
+        _isDebugMode = (extras != null) ? _isDebugMode = extras.getBoolean("DebugMode") : false;
+    }
+
+    private void initViews()
+    {
+        _webView = findViewById(R.id.webview);
+        _appStateTextView = findViewById(R.id.appStateTextView);
+
+        if (!_isDebugMode)
+        {
+            // The webView doesnt see to work correctly if we set it visibility to invisible or gone
+            _webView.setAlpha(0);
+            _webView.setOnTouchListener((v, event) -> false);
+        }
+    }
+
     private void initUberEats()
     {
+        AppState.setUberEatsAppState(UberAppState.InitialLoading);
+
         _uberEatsInitial = new UberInitial(this, _webView);
         _uberEatsDeliveryDetails = new UberDeliveryDetails(this, _webView);
         _uberEatsMainMenu = new UberMainMenu(this, _webView);
@@ -74,8 +117,6 @@ public class UberActivity extends AppCompatActivity
 
     private void initWebView()
     {
-        _webView = findViewById(R.id.webview);
-
         _webView.getSettings().setJavaScriptEnabled(true);
         _webView.setWebViewClient(new UberWebViewClient(this));
         _webView.setWebChromeClient(new WebChromeClient());
@@ -88,7 +129,9 @@ public class UberActivity extends AppCompatActivity
     }
 
 
+    private boolean _isDebugMode;
     private WebView _webView;
+    private static TextView _appStateTextView;
 
     private UberInitial _uberEatsInitial;
     private UberDeliveryDetails _uberEatsDeliveryDetails;

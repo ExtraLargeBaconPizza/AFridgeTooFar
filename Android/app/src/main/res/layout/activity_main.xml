@@ -21,8 +21,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="A\nFRIDGE\nTOO\nFAR"
-        style="@style/lightTitleTextView" />
+        android:text="@string/A_FRIDGE_TOO_FAR"
+        style="@style/largeTitleTextView" />
 
     <AutoCompleteTextView
         android:id="@+id/autoCompleteTextView"
@@ -34,18 +34,29 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:hint="Enter Delivery Address"
+        android:hint="@string/Enter_Delivery_Address"
         android:imeOptions="actionSearch"
         android:outlineProvider="none"
         android:singleLine="true"
         android:theme="@style/autoCompleteTextViewTheme"
         style="@style/autoCompleteTextView" />
 
+    <TextView
+        android:id="@+id/searchingTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/top_margin"
+        android:layout_marginEnd="@dimen/side_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/SEARCHING"
+        style="@style/mediumTitleTextView" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/appConstraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="88dp"
+        android:layout_marginBottom="@dimen/bottom_margin"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
         app:layout_constraintBottom_toBottomOf="parent">
@@ -71,7 +82,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:onClick="appClicked"
             android:padding="10dp"
-            android:text="DoorDash"
+            android:text="@string/DoorDash"
             style="@style/appSelectionTextView" />
 
         <TextView
@@ -83,7 +94,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             android:onClick="appClicked"
             android:padding="10dp"
-            android:text="SkipTheDishes"
+            android:text="@string/SkipTheDishes"
             style="@style/appSelectionTextView" />
 
         <TextView

@@ -23,6 +23,8 @@ public class PlaceApi
         {
             StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/autocomplete/json?");
             sb.append("input=").append(input);
+            // TODO - @jim remove country restrictions
+            sb.append("&components=country:us|country:ca");
             sb.append("&key=AIzaSyCCsgmb-3SsAt7eQxSucG1vktfKBKeW9sM");
 
             URL url = new URL(sb.toString());

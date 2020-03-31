@@ -5,43 +5,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grayE">
+    android:background="@color/gray2">
 
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/top_margin"
-        android:layout_marginStart="@dimen/side_margin"
         android:layout_marginEnd="@dimen/side_margin"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="SEARCHING"
+        android:text="@string/SEARCHING"
         android:textSize="25dp"
-        style="@style/darkTitleTextView" />
+        style="@style/largeTitleTextView" />
 
     <TextView
         android:id="@+id/subtitleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/side_margin"
         android:layout_marginEnd="@dimen/side_margin"
         app:layout_constraintTop_toBottomOf="@id/titleTextView"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/UBER_EATS"
-        android:textSize="20dp"
-        style="@style/darkTitleTextView" />
+        android:text="@string/Uber_Eats"
+        style="@style/appSelectionTextView" />
 
     <TextView
+        android:id="@+id/messageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/side_margin"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="Ads will go here so I can buy beer" />
+        android:text="Ads will go here so I can buy beer.\nAlso, a waiting indicator.\nThe app is currently searching.\nThis will be much faster on better internet."
+        android:textColor="@color/grayE" />
+
+    <TextView
+        android:id="@+id/appStateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/side_margin"
+        app:layout_constraintTop_toBottomOf="@id/messageTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textColor="@color/grayE" />
 
     <WebView
         android:id="@+id/webview"
@@ -50,6 +56,8 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

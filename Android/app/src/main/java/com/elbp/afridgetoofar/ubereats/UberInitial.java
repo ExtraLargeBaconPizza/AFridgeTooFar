@@ -23,10 +23,6 @@ public class UberInitial extends UberBase
         {
             AppState.setUberEatsAppState(UberAppState.DeliveryDetailsLoading);
 
-//            new android.os.Handler().postDelayed(() ->
-//            {
-//                clickLinkByKeyword("Find Food");
-//            }, 5000);
 
             clickLinkByKeyword("Find Food");
         }

@@ -1,6 +1,7 @@
 package com.elbp.afridgetoofar.ubereats;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
@@ -25,12 +26,16 @@ public class UberDeliveryDetails extends UberBase
             // by Uber's code
             if (!imm.isAcceptingText())
             {
+                webView.requestFocus();
+
                 retrieveHtml();
             }
             else
             {
                 if (!_addressEntered)
                 {
+                    AppState.setUberEatsAppState(UberAppState.DeliveryDetailsComplete);
+
                     String addressFull = "211 summit Ave e Seattle";
 
                     // convert the string to a char array
@@ -51,28 +56,35 @@ public class UberDeliveryDetails extends UberBase
                     _addressEntered = true;
                 }
 
-                // Loop until the address option appears
-                if (html.contains("location-typeahead-item-0"))
+                if (_addressEntered && !_addressClicked)
                 {
-                    clickElementById("location-typeahead-item-0");
+                    // Loop until the address option appears
+                    if (html.contains("location-typeahead-item-0"))
+                    {
+                        _addressClicked = true;
+
+                        clickElementById("location-typeahead-item-0");
+                    }
+                    else
+                    {
+                        retrieveHtml();
+                    }
                 }
-                else
+
+                if (_addressClicked && !_doneClicked)
                 {
-                    retrieveHtml();
-                }
+                    if (html.contains("Choose a time"))
+                    {
+                        _doneClicked = true;
 
-                // TODO @jim - check to make sure done button is ready instead of just a timer
-                try
-                {
-                    Thread.sleep(2000);
+                        AppState.setUberEatsAppState(UberAppState.MainMenuLoading);
 
-                    clickButtonByKeyword("Done");
-
-                    AppState.setUberEatsAppState(UberAppState.MainMenuLoading);
-                }
-                catch (Exception e)
-                {
-
+                        clickButtonByKeyword("Done");
+                    }
+                    else
+                    {
+                        retrieveHtml();
+                    }
                 }
             }
         }
@@ -84,4 +96,6 @@ public class UberDeliveryDetails extends UberBase
 
 
     private boolean _addressEntered;
+    private boolean _addressClicked;
+    private boolean _doneClicked;
 }

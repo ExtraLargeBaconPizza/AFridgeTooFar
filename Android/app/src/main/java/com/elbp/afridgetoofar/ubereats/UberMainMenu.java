@@ -32,6 +32,7 @@ public class UberMainMenu extends UberBase
 
             while (html.charAt(hrefIndex) != '"')
             {
+                // TODO can probably improve perf by just getting the final index then substringing. this can be done elsewhere as well
                 href += html.charAt(hrefIndex);
                 hrefIndex++;
             }
@@ -51,9 +52,14 @@ public class UberMainMenu extends UberBase
         // if the data hasn't loaded yet, check again
         if (restaurantCount > 3)
         {
-            AppState.setUberEatsAppState(UberAppState.MainMenuComplete);
+            if (!_restaurantSelected)
+            {
+                _restaurantSelected = true;
 
-            selectRestaurant(restaurants, restaurantCount);
+                AppState.setUberEatsAppState(UberAppState.MainMenuComplete);
+
+                selectRestaurant(restaurants, restaurantCount);
+            }
         }
         else
         {
@@ -74,4 +80,15 @@ public class UberMainMenu extends UberBase
 
         uberActivity.webViewLoadUrl(_restaurantUrl);
     }
+
+
+    private static class Restaurant
+    {
+        int id;
+        String href;
+        String name;
+    }
+
+
+    private boolean _restaurantSelected;
 }

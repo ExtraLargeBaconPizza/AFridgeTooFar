@@ -14,6 +14,8 @@ public class AppState
         _currentAppState = appState;
 
         Log.e("AppState", "" + _currentAppState);
+
+        UberActivity.updateAppStateTextView(appState);
     }
 
     private static UberAppState _currentAppState = UberAppState.InitialLoading;

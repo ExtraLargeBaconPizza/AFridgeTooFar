@@ -3,9 +3,18 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:windowAnimationStyle">@null</item>
+
+        <!--        <item name="android:windowIsTranslucent">true</item>-->
     </style>
 
-    <style name="lightTitleTextView">
+    <!--    <style name="Theme.app.Translucent" parent="AppTheme">-->
+    <!--        <item name="android:windowIsTranslucent">true</item>-->
+    <!--        <item name="android:windowBackground">@android:color/transparent</item>-->
+    <!--        <item name="android:colorBackgroundCacheHint">@null</item>-->
+    <!--    </style>-->
+
+    <style name="largeTitleTextView">
         <item name="android:textSize">30sp</item>
         <item name="fontFamily">@font/helveticaneue</item>
         <item name="android:textColor">@color/grayE</item>
@@ -13,9 +22,8 @@
         <item name="android:textAlignment">textEnd</item>
     </style>
 
-    <style name="darkTitleTextView" parent="lightTitleTextView">
-        <item name="android:textColor">@color/gray2</item>
-        <item name="android:textStyle">normal</item>
+    <style name="mediumTitleTextView" parent="largeTitleTextView">
+        <item name="android:textSize">25sp</item>
     </style>
 
     <style name="autoCompleteTextView">
