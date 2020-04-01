@@ -1,4 +1,4 @@
-package com.elbp.afridgetoofar;
+package com.xlbp.afridgetoofar;
 
 import org.json.JSONArray;
 import org.json.JSONException;

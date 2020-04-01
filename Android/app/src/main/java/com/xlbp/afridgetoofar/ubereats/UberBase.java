@@ -1,10 +1,10 @@
-package com.elbp.afridgetoofar.ubereats;
+package com.xlbp.afridgetoofar.ubereats;
 
 import android.webkit.WebView;
 
 public abstract class UberBase
 {
-    public UberBase(UberActivity uberEatsActivity, WebView webView)
+    public UberBase(ActivityUber uberEatsActivity, WebView webView)
     {
         this.uberActivity = uberEatsActivity;
         this.webView = webView;
@@ -60,6 +60,6 @@ public abstract class UberBase
     }
 
 
-    protected UberActivity uberActivity;
+    protected ActivityUber uberActivity;
     protected WebView webView;
 }

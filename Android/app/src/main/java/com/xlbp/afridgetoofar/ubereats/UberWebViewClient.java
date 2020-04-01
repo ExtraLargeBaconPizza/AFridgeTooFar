@@ -1,11 +1,11 @@
-package com.elbp.afridgetoofar.ubereats;
+package com.xlbp.afridgetoofar.ubereats;
 
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 public class UberWebViewClient extends WebViewClient
 {
-    public UberWebViewClient(UberActivity uberEatsActivity)
+    public UberWebViewClient(ActivityUber uberEatsActivity)
     {
         _uberEatsActivity = uberEatsActivity;
     }
@@ -33,5 +33,5 @@ public class UberWebViewClient extends WebViewClient
 
 
     // TODO @jim - just retrieve MainActivity when needed. Don't need to store it
-    private UberActivity _uberEatsActivity;
+    private ActivityUber _uberEatsActivity;
 }

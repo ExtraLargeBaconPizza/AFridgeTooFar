@@ -1,7 +1,6 @@
-package com.elbp.afridgetoofar.ubereats;
+package com.xlbp.afridgetoofar.ubereats;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
@@ -10,7 +9,7 @@ import android.webkit.WebView;
 
 public class UberDeliveryDetails extends UberBase
 {
-    public UberDeliveryDetails(UberActivity uberEatsActivity, WebView webView)
+    public UberDeliveryDetails(ActivityUber uberEatsActivity, WebView webView)
     {
         super(uberEatsActivity, webView);
     }

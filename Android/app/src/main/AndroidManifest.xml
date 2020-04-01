@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.elbp.afridgetoofar">
+    package="com.xlbp.afridgetoofar">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,12 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityResultFood" />
-        <activity android:name=".ActivityResultRestaurant" />
+        <activity android:name="com.xlbp.afridgetoofar.ActivityResultFood" />
+        <activity android:name="com.xlbp.afridgetoofar.ActivityResultRestaurant" />
         <activity
-            android:name=".ubereats.UberActivity" />
+            android:name="com.xlbp.afridgetoofar.ubereats.ActivityUber" />
 
-        <activity android:name=".ActivityMain">
+        <activity android:name="com.xlbp.afridgetoofar.ActivityMain">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

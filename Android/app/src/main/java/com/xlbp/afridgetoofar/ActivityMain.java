@@ -1,6 +1,6 @@
 // This app is dedicated to my dog Ruffles. He was the best.
 
-package com.elbp.afridgetoofar;
+package com.xlbp.afridgetoofar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
-import com.elbp.afridgetoofar.ubereats.UberActivity;
+import com.xlbp.afridgetoofar.ubereats.ActivityUber;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -90,6 +90,7 @@ public class ActivityMain extends AppCompatActivity
     {
         _layout = findViewById(R.id.layout);
         _titleTextView = findViewById(R.id.titleTextView);
+        // TODO - @jim make the autocomplete overlap the underline
         _autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
 
         _appConstraintLayout = findViewById(R.id.appConstraintLayout);
@@ -197,6 +198,7 @@ public class ActivityMain extends AppCompatActivity
 
         if (navigatingForward)
         {
+            // TODO - @jim organise the animation parameter function call order
             _autoCompleteTextView.animate()
                     .alpha(0)
                     .translationYBy(-_autoCompleteTextView.getHeight() - f_topMargin)
@@ -206,7 +208,7 @@ public class ActivityMain extends AppCompatActivity
             _appConstraintLayout.animate()
                     .setDuration(f_animTime)
                     .translationY(-_appConstraintLayout.getY() + _searchingTextView.getHeight() + selectionOffset)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor)).withEndAction(() -> navigateToSearching(view));
+                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
 
             // TODO - @im handle different animations for each choice
             _searchingTextView.animate()
@@ -228,7 +230,8 @@ public class ActivityMain extends AppCompatActivity
             _foodTextView.animate()
                     .alpha(0)
                     .setDuration(f_animTime)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
+                    .setInterpolator(new DecelerateInterpolator(f_animationFactor))
+                    .withEndAction(() -> navigateToSearching(view));
         }
         else
         {
@@ -241,7 +244,7 @@ public class ActivityMain extends AppCompatActivity
             _appConstraintLayout.animate()
                     .setDuration(f_animTime)
                     .translationY(_appConstraintLayout.getY() - _searchingTextView.getHeight() - selectionOffset)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor)).withEndAction(() -> _thirdAnimationComplete = false);
+                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
 
             _searchingTextView.animate()
                     .alpha(0)
@@ -262,7 +265,8 @@ public class ActivityMain extends AppCompatActivity
             _foodTextView.animate()
                     .alpha(1)
                     .setDuration(f_animTime)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
+                    .setInterpolator(new DecelerateInterpolator(f_animationFactor))
+                    .withEndAction(() -> _thirdAnimationComplete = false);
         }
     }
 
@@ -270,7 +274,7 @@ public class ActivityMain extends AppCompatActivity
     {
         _thirdAnimationComplete = true;
 
-        Intent intent = new Intent(getBaseContext(), UberActivity.class);
+        Intent intent = new Intent(getBaseContext(), ActivityUber.class);
 
         switch (view.getId())
         {
@@ -290,6 +294,11 @@ public class ActivityMain extends AppCompatActivity
     private void clearFocus()
     {
         _autoCompleteTextView.setText(_currentDeliveryAddress);
+
+        if (_currentDeliveryAddress != null)
+        {
+            _autoCompleteTextView.setSelection(_currentDeliveryAddress.length());
+        }
 
         _layout.requestFocus();
 
@@ -315,10 +324,11 @@ public class ActivityMain extends AppCompatActivity
     private boolean _firstAnimationComplete;
     private boolean _thirdAnimationComplete;
 
-    public final int f_topMargin = Helpers.dpToPixels(74);
-    public final int f_bottomMargin = Helpers.dpToPixels(98);
+    // TODO account for notch
+    public static final int f_topMargin = Helpers.dpToPixels(74);
+    public static final int f_bottomMargin = Helpers.dpToPixels(98);
 
-    public final int f_postTapDelay = 100;
-    public final int f_animTime = 600;
-    public final int f_animationFactor = 2;
+    public static final int f_postTapDelay = 100;
+    public static final int f_animTime = 600;
+    public static final int f_animationFactor = 2;
 }

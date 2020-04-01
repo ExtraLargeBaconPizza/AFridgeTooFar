@@ -8,7 +8,7 @@
     android:background="@color/gray2">
 
     <TextView
-        android:id="@+id/titleTextView"
+        android:id="@+id/searchingTitleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/top_margin"
@@ -16,28 +16,27 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/SEARCHING"
-        android:textSize="25dp"
-        style="@style/largeTitleTextView" />
+        style="@style/mediumTitleTextView" />
 
     <TextView
-        android:id="@+id/subtitleTextView"
+        android:id="@+id/searchingSubtitleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/side_margin"
-        app:layout_constraintTop_toBottomOf="@id/titleTextView"
+        app:layout_constraintTop_toBottomOf="@id/searchingTitleTextView"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/Uber_Eats"
         style="@style/appSelectionTextView" />
 
     <TextView
-        android:id="@+id/messageTextView"
+        android:id="@+id/debugMessageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/side_margin"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        android:text="Ads will go here so I can buy beer.\nAlso, a waiting indicator.\nThe app is currently searching.\nThis will be much faster on better internet."
+        android:text="Ads will go here so I can buy beer.\n\nThe app is currently searching.\nThis will be much faster on better internet.\n\nIf the app gets stuck here, please\nlet me know the AppState"
         android:textColor="@color/grayE" />
 
     <TextView
@@ -45,7 +44,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/side_margin"
-        app:layout_constraintTop_toBottomOf="@id/messageTextView"
+        app:layout_constraintTop_toBottomOf="@id/debugMessageTextView"
         app:layout_constraintStart_toStartOf="parent"
         android:textColor="@color/grayE" />
 
@@ -59,5 +58,64 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:focusable="true"
         android:focusableInTouchMode="true" />
+
+    <TextView
+        android:id="@+id/searchCompleteTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/top_margin"
+        android:layout_marginEnd="@dimen/side_margin"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="@string/SEARCH_COMPLETE"
+        style="@style/mediumTitleTextView" />
+
+    <TextView
+        android:id="@+id/foodItemTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/top_margin"
+        android:layout_marginStart="@dimen/side_margin"
+        android:layout_marginEnd="@dimen/side_margin"
+        app:layout_constraintTop_toBottomOf="@id/searchCompleteTitleTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/searchSelectionTextView" />
+
+    <TextView
+        android:id="@+id/rerollFoodTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/side_margin"
+        android:layout_marginStart="@dimen/side_margin"
+        android:layout_marginEnd="@dimen/side_margin"
+        app:layout_constraintTop_toBottomOf="@id/foodItemTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/searchSelectionTextView" />
+
+    <TextView
+        android:id="@+id/visitRestaurantTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/side_margin"
+        android:layout_marginStart="@dimen/side_margin"
+        android:layout_marginEnd="@dimen/side_margin"
+        app:layout_constraintTop_toBottomOf="@id/rerollFoodTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/searchSelectionTextView" />
+
+    <TextView
+        android:id="@+id/rerollTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/side_margin"
+        android:layout_marginStart="@dimen/side_margin"
+        android:layout_marginEnd="@dimen/side_margin"
+        app:layout_constraintTop_toBottomOf="@id/visitRestaurantTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        style="@style/searchSelectionTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

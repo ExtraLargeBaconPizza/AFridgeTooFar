@@ -1,4 +1,4 @@
-package com.elbp.afridgetoofar.ubereats;
+package com.xlbp.afridgetoofar.ubereats;
 
 import android.util.Log;
 
@@ -15,7 +15,7 @@ public class AppState
 
         Log.e("AppState", "" + _currentAppState);
 
-        UberActivity.updateAppStateTextView(appState);
+        ActivityUber.updateAppStateTextView(appState);
     }
 
     private static UberAppState _currentAppState = UberAppState.InitialLoading;
@@ -31,11 +31,5 @@ enum UberAppState
     MainMenuComplete,
     RestaurantMenuLoading,
     RestaurantMenuComplete,
-    SelectingCart,
-    SelectingCartComplete,
-    FoodItemLoading,
-    FoodItemComplete,
-    FoodItemAdded,
-    StartNewOrder,
-    StartNewOrderComplete,
+    SearchComplete,
 }
