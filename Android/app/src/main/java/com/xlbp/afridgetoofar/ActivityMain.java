@@ -324,6 +324,7 @@ public class ActivityMain extends AppCompatActivity
     private boolean _firstAnimationComplete;
     private boolean _thirdAnimationComplete;
 
+    // TODO move these values to a more central location
     // TODO account for notch
     public static final int f_topMargin = Helpers.dpToPixels(74);
     public static final int f_bottomMargin = Helpers.dpToPixels(98);

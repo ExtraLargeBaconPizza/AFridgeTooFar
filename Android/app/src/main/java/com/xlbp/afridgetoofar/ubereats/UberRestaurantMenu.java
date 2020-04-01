@@ -72,7 +72,10 @@ public class UberRestaurantMenu extends UberBase
                     if (!(innerText.contains("Sign In")
                             || innerText.contains("Deliver now")
                             || innerText.contains("Menu")
-                            || innerText.contains("Sold out")))
+                            || innerText.contains("Sold out")
+                            || innerText.contains("Breakfast")
+                            || innerText.contains("Lunch")
+                            || innerText.contains("Dinner")))
                     {
                         hasFoodItems = true;
 
@@ -101,6 +104,7 @@ public class UberRestaurantMenu extends UberBase
         }
     }
 
+    // TODO get Description
     private void parseFoodItemsNamePrice()
     {
         for (FoodItem foodItem : _foodItems)
@@ -111,6 +115,7 @@ public class UberRestaurantMenu extends UberBase
 
             for (int i = 1; i < values.length; i++)
             {
+                // TODO set min price of $5
                 if (values[i].contains("$"))
                 {
                     foodItem.price = values[i];

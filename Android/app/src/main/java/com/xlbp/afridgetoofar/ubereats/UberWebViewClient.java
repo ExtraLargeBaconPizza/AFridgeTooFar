@@ -3,6 +3,7 @@ package com.xlbp.afridgetoofar.ubereats;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+// TODO - can probably make this a more generic class and use for all apps
 public class UberWebViewClient extends WebViewClient
 {
     public UberWebViewClient(ActivityUber uberEatsActivity)
@@ -32,6 +33,6 @@ public class UberWebViewClient extends WebViewClient
     }
 
 
-    // TODO @jim - just retrieve MainActivity when needed. Don't need to store it
+    // TODO @jim - maybe just retrieve the activity when needed. Don't need to store it
     private ActivityUber _uberEatsActivity;
 }

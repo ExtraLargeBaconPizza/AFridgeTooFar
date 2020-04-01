@@ -30,6 +30,7 @@ public class UberMainMenu extends UberBase
         return _selectedRestaurant;
     }
 
+    // TODO refactor this to match UberRestaurantMenu
     @Override
     protected void parseHtml(String html)
     {
@@ -47,8 +48,6 @@ public class UberMainMenu extends UberBase
 
             while (html.charAt(hrefIndex) != '"')
             {
-                // TODO can probably improve perf by just getting the final index then substringing. this can be done elsewhere as well
-                // TODO or just use javascript to get all href strings ..
                 href += html.charAt(hrefIndex);
                 hrefIndex++;
             }

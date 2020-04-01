@@ -17,6 +17,7 @@ public abstract class UberBase
         retrieveHtml();
     }
 
+    // TODO can probably move this helpers
     protected void retrieveHtml()
     {
         // !!! This function is called often as a recursive call so be careful when using it !!!

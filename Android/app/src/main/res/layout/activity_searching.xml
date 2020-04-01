@@ -64,44 +64,47 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/top_margin"
+        android:layout_marginStart="@dimen/side_margin"
         android:layout_marginEnd="@dimen/side_margin"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/SEARCH_COMPLETE"
-        style="@style/mediumTitleTextView" />
+        android:text="@string/SELECTION"
+        style="@style/mediumLeftTitleTextView" />
 
     <TextView
         android:id="@+id/foodItemTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/top_margin"
+        android:layout_marginBottom="25dp"
         android:layout_marginStart="@dimen/side_margin"
         android:layout_marginEnd="@dimen/side_margin"
-        app:layout_constraintTop_toBottomOf="@id/searchCompleteTitleTextView"
+        app:layout_constraintBottom_toTopOf="@id/rerollFoodItemTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/searchSelectionTextView" />
 
     <TextView
-        android:id="@+id/rerollFoodTextView"
+        android:id="@+id/rerollFoodItemTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/side_margin"
+        android:layout_marginBottom="25dp"
         android:layout_marginStart="@dimen/side_margin"
         android:layout_marginEnd="@dimen/side_margin"
-        app:layout_constraintTop_toBottomOf="@id/foodItemTextView"
+        app:layout_constraintBottom_toTopOf="@id/visitRestaurantTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="onRerollFoodItemClicked"
         style="@style/searchSelectionTextView" />
 
     <TextView
         android:id="@+id/visitRestaurantTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/side_margin"
+        android:layout_marginBottom="25dp"
         android:layout_marginStart="@dimen/side_margin"
         android:layout_marginEnd="@dimen/side_margin"
-        app:layout_constraintTop_toBottomOf="@id/rerollFoodTextView"
+        app:layout_constraintBottom_toTopOf="@id/rerollTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/searchSelectionTextView" />
@@ -110,10 +113,10 @@
         android:id="@+id/rerollTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/side_margin"
+        android:layout_marginBottom="@dimen/bottom_margin"
         android:layout_marginStart="@dimen/side_margin"
         android:layout_marginEnd="@dimen/side_margin"
-        app:layout_constraintTop_toBottomOf="@id/visitRestaurantTextView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         style="@style/searchSelectionTextView" />
