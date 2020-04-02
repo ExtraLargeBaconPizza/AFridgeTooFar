@@ -53,7 +53,6 @@ public class UberRestaurantMenu extends UberBase
     private void parseHrefsAndFoodItemInfo(String hrefsAndFoodItemInfo)
     {
         ArrayList<FoodItem> foodItems = new ArrayList<>();
-        boolean hasFoodItems = false;
 
         String[] splitHrefsAndFoodItemInfo = hrefsAndFoodItemInfo.split("foodItem");
 
@@ -77,8 +76,6 @@ public class UberRestaurantMenu extends UberBase
                             || innerText.contains("Lunch")
                             || innerText.contains("Dinner")))
                     {
-                        hasFoodItems = true;
-
                         FoodItem foodItem = new FoodItem();
 
                         foodItem.href = href;
@@ -90,10 +87,8 @@ public class UberRestaurantMenu extends UberBase
             }
         }
 
-        if (hasFoodItems)
+        if (foodItems.size() > 3)
         {
-            AppState.setUberEatsAppState(UberAppState.RestaurantMenuComplete);
-
             _foodItems = foodItems;
 
             parseFoodItemsNamePrice();
@@ -104,26 +99,43 @@ public class UberRestaurantMenu extends UberBase
         }
     }
 
-    // TODO get Description
+    // TODO get picture will probably have to navigate to food item, or delay to ensure images have loaded...
     private void parseFoodItemsNamePrice()
     {
-        for (FoodItem foodItem : _foodItems)
+        for (int i = _foodItems.size() - 1; i >= 0; i--)
         {
+            FoodItem foodItem = _foodItems.get(i);
+
             String[] values = foodItem.innerText.split("\\\\n");
 
             foodItem.name = values[0];
 
-            for (int i = 1; i < values.length; i++)
+            for (int j = 1; j < values.length; j++)
             {
-                // TODO set min price of $5
-                if (values[i].contains("$"))
+                if (values[j].contains("$") && values[j].length() < 10)
                 {
-                    foodItem.price = values[i];
+                    foodItem.price = values[j].replace("US", "");
+
+                    float priceCheck = Float.parseFloat(foodItem.price.replace("[^\\d.]", "").replace("$", "").replace("\"", ""));
+
+                    if (priceCheck < 4.99f)
+                    {
+                        _foodItems.remove(foodItem);
+                    }
                 }
             }
         }
 
-        allRestaurantInfoParsed();
+        if (_foodItems.size() > 3)
+        {
+            AppState.setUberEatsAppState(UberAppState.RestaurantMenuComplete);
+
+            allRestaurantInfoParsed();
+        }
+        else
+        {
+            retrieveHtml();
+        }
     }
 
     private void allRestaurantInfoParsed()
@@ -134,7 +146,7 @@ public class UberRestaurantMenu extends UberBase
 
         _selectedFoodItem = _foodItems.get(random);
 
-        Log.e("UberEatsMainMenu", "selectedRestaurant - " + _selectedFoodItem.name);
+        Log.e("UberEatsMainMenu", "_selectedFoodItem - " + _selectedFoodItem.name);
 
         AppState.setUberEatsAppState(UberAppState.SearchComplete);
 
@@ -145,5 +157,4 @@ public class UberRestaurantMenu extends UberBase
     private ArrayList<FoodItem> _foodItems;
 
     private FoodItem _selectedFoodItem;
-
 }

@@ -168,7 +168,7 @@ public class UberMainMenu extends UberBase
 
         _selectedRestaurant = _restaurants.get(random);
 
-        Log.e("UberEatsMainMenu", "selectedRestaurant - " + _selectedRestaurant.name);
+        Log.e("UberEatsMainMenu", "_selectedRestaurant - " + _selectedRestaurant.name);
 
         String _restaurantUrl = ActivityUber.uberEatsUrl + _selectedRestaurant.href;
         _restaurantUrl = Helpers.removeLastCharacter(_restaurantUrl);

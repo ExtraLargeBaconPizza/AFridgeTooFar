@@ -9,6 +9,7 @@ import android.webkit.WebView;
 
 public class UberDeliveryDetails extends UberBase
 {
+    // TODO handle address not available
     public UberDeliveryDetails(ActivityUber uberEatsActivity, WebView webView)
     {
         super(uberEatsActivity, webView);

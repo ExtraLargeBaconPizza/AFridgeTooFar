@@ -16,6 +16,12 @@ import com.xlbp.afridgetoofar.ubereats.ActivityUber;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+// magic 8 ball for food
+// soup or salad?
+// whats for dinner?
+// what can I order?
+
+
 public class ActivityMain extends AppCompatActivity
 {
     @Override
@@ -136,33 +142,29 @@ public class ActivityMain extends AppCompatActivity
     {
         if (hasFocus)
         {
-            _titleTextView.animate()
+            new Animation(_titleTextView)
                     .alpha(0)
                     .translationY(-_titleTextView.getHeight() - f_topMargin)
-                    .setDuration(f_animTime)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
+                    .start();
 
-            _autoCompleteTextView.animate()
+            new Animation(_autoCompleteTextView)
                     .translationY(-_autoCompleteTextView.getY() + f_topMargin)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor))
-                    .setDuration(f_animTime)
-                    .withEndAction(() -> _firstAnimationComplete = true);
+                    .withEndAction(() -> _firstAnimationComplete = true)
+                    .start();
         }
         else
         {
             clearFocus();
 
-            _titleTextView.animate()
+            new Animation(_titleTextView)
                     .alpha(1)
                     .translationY(0)
-                    .setDuration(f_animTime)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
+                    .start();
 
-            _autoCompleteTextView.animate()
+            new Animation(_autoCompleteTextView)
                     .translationY(0)
-                    .setDuration(f_animTime)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor))
-                    .withEndAction(() -> _firstAnimationComplete = false);
+                    .withEndAction(() -> _firstAnimationComplete = false)
+                    .start();
         }
     }
 
@@ -172,22 +174,18 @@ public class ActivityMain extends AppCompatActivity
         {
             clearFocus();
 
-            new Handler().postDelayed(() ->
-            {
-                _appConstraintLayout.animate()
-                        .translationY(0)
-                        .setDuration(f_animTime)
-                        .alpha(1)
-                        .setInterpolator(new DecelerateInterpolator(f_animationFactor));
-            }, f_animTime);
+            new Animation(_appConstraintLayout)
+                    .alpha(1)
+                    .translationY(0)
+                    .startDelay(600)
+                    .start();
         }
         else
         {
-            _appConstraintLayout.animate()
-                    .setDuration(f_animTime)
+            new Animation(_appConstraintLayout)
                     .alpha(0)
                     .translationY(_appConstraintLayout.getHeight() + f_bottomMargin)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
+                    .start();
         }
     }
 
@@ -198,77 +196,74 @@ public class ActivityMain extends AppCompatActivity
 
         if (navigatingForward)
         {
-            // TODO - @jim organise the animation parameter function call order
-            _autoCompleteTextView.animate()
+            // exit
+            new Animation(_autoCompleteTextView)
                     .alpha(0)
-                    .translationYBy(-_autoCompleteTextView.getHeight() - f_topMargin)
-                    .setDuration(f_animTime)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
+                    .translationY(_autoCompleteTextView.getTranslationY() - _autoCompleteTextView.getHeight() - f_topMargin)
+                    .start();
 
-            _appConstraintLayout.animate()
-                    .setDuration(f_animTime)
-                    .translationY(-_appConstraintLayout.getY() + _searchingTextView.getHeight() + selectionOffset)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
+            new Animation(_doorTextView)
+                    .alpha(0)
+                    .start();
 
-            // TODO - @im handle different animations for each choice
-            _searchingTextView.animate()
+            new Animation(_skipTextView)
+                    .alpha(0)
+                    .start();
+
+            new Animation(_foodTextView)
+                    .alpha(0)
+                    .start();
+
+            // enter
+            // TODO - @jim handle different animations for each choice
+            new Animation(_searchingTextView)
                     .alpha(1)
                     .translationY(0)
-                    .setDuration(f_animTime)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
+                    .startDelay(600)
+                    .start();
 
-            _doorTextView.animate()
-                    .alpha(0)
-                    .setDuration(f_animTime)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
-
-            _skipTextView.animate()
-                    .alpha(0)
-                    .setDuration(f_animTime)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
-
-            _foodTextView.animate()
-                    .alpha(0)
-                    .setDuration(f_animTime)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor))
-                    .withEndAction(() -> navigateToSearching(view));
+            new Animation(_appConstraintLayout)
+                    .translationY(-_appConstraintLayout.getY() + _searchingTextView.getHeight() + selectionOffset)
+                    .startDelay(600)
+                    .withEndAction(() -> navigateToSearching(view))
+                    .start();
         }
         else
         {
-            _autoCompleteTextView.animate()
-                    .alpha(1)
-                    .translationYBy(_autoCompleteTextView.getHeight() + f_topMargin)
-                    .setDuration(f_animTime)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
-
-            _appConstraintLayout.animate()
-                    .setDuration(f_animTime)
-                    .translationY(_appConstraintLayout.getY() - _searchingTextView.getHeight() - selectionOffset)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
-
-            _searchingTextView.animate()
+            // exit
+            new Animation(_searchingTextView)
                     .alpha(0)
                     .translationY(-_searchingTextView.getHeight() - f_topMargin)
-                    .setDuration(f_animTime)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
+                    .start();
 
-            _doorTextView.animate()
-                    .alpha(1)
-                    .setDuration(f_animTime)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
+            new Animation(_appConstraintLayout)
+                    .translationY(_appConstraintLayout.getY() - _searchingTextView.getHeight() - selectionOffset)
+                    .start();
 
-            _skipTextView.animate()
+            // enter
+            new Animation(_autoCompleteTextView)
                     .alpha(1)
-                    .setDuration(f_animTime)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor));
+                    .translationY(_autoCompleteTextView.getTranslationY() + _autoCompleteTextView.getHeight() + f_topMargin)
+                    .startDelay(400)
+                    .start();
 
-            _foodTextView.animate()
+            new Animation(_doorTextView)
                     .alpha(1)
-                    .setDuration(f_animTime)
-                    .setInterpolator(new DecelerateInterpolator(f_animationFactor))
-                    .withEndAction(() -> _thirdAnimationComplete = false);
+                    .startDelay(600)
+                    .start();
+
+            new Animation(_skipTextView)
+                    .alpha(1)
+                    .startDelay(600)
+                    .start();
+
+            new Animation(_foodTextView)
+                    .alpha(1)
+                    .startDelay(600)
+                    .start();
         }
     }
+
 
     private void navigateToSearching(View view)
     {

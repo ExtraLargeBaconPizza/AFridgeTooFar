@@ -15,6 +15,7 @@ import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.xlbp.afridgetoofar.ActivityMain;
+import com.xlbp.afridgetoofar.Animation;
 import com.xlbp.afridgetoofar.Helpers;
 import com.xlbp.afridgetoofar.R;
 
@@ -32,16 +33,10 @@ public class ActivityUber extends AppCompatActivity
     }
 
     @Override
-    protected void onResume()
-    {
-        super.onResume();
-
-        initAnimationPositions();
-    }
-
-    @Override
     public void onBackPressed()
     {
+        _webView.destroy();
+
         finish();
         return;
     }
@@ -124,14 +119,14 @@ public class ActivityUber extends AppCompatActivity
 
         _webView = findViewById(R.id.webview);
 
-        _searchCompleteTitleTextView = findViewById(R.id.searchCompleteTitleTextView);
         _foodItemTextView = findViewById(R.id.foodItemTextView);
+        _foodItemDetailsTextView = findViewById(R.id.foodItemDetailsTextView);
         _rerollFoodTextView = findViewById(R.id.rerollFoodItemTextView);
         _visitRestaurantTextView = findViewById(R.id.visitRestaurantTextView);
         _rerollTextView = findViewById(R.id.rerollTextView);
 
-        _searchCompleteTitleTextView.setAlpha(0);
         _foodItemTextView.setAlpha(0);
+        _foodItemDetailsTextView.setAlpha(0);
         _rerollFoodTextView.setAlpha(0);
         _visitRestaurantTextView.setAlpha(0);
         _rerollTextView.setAlpha(0);
@@ -167,152 +162,136 @@ public class ActivityUber extends AppCompatActivity
         webViewLoadUrl(uberEatsUrl);
     }
 
-    private void initAnimationPositions()
-    {
-        _searchCompleteTitleTextView.setTranslationY(_searchCompleteTitleTextView.getHeight() - Helpers.dpToPixels(ActivityMain.f_topMargin));
-
-        float offset = Helpers.getScreenHeight() - _foodItemTextView.getY() + Helpers.dpToPixels(48);
-
-        _foodItemTextView.setTranslationY(offset);
-        _rerollFoodTextView.setTranslationY(offset);
-        _visitRestaurantTextView.setTranslationY(offset);
-        _rerollTextView.setTranslationY(offset);
-    }
-
     private void handleSearchComplete()
     {
         // TODO add a "Pick One" or "Choose an Item" subtitle to the xml
         UberMainMenu.Restaurant selectedRestaurant = _uberEatsMainMenu.getSelectedRestaurant();
         UberRestaurantMenu.FoodItem foodItem = _uberEatsRestaurantMenu.getSelectedFoodItem();
 
-        Log.e("UberActivity", "Search Complete: selectedRestaurant - " + selectedRestaurant.name + " food item - " + foodItem.name);
+        Log.e("UberActivity", "Search Complete: selectedRestaurant - " + selectedRestaurant.name + " - food item - " + foodItem.name);
 
-        _foodItemTextView.setText(foodItem.name + "\n" + selectedRestaurant.name + "\n" + foodItem.price);
+        _foodItemTextView.setText(foodItem.name);
+        _foodItemDetailsTextView.setText(selectedRestaurant.name + "\n" + foodItem.price + " • Select ->");
         _rerollFoodTextView.setText("Different Item From Restaurant");
         _visitRestaurantTextView.setText("See Menu");
         _rerollTextView.setText("Restart");
 
-        animateComplete();
+        if (_offset == 0.0f)
+        {
+            initAnimationPositions();
+        }
+
+        animateSearchCompleteExit();
     }
 
-    private void animateComplete()
+    private void initAnimationPositions()
+    {
+        _foodItemTextView.setTranslationY(_foodItemTextView.getHeight() - _foodItemDetailsTextView.getHeight() - Helpers.dpToPixels(ActivityMain.f_topMargin));
+        _foodItemDetailsTextView.setTranslationY(_foodItemDetailsTextView.getHeight() - Helpers.dpToPixels(ActivityMain.f_topMargin));
+
+        _offset = Helpers.getScreenHeight() - _rerollFoodTextView.getY() + Helpers.dpToPixels(48);
+
+        _rerollFoodTextView.setTranslationY(_offset);
+        _visitRestaurantTextView.setTranslationY(_offset);
+        _rerollTextView.setTranslationY(_offset);
+    }
+
+    private void animateSearchCompleteExit()
     {
         //exit
-        float translationY = -_searchingSubtitleTextView.getY() - _searchingSubtitleTextView.getHeight();
+        float offset = -_searchingSubtitleTextView.getY() - _searchingSubtitleTextView.getHeight();
 
-        _searchingTitleTextView.animate()
-                .translationYBy(translationY)
+        new Animation(_searchingTitleTextView)
                 .alpha(0)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
+                .translationY(_searchingTitleTextView.getTranslationY() + offset)
+                .start();
 
-        _searchingSubtitleTextView.animate()
-                .translationYBy(translationY)
+        new Animation(_searchingSubtitleTextView)
                 .alpha(0)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
+                .translationY(_searchingSubtitleTextView.getTranslationY() + offset)
+                .start();
 
-        _debugMessageTextView.animate()
-                .alpha(0)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
+        new Animation(_debugMessageTextView)
+                .alpha(0);
 
-        _appStateTextView.animate()
+        new Animation(_appStateTextView)
                 .alpha(0)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
+                .start();
 
         // enter
-        _searchCompleteTitleTextView.animate()
-                .alpha(1)
-                .translationY(0)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
+        int enterDelay = 400;
 
-        _foodItemTextView.animate()
+        new Animation(_foodItemTextView)
                 .alpha(1)
                 .translationY(0)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
+                .startDelay(enterDelay)
+                .start();
 
-        _rerollFoodTextView.animate()
+        new Animation(_foodItemDetailsTextView)
                 .alpha(1)
                 .translationY(0)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
+                .startDelay(enterDelay)
+                .start();
 
-        _visitRestaurantTextView.animate()
+        new Animation(_rerollFoodTextView)
                 .alpha(1)
                 .translationY(0)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
+                .startDelay(enterDelay)
+                .start();
 
-        _rerollTextView.animate()
+        new Animation(_visitRestaurantTextView)
                 .alpha(1)
                 .translationY(0)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
+                .startDelay(enterDelay)
+                .start();
+
+        new Animation(_rerollTextView)
+                .alpha(1)
+                .translationY(0)
+                .startDelay(enterDelay)
+                .start();
     }
 
     private void rerollFoodItemAnimation()
     {
-        //enter
-        float translationY = -_searchingSubtitleTextView.getY() - _searchingSubtitleTextView.getHeight();
-
-        _searchingTitleTextView.animate()
-                .translationY(0)
-                .alpha(1)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
-
-        _searchingSubtitleTextView.animate()
-                .translationY(0)
-                .alpha(1)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
-
-        _debugMessageTextView.animate()
-                .alpha(1)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
-
-        _appStateTextView.animate()
-                .alpha(1)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
-
         // exit
-        _searchCompleteTitleTextView.animate()
+        new Animation(_foodItemTextView)
                 .alpha(0)
-                .translationY(-_searchCompleteTitleTextView.getY() - _searchCompleteTitleTextView.getHeight())
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
+                .translationY(-_foodItemTextView.getY() - _foodItemTextView.getHeight() - _foodItemDetailsTextView.getHeight())
+                .start();
 
-        float offset = Helpers.getScreenHeight() - _foodItemTextView.getY() + Helpers.dpToPixels(48);
-
-        _foodItemTextView.animate()
+        new Animation(_foodItemDetailsTextView)
                 .alpha(0)
-                .translationY(offset)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
+                .translationY(-_foodItemDetailsTextView.getY() - _foodItemDetailsTextView.getHeight())
+                .start();
 
-        _rerollFoodTextView.animate()
+        new Animation(_rerollFoodTextView)
                 .alpha(0)
-                .translationY(offset)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
+                .translationY(_offset)
+                .start();
 
-        _visitRestaurantTextView.animate()
+        new Animation(_visitRestaurantTextView)
                 .alpha(0)
-                .translationY(offset)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
+                .translationY(_offset)
+                .start();
 
-        _rerollTextView.animate()
+        new Animation(_rerollTextView)
                 .alpha(0)
-                .translationY(offset)
-                .setDuration(ActivityMain.f_animTime)
-                .setInterpolator(new DecelerateInterpolator(ActivityMain.f_animationFactor));
+                .translationY(_offset)
+                .start();
+
+        // enter
+        new Animation(_searchingTitleTextView)
+                .alpha(1)
+                .translationY(0)
+                .startDelay(400)
+                .start();
+
+        new Animation(_searchingSubtitleTextView)
+                .alpha(1)
+                .translationY(0)
+                .startDelay(400)
+                .start();
     }
 
     // TODO - @jim figure out how to load specific food/restaurants
@@ -336,11 +315,13 @@ public class ActivityUber extends AppCompatActivity
 
     private WebView _webView;
 
-    private TextView _searchCompleteTitleTextView;
     private TextView _foodItemTextView;
+    private TextView _foodItemDetailsTextView;
     private TextView _rerollFoodTextView;
     private TextView _visitRestaurantTextView;
     private TextView _rerollTextView;
+
+    private float _offset;
 
     private UberInitial _uberEatsInitial;
     private UberDeliveryDetails _uberEatsDeliveryDetails;

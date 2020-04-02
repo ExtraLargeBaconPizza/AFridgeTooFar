@@ -1,6 +1,7 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:colorPrimary">@color/grayE</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowAnimationStyle">@null</item>
@@ -42,6 +43,7 @@
         <item name="fontFamily">@font/helveticaneue</item>
         <item name="android:textColor">@color/grayE</item>
         <item name="android:textAlignment">viewEnd</item>
+        <item name="android:lineSpacingExtra">5sp</item>
     </style>
 
     <style name="searchSelectionTextView">
