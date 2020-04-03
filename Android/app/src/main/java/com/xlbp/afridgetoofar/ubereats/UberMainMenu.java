@@ -3,16 +3,19 @@ package com.xlbp.afridgetoofar.ubereats;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.xlbp.afridgetoofar.AppState;
 import com.xlbp.afridgetoofar.Helpers;
+import com.xlbp.afridgetoofar.Javascript;
+import com.xlbp.afridgetoofar.UberAppState;
 
 import java.util.ArrayList;
 
 public class UberMainMenu extends UberBase
 {
 
-    public UberMainMenu(ActivityUber uberEatsActivity, WebView webView)
+    public UberMainMenu(WebView webView)
     {
-        super(uberEatsActivity, webView);
+        super(webView);
 
         init();
     }
@@ -78,7 +81,7 @@ public class UberMainMenu extends UberBase
             {
                 _mainMenuComplete = true;
 
-                AppState.setUberEatsAppState(UberAppState.MainMenuComplete);
+                AppState.setUberEatsAppState(UberAppState.MainMenuReady);
 
                 retrieveRestaurantInfo(hrefs);
             }
@@ -100,9 +103,7 @@ public class UberMainMenu extends UberBase
 
         for (String href : hrefs)
         {
-            String javascriptFunction = "javascript: (function(){ return(document.querySelectorAll(\"a[href='" + href + "']\")[0].parentElement.innerText); })();";
-
-            webView.evaluateJavascript(javascriptFunction,
+            Javascript.getHrefsInnerText(webView, href,
                     innerText ->
                     {
                         parseInnerText(href, innerText, hrefsSize);
@@ -170,12 +171,12 @@ public class UberMainMenu extends UberBase
 
         Log.e("UberEatsMainMenu", "_selectedRestaurant - " + _selectedRestaurant.name);
 
-        String _restaurantUrl = ActivityUber.uberEatsUrl + _selectedRestaurant.href;
+        String _restaurantUrl = UberActivity.uberEatsUrl + _selectedRestaurant.href;
         _restaurantUrl = Helpers.removeLastCharacter(_restaurantUrl);
 
         AppState.setUberEatsAppState(UberAppState.RestaurantMenuLoading);
 
-        uberActivity.webViewLoadUrl(_restaurantUrl);
+        webView.loadUrl(_restaurantUrl);
     }
 
 

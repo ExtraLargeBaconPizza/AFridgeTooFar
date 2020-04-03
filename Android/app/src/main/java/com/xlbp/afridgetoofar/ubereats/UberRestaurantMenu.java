@@ -3,13 +3,19 @@ package com.xlbp.afridgetoofar.ubereats;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.xlbp.afridgetoofar.AppState;
+import com.xlbp.afridgetoofar.Javascript;
+import com.xlbp.afridgetoofar.UberAppState;
+
 import java.util.ArrayList;
 
 public class UberRestaurantMenu extends UberBase
 {
-    public UberRestaurantMenu(ActivityUber uberEatsActivity, WebView webView)
+    public UberRestaurantMenu(UberActivity uberActivity, WebView webView)
     {
-        super(uberEatsActivity, webView);
+        super(webView);
+
+        _uberActivity = uberActivity;
 
         init();
     }
@@ -41,9 +47,7 @@ public class UberRestaurantMenu extends UberBase
 
     private void retrieveHrefAndFoodItemInfo()
     {
-        String javascriptFunction = "javascript: (function(){ var result = ''; var elem = document.getElementsByTagName('a'); for (var i = 0; i < elem.length; i++) { result += 'foodItem'; result += elem[i].href; result += 'innerText' + elem[i].innerText; } return result; })();";
-
-        webView.evaluateJavascript(javascriptFunction,
+        Javascript.getUberRestaurantMenuItemsHrefsAndInnerText(webView,
                 hrefsAndFoodItemInfo ->
                 {
                     parseHrefsAndFoodItemInfo(hrefsAndFoodItemInfo);
@@ -128,7 +132,7 @@ public class UberRestaurantMenu extends UberBase
 
         if (_foodItems.size() > 3)
         {
-            AppState.setUberEatsAppState(UberAppState.RestaurantMenuComplete);
+            AppState.setUberEatsAppState(UberAppState.RestaurantMenuReady);
 
             allRestaurantInfoParsed();
         }
@@ -150,9 +154,11 @@ public class UberRestaurantMenu extends UberBase
 
         AppState.setUberEatsAppState(UberAppState.SearchComplete);
 
-        uberActivity.searchComplete();
+        _uberActivity.searchComplete();
     }
 
+
+    private UberActivity _uberActivity;
 
     private ArrayList<FoodItem> _foodItems;
 

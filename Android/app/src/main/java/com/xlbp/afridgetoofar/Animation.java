@@ -13,12 +13,11 @@ public class Animation
         _alpha = _view.getAlpha();
         _translationX = _view.getTranslationX();
         _translationY = _view.getTranslationY();
+        _startDelay = 0;
 
         _runnable = () ->
         {
         };
-
-        _startDelay = 0;
     }
 
     public Animation alpha(float alpha)
@@ -73,8 +72,8 @@ public class Animation
     private float _alpha;
     private float _translationX;
     private float _translationY;
-    private Runnable _runnable;
     private long _startDelay;
+    private Runnable _runnable;
 
     private final int f_animationTime = 600;
     private final int f_animationFactor = 2;

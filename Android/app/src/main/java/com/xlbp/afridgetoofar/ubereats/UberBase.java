@@ -2,11 +2,12 @@ package com.xlbp.afridgetoofar.ubereats;
 
 import android.webkit.WebView;
 
+import com.xlbp.afridgetoofar.Javascript;
+
 public abstract class UberBase
 {
-    public UberBase(ActivityUber uberEatsActivity, WebView webView)
+    public UberBase(WebView webView)
     {
-        this.uberActivity = uberEatsActivity;
         this.webView = webView;
     }
 
@@ -17,50 +18,11 @@ public abstract class UberBase
         retrieveHtml();
     }
 
-    // TODO can probably move this helpers
     protected void retrieveHtml()
     {
-        // !!! This function is called often as a recursive call so be careful when using it !!!
-
-        // if we ever need a tiny bit of perf improvement we can call getElementsByTagName('main')
-        // instead.  However, some pages don't have a main element on uber, so this would need to be
-        // accounted for
-        webView.evaluateJavascript("(function() { return (document.getElementById('root').innerHTML); })();",
-                html ->
-                {
-                    parseHtml(html);
-                });
-    }
-
-    protected void clickLinkByKeyword(String linkKeyword)
-    {
-        String javascriptFunction = "javascript: (function(){var elem = document.getElementsByTagName('a'); for(var i=0; i < elem.length; i++){ var t = elem[i].innerHTML; if(t != '' && t.includes('" + linkKeyword + "')){ elem[i].click(); }}})();";
-
-        uberActivity.webViewLoadUrl(javascriptFunction);
-    }
-
-    protected void clickButtonByKeyword(String buttonKeyword)
-    {
-        String javascriptFunction = "javascript: (function(){var elem = document.getElementsByTagName('button'); for(var i=0; i < elem.length; i++){ var t = elem[i].innerHTML; if(t != '' && t.includes('" + buttonKeyword + "')){ elem[i].click(); }}})();";
-
-        uberActivity.webViewLoadUrl(javascriptFunction);
-    }
-
-    protected void clickElementById(String elementId)
-    {
-        String javascriptFunction = "javascript: (function(){ document.getElementById('" + elementId + "').click(); })();";
-
-        uberActivity.webViewLoadUrl(javascriptFunction);
-    }
-
-    protected void test(String elementId)
-    {
-        String javascriptFunction = "javascript: (function(){ alert(document.getElementById('" + elementId + "').select()); })();";
-
-        uberActivity.webViewLoadUrl(javascriptFunction);
+        Javascript.getRootInnerHtml(webView, this::parseHtml);
     }
 
 
-    protected ActivityUber uberActivity;
     protected WebView webView;
 }

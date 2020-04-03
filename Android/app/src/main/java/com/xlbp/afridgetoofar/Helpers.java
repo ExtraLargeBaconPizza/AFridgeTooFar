@@ -8,6 +8,10 @@ import android.view.inputmethod.InputMethodManager;
 
 public class Helpers
 {
+    // TODO account for notch
+    public static final int topMargin = Helpers.dpToPixels(74);
+    public static final int bottomMargin = Helpers.dpToPixels(98);
+
     public static String removeLastCharacter(String inputString)
     {
         if ((!inputString.equals("")) && (inputString.length() > 0))

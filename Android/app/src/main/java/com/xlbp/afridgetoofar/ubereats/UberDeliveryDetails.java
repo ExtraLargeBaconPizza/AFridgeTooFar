@@ -1,24 +1,31 @@
 package com.xlbp.afridgetoofar.ubereats;
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 
+import com.xlbp.afridgetoofar.AppState;
+import com.xlbp.afridgetoofar.Javascript;
+import com.xlbp.afridgetoofar.UberAppState;
+
 
 public class UberDeliveryDetails extends UberBase
 {
     // TODO handle address not available
-    public UberDeliveryDetails(ActivityUber uberEatsActivity, WebView webView)
+    public UberDeliveryDetails(UberActivity uberActivity, WebView webView)
     {
-        super(uberEatsActivity, webView);
+        super(webView);
+
+        _uberActivity = uberActivity;
     }
 
     @Override
     public void parseHtml(String html)
     {
-        InputMethodManager imm = (InputMethodManager) uberActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) _uberActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         if (imm != null)
         {
@@ -34,7 +41,7 @@ public class UberDeliveryDetails extends UberBase
             {
                 if (!_addressEntered)
                 {
-                    AppState.setUberEatsAppState(UberAppState.DeliveryDetailsComplete);
+                    AppState.setUberEatsAppState(UberAppState.DeliveryDetailsReady);
 
                     String addressFull = "211 summit Ave e Seattle";
 
@@ -50,7 +57,7 @@ public class UberDeliveryDetails extends UberBase
                     // dispatch all the key events
                     for (int i = 0; i < keySequence.length; i++)
                     {
-                        uberActivity.dispatchKeyEvent(keySequence[i]);
+                        _uberActivity.dispatchKeyEvent(keySequence[i]);
                     }
 
                     _addressEntered = true;
@@ -63,7 +70,7 @@ public class UberDeliveryDetails extends UberBase
                     {
                         _addressClicked = true;
 
-                        clickElementById("location-typeahead-item-0");
+                        Javascript.clickElementById(webView, "location-typeahead-item-0");
                     }
                     else
                     {
@@ -79,7 +86,7 @@ public class UberDeliveryDetails extends UberBase
 
                         AppState.setUberEatsAppState(UberAppState.MainMenuLoading);
 
-                        clickButtonByKeyword("Done");
+                        Javascript.clickElementByKeyword(webView, "button", "Done");
                     }
                     else
                     {
@@ -94,6 +101,8 @@ public class UberDeliveryDetails extends UberBase
         }
     }
 
+
+    private Activity _uberActivity;
 
     private boolean _addressEntered;
     private boolean _addressClicked;
