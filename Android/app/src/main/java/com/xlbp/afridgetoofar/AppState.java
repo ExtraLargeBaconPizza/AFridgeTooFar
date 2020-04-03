@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.xlbp.afridgetoofar.ubereats.UberActivity;
 import com.xlbp.afridgetoofar.ubereats.UberAppState;
+import com.xlbp.afridgetoofar.ubereats.UberView;
 
 public class AppState
 {
@@ -28,7 +29,7 @@ public class AppState
 
         Log.e("AppState", "" + _uberAppState);
 
-        UberActivity.updateAppStateTextView(appState);
+        UberView.updateUberAppStateTextView(appState);
     }
 
 

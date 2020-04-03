@@ -4,7 +4,6 @@ import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.AppState;
 import com.xlbp.afridgetoofar.Javascript;
-import com.xlbp.afridgetoofar.UberAppState;
 
 public class UberHomePage extends UberBase
 {

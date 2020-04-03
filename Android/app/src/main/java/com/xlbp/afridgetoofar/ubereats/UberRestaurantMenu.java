@@ -5,7 +5,6 @@ import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.AppState;
 import com.xlbp.afridgetoofar.Javascript;
-import com.xlbp.afridgetoofar.UberAppState;
 
 import java.util.ArrayList;
 

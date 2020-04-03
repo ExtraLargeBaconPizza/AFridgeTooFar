@@ -15,7 +15,7 @@ public class Animation
         _translationY = _view.getTranslationY();
         _startDelay = 0;
 
-        _runnable = () ->
+        _endAction = () ->
         {
         };
     }
@@ -44,9 +44,9 @@ public class Animation
         return this;
     }
 
-    public Animation withEndAction(Runnable runnable)
+    public Animation withEndAction(Runnable endAction)
     {
-        _runnable = runnable;
+        _endAction = endAction;
         return this;
     }
 
@@ -62,7 +62,7 @@ public class Animation
                     .setStartDelay(_startDelay)
                     .translationX(_translationX)
                     .translationY(_translationY)
-                    .withEndAction(_runnable);
+                    .withEndAction(_endAction);
         });
 
     }
@@ -73,7 +73,7 @@ public class Animation
     private float _translationX;
     private float _translationY;
     private long _startDelay;
-    private Runnable _runnable;
+    private Runnable _endAction;
 
     private final int f_animationTime = 600;
     private final int f_animationFactor = 2;
