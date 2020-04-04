@@ -4,11 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 
 import com.xlbp.afridgetoofar.AppState;
+import com.xlbp.afridgetoofar.MainScreenState;
 import com.xlbp.afridgetoofar.XlbpWebViewClient;
 
 public class UberActivity extends AppCompatActivity
@@ -26,10 +28,17 @@ public class UberActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        _view.getWebView().destroy();
+        if (AppState.getUberEatsAppState() == UberAppState.SearchComplete)
+        {
 
-        finish();
-        return;
+        }
+        else
+        {
+            _view.getWebView().destroy();
+
+            finish();
+            return;
+        }
     }
 
     public void onDocumentComplete()
@@ -55,20 +64,24 @@ public class UberActivity extends AppCompatActivity
 
     public void searchComplete()
     {
+        AppState.setMainScreenState(MainScreenState.SearchComplete);
+
         handleSearchComplete();
     }
 
-    // TODO - figure out what to do in this situation? currently we can just instantly reroll
-    public void onRerollFoodItemClicked(View view)
+    // TODO - figure out what to do in this situation? We can just instantly reroll
+    public void onSameRestaurantClicked(View view)
     {
-//        _searchingSubtitleTextView.setText(_uberEatsMainMenu.getSelectedRestaurant().name);
-//
-//        rerollFoodItemAnimation();
-//
-//        new Handler().postDelayed(() ->
-//        {
-//            _uberEatsRestaurantMenu.onDocumentComplete();
-//        }, 3000);
+        AppState.setUberEatsAppState(UberAppState.RestaurantMenuLoading);
+
+        _view.setSubtitleTextView(_uberEatsMainMenu.getSelectedRestaurant().name);
+
+        _view.rerollFoodItemAnimation();
+
+        new Handler().postDelayed(() ->
+        {
+            _uberEatsRestaurantMenu.onDocumentComplete();
+        }, 3000);
     }
 
     private void init()
@@ -105,12 +118,14 @@ public class UberActivity extends AppCompatActivity
 
     private void handleSearchComplete()
     {
+        AppState.setMainScreenState(MainScreenState.SearchComplete);
+
         UberMainMenu.Restaurant selectedRestaurant = _uberEatsMainMenu.getSelectedRestaurant();
         UberRestaurantMenu.FoodItem foodItem = _uberEatsRestaurantMenu.getSelectedFoodItem();
 
         _view.setSearchCompleteText(selectedRestaurant.name, foodItem.name, foodItem.price);
 
-        _view.animateSearchComplete();
+        _view.animateSearchComplete(() -> AppState.setUberEatsAppState(UberAppState.SearchComplete));
     }
 
     // TODO - @jim figure out how to load specific food/restaurants

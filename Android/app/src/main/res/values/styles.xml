@@ -46,6 +46,14 @@
         <item name="android:lineSpacingExtra">5sp</item>
     </style>
 
+    <style name="searchAgainTextView">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">@font/helveticaneue</item>
+        <item name="android:textColor">@color/grayE</item>
+        <item name="android:textAlignment">viewEnd</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="searchSelectionTextView">
         <item name="android:textSize">18sp</item>
         <item name="fontFamily">@font/helveticaneue</item>

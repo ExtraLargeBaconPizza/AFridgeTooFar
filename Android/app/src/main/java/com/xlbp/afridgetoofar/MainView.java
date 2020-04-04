@@ -160,7 +160,6 @@ public class MainView
                 .start();
     }
 
-    // TODO verify this animation
     public void animateReturnFromSearchComplete(Runnable endAction)
     {
         AppState.setMainScreenState(MainScreenState.Animating);
@@ -176,21 +175,21 @@ public class MainView
         }
 
         // enter
-        new Animation(_autoCompleteTextView)
-                .alpha(1)
-                .translationY(_autoCompleteTextView.getTranslationY() + _autoCompleteTextView.getHeight() + Helpers.topMargin)
-                .startDelay(300)
-                .start();
-
         for (TextView selectionApp : _selectionApps)
         {
             new Animation(selectionApp)
                     .alpha(1)
                     .translationY(0)
                     .startDelay(600)
-                    .withEndAction(endAction)
                     .start();
         }
+
+        new Animation(_autoCompleteTextView)
+                .alpha(1)
+                .translationY(_autoCompleteTextView.getTranslationY() + _autoCompleteTextView.getHeight() + Helpers.topMargin)
+                .startDelay(900)
+                .withEndAction(endAction)
+                .start();
     }
 
     public void clearFocus(String currentDeliveryAddress)
@@ -225,6 +224,7 @@ public class MainView
         _autoCompleteTextView = _activity.findViewById(R.id.autoCompleteTextView);
 
         _searchingTextView = _activity.findViewById(R.id.searchingTextView);
+
         TextView uberTextView = _activity.findViewById(R.id.uberTextView);
         TextView doorTextView = _activity.findViewById(R.id.doorTextView);
         TextView skipTextView = _activity.findViewById(R.id.skipTextView);

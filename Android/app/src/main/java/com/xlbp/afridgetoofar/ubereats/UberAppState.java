@@ -2,6 +2,7 @@ package com.xlbp.afridgetoofar.ubereats;
 
 public enum UberAppState
 {
+    Animating,
     HomePageLoading,
     HomePageReady,
     DeliveryDetailsLoading,

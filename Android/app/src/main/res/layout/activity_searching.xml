@@ -6,7 +6,9 @@
     android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/gray2">
+    android:background="@color/gray2"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <TextView
         android:id="@+id/searchingTitleTextView"
@@ -67,7 +69,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/top_margin"
-        android:layout_marginStart="@dimen/side_margin"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="@dimen/side_margin"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,32 +88,48 @@
         style="@style/appSelectionTextView" />
 
     <TextView
-        android:id="@+id/rerollFoodItemTextView"
+        android:id="@+id/searchAgainTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="@dimen/side_margin"
+        android:layout_marginEnd="@dimen/side_margin"
+        app:layout_constraintBottom_toTopOf="@id/sameRestaurantTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="SEARCH AGAIN"
+        style="@style/searchAgainTextView" />
+
+    <TextView
+        android:id="@+id/sameRestaurantTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
         android:layout_marginStart="@dimen/side_margin"
         android:layout_marginEnd="@dimen/side_margin"
-        app:layout_constraintBottom_toTopOf="@id/visitRestaurantTextView"
+        app:layout_constraintBottom_toTopOf="@id/sameAppTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="onRerollFoodItemClicked"
+        android:onClick="onSameRestaurantClicked"
+        android:text="Same Restaurant"
         style="@style/searchSelectionTextView" />
 
     <TextView
-        android:id="@+id/visitRestaurantTextView"
+        android:id="@+id/sameAppTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="25dp"
         android:layout_marginStart="@dimen/side_margin"
         android:layout_marginEnd="@dimen/side_margin"
-        app:layout_constraintBottom_toTopOf="@id/rerollTextView"
+        app:layout_constraintBottom_toTopOf="@id/differentAppTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="onSameAppClicked"
+        android:text="Uber Eats"
         style="@style/searchSelectionTextView" />
 
     <TextView
-        android:id="@+id/rerollTextView"
+        android:id="@+id/differentAppTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/bottom_margin"
@@ -120,6 +138,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="onDifferentAppClicked"
+        android:text="Different App"
         style="@style/searchSelectionTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,7 +2,6 @@ package com.xlbp.afridgetoofar;
 
 import android.util.Log;
 
-import com.xlbp.afridgetoofar.ubereats.UberActivity;
 import com.xlbp.afridgetoofar.ubereats.UberAppState;
 import com.xlbp.afridgetoofar.ubereats.UberView;
 
