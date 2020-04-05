@@ -1,4 +1,4 @@
-package com.xlbp.afridgetoofar;
+package com.xlbp.afridgetoofar.google;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,13 +21,13 @@ public class PlaceApi
 
         try
         {
-            StringBuilder sb = new StringBuilder("https://maps.googleapis.com/maps/api/place/autocomplete/json?");
-            sb.append("input=").append(input);
-            // TODO - @jim remove country restrictions
-            sb.append("&components=country:us|country:ca");
-            sb.append("&key=AIzaSyCCsgmb-3SsAt7eQxSucG1vktfKBKeW9sM");
+            StringBuilder stringBuilder = new StringBuilder("https://maps.googleapis.com/maps/api/place/autocomplete/json?");
+            stringBuilder.append("input=").append(input);
+            // TODO - remove country restrictions
+            stringBuilder.append("&components=country:us|country:ca");
+            stringBuilder.append("&key=AIzaSyCCsgmb-3SsAt7eQxSucG1vktfKBKeW9sM");
 
-            URL url = new URL(sb.toString());
+            URL url = new URL(stringBuilder.toString());
             _connection = (HttpURLConnection) url.openConnection();
             InputStreamReader inputStreamReader = new InputStreamReader(_connection.getInputStream());
 

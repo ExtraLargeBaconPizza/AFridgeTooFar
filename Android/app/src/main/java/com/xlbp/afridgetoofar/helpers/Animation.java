@@ -1,4 +1,4 @@
-package com.xlbp.afridgetoofar;
+package com.xlbp.afridgetoofar.helpers;
 
 import android.os.Handler;
 import android.os.Looper;

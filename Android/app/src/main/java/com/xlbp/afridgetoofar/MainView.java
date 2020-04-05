@@ -5,6 +5,10 @@ import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
+import com.xlbp.afridgetoofar.enums.MainScreenState;
+import com.xlbp.afridgetoofar.helpers.Animation;
+import com.xlbp.afridgetoofar.helpers.Helpers;
+
 import java.util.ArrayList;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -112,15 +116,14 @@ public class MainView
         }
 
         // enter
-        new Animation(_searchingTextView)
-                .alpha(1)
-                .translationY(0)
-                .startDelay(600)
-                .start();
-
         // 64 = the top margin - the 10dp padding
         new Animation(_currentlySelectedView)
                 .translationY(-_currentlySelectedView.getY() + _searchingTextView.getHeight() + Helpers.dpToPixels(64))
+                .start();
+
+        new Animation(_searchingTextView)
+                .alpha(1)
+//                .translationY(0)
                 .startDelay(600)
                 .withEndAction(endAction)
                 .start();
@@ -133,7 +136,7 @@ public class MainView
         // exit
         new Animation(_searchingTextView)
                 .alpha(0)
-                .translationY(-_searchingTextView.getHeight() - Helpers.topMargin)
+//                .translationY(-_searchingTextView.getHeight() - Helpers.topMargin)
                 .start();
 
         new Animation(_currentlySelectedView)
@@ -155,7 +158,6 @@ public class MainView
         new Animation(_autoCompleteTextView)
                 .alpha(1)
                 .translationY(_autoCompleteTextView.getTranslationY() + _autoCompleteTextView.getHeight() + Helpers.topMargin)
-                .startDelay(900)
                 .withEndAction(endAction)
                 .start();
     }
@@ -171,25 +173,37 @@ public class MainView
         for (TextView selectionApp : _selectionApps)
         {
             selectionApp.setAlpha(0);
-            selectionApp.setTranslationY(_selectionAppOffset);
+            selectionApp.setTranslationY(0);
         }
 
         // enter
-        for (TextView selectionApp : _selectionApps)
-        {
-            new Animation(selectionApp)
-                    .alpha(1)
-                    .translationY(0)
-                    .startDelay(600)
-                    .start();
-        }
-
         new Animation(_autoCompleteTextView)
                 .alpha(1)
                 .translationY(_autoCompleteTextView.getTranslationY() + _autoCompleteTextView.getHeight() + Helpers.topMargin)
-                .startDelay(900)
-                .withEndAction(endAction)
                 .start();
+
+        boolean endActionRun = false;
+
+        for (TextView selectionApp : _selectionApps)
+        {
+            if (endActionRun)
+            {
+                new Animation(selectionApp)
+                        .alpha(1)
+                        .startDelay(600)
+                        .start();
+            }
+            else
+            {
+                endActionRun = true;
+
+                new Animation(selectionApp)
+                        .alpha(1)
+                        .startDelay(600)
+                        .withEndAction(endAction)
+                        .start();
+            }
+        }
     }
 
     public void clearFocus(String currentDeliveryAddress)
@@ -220,7 +234,7 @@ public class MainView
     {
         _layout = _activity.findViewById(R.id.layout);
         _titleTextView = _activity.findViewById(R.id.titleTextView);
-        // TODO - @jim make the autocomplete overlap the underline, maybe
+        // TODO - make the autocomplete overlap the underline, maybe
         _autoCompleteTextView = _activity.findViewById(R.id.autoCompleteTextView);
 
         _searchingTextView = _activity.findViewById(R.id.searchingTextView);
@@ -247,16 +261,16 @@ public class MainView
 
     private void initAnimationPositions()
     {
-        _searchingTextView.setTranslationY(-_searchingTextView.getHeight() - Helpers.topMargin);
+//        _searchingTextView.setTranslationY(-_searchingTextView.getHeight() - Helpers.topMargin);
 
         int[] location = new int[2];
         _selectionApps.get(0).getLocationOnScreen(location);
 
         _selectionAppOffset = Helpers.getScreenHeight() - location[1] + Helpers.dpToPixels(96);
 
-        for (TextView selectionApp : _selectionApps)
+        for (TextView app : _selectionApps)
         {
-            selectionApp.setTranslationY(_selectionAppOffset);
+            app.setTranslationY(_selectionAppOffset);
         }
     }
 

@@ -43,11 +43,15 @@
         <item name="fontFamily">@font/helveticaneue</item>
         <item name="android:textColor">@color/grayE</item>
         <item name="android:textAlignment">viewEnd</item>
+    </style>
+
+
+    <style name="searchingSubtitleTextView" parent="appSelectionTextView">
         <item name="android:lineSpacingExtra">5sp</item>
     </style>
 
-    <style name="searchAgainTextView">
-        <item name="android:textSize">20sp</item>
+    <style name="searchTextView">
+        <item name="android:textSize">22sp</item>
         <item name="fontFamily">@font/helveticaneue</item>
         <item name="android:textColor">@color/grayE</item>
         <item name="android:textAlignment">viewEnd</item>

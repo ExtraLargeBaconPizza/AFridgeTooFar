@@ -1,4 +1,4 @@
-package com.xlbp.afridgetoofar;
+package com.xlbp.afridgetoofar.helpers;
 
 import android.app.Activity;
 import android.content.Context;
@@ -8,7 +8,7 @@ import android.view.inputmethod.InputMethodManager;
 
 public class Helpers
 {
-    // TODO account for notch
+    // TODO - account for notch
     public static final int topMargin = Helpers.dpToPixels(74);
     public static final int bottomMargin = Helpers.dpToPixels(98);
 

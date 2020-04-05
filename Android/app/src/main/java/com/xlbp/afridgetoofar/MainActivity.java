@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.xlbp.afridgetoofar.google.PlaceAutoSuggestAdapter;
 import com.xlbp.afridgetoofar.ubereats.UberActivity;
+import com.xlbp.afridgetoofar.enums.MainScreenState;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -78,6 +80,8 @@ public class MainActivity extends AppCompatActivity
     private void init()
     {
         _view = new MainView(this);
+
+        AppState.setMainScreenState(MainScreenState.StartingScreen);
 
         _placeAutoSuggestAdapter = new PlaceAutoSuggestAdapter(this, android.R.layout.simple_list_item_1);
         _view.getAutoCompleteTextView().setAdapter(_placeAutoSuggestAdapter);

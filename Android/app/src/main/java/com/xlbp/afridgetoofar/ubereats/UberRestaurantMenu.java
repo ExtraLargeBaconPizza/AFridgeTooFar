@@ -4,7 +4,8 @@ import android.util.Log;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.AppState;
-import com.xlbp.afridgetoofar.Javascript;
+import com.xlbp.afridgetoofar.helpers.Javascript;
+import com.xlbp.afridgetoofar.enums.UberAppState;
 
 import java.util.ArrayList;
 
@@ -90,7 +91,7 @@ public class UberRestaurantMenu extends UberBase
             }
         }
 
-        if (foodItems.size() > 3)
+        if (foodItems.size() > 1)
         {
             _foodItems = foodItems;
 
@@ -102,7 +103,7 @@ public class UberRestaurantMenu extends UberBase
         }
     }
 
-    // TODO get picture will probably have to navigate to food item, or delay to ensure images have loaded...
+    // TODO - get picture will probably have to navigate to food item, or delay to ensure images have loaded...
     private void parseFoodItemsNamePrice()
     {
         for (int i = _foodItems.size() - 1; i >= 0; i--)
@@ -113,15 +114,35 @@ public class UberRestaurantMenu extends UberBase
 
             foodItem.name = values[0];
 
+            foodItem.name = foodItem.name.replace("\\", "");
+
             for (int j = 1; j < values.length; j++)
             {
                 if (values[j].contains("$") && values[j].length() < 10)
                 {
                     foodItem.price = values[j].replace("US", "");
 
-                    float priceCheck = Float.parseFloat(foodItem.price.replace("[^\\d.]", "").replace("$", "").replace("\"", ""));
+                    String currencyOnly = foodItem.price.replace("[^\\d.]", "").replace("$", "").replace("\"", "");
 
-                    if (priceCheck < 4.99f)
+                    boolean removeFoodItem = false;
+
+                    if (!(currencyOnly.isEmpty()
+                            || foodItem.price.contains("Customize")
+                            || foodItem.price == null))
+                    {
+                        float priceCheck = Float.parseFloat(currencyOnly);
+
+                        if (priceCheck < 4.99f)
+                        {
+                            removeFoodItem = true;
+                        }
+                    }
+                    else
+                    {
+                        removeFoodItem = true;
+                    }
+
+                    if (removeFoodItem)
                     {
                         _foodItems.remove(foodItem);
                     }
@@ -129,7 +150,7 @@ public class UberRestaurantMenu extends UberBase
             }
         }
 
-        if (_foodItems.size() > 3)
+        if (_foodItems.size() > 1)
         {
             AppState.setUberEatsAppState(UberAppState.RestaurantMenuReady);
 

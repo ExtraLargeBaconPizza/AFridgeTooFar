@@ -2,7 +2,8 @@ package com.xlbp.afridgetoofar;
 
 import android.util.Log;
 
-import com.xlbp.afridgetoofar.ubereats.UberAppState;
+import com.xlbp.afridgetoofar.enums.MainScreenState;
+import com.xlbp.afridgetoofar.enums.UberAppState;
 import com.xlbp.afridgetoofar.ubereats.UberView;
 
 public class AppState
@@ -14,7 +15,12 @@ public class AppState
 
     public static void setMainScreenState(MainScreenState mainScreenState)
     {
-        _mainScreenState = mainScreenState;
+        if (_mainScreenState != mainScreenState)
+        {
+            _mainScreenState = mainScreenState;
+
+            Log.e("MainScreenState", "" + _mainScreenState);
+        }
     }
 
     public static UberAppState getUberEatsAppState()
@@ -22,16 +28,19 @@ public class AppState
         return _uberAppState;
     }
 
-    public static void setUberEatsAppState(UberAppState appState)
+    public static void setUberEatsAppState(UberAppState uberAppState)
     {
-        _uberAppState = appState;
+        if (_uberAppState != uberAppState)
+        {
+            _uberAppState = uberAppState;
 
-        Log.e("AppState", "" + _uberAppState);
+            Log.e("UberAppState", "" + _uberAppState);
 
-        UberView.updateUberAppStateTextView(appState);
+            UberView.updateUberAppStateTextView(uberAppState);
+        }
     }
 
 
-    private static MainScreenState _mainScreenState = MainScreenState.StartingScreen;
-    private static UberAppState _uberAppState = UberAppState.HomePageLoading;
+    private static MainScreenState _mainScreenState;
+    private static UberAppState _uberAppState;
 }

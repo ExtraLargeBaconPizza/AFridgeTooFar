@@ -1,4 +1,4 @@
-package com.xlbp.afridgetoofar;
+package com.xlbp.afridgetoofar.google;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;
@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class PlaceAutoSuggestAdapter extends ArrayAdapter implements Filterable
 {
-    PlaceAutoSuggestAdapter(Context context, int resId)
+    public PlaceAutoSuggestAdapter(Context context, int resId)
     {
         super(context, resId);
 

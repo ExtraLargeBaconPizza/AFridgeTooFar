@@ -2,7 +2,7 @@ package com.xlbp.afridgetoofar.ubereats;
 
 import android.webkit.WebView;
 
-import com.xlbp.afridgetoofar.Javascript;
+import com.xlbp.afridgetoofar.helpers.Javascript;
 
 public abstract class UberBase
 {

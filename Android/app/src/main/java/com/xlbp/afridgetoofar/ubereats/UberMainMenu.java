@@ -4,8 +4,9 @@ import android.util.Log;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.AppState;
-import com.xlbp.afridgetoofar.Helpers;
-import com.xlbp.afridgetoofar.Javascript;
+import com.xlbp.afridgetoofar.helpers.Helpers;
+import com.xlbp.afridgetoofar.helpers.Javascript;
+import com.xlbp.afridgetoofar.enums.UberAppState;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,6 @@ public class UberMainMenu extends UberBase
     {
         String href;
         String name;
-        // TODO get image and display
         String image;
     }
 
@@ -32,7 +32,12 @@ public class UberMainMenu extends UberBase
         return _selectedRestaurant;
     }
 
-    // TODO refactor this to match UberRestaurantMenu
+    public void selectRestaurant()
+    {
+        handleRestaurantSelection();
+    }
+
+    // TODO - refactor this to match UberRestaurantMenu
     @Override
     protected void parseHtml(String html)
     {
@@ -94,6 +99,7 @@ public class UberMainMenu extends UberBase
     private void init()
     {
         _restaurants = new ArrayList<>();
+        _restaurantsAlreadyPicked = new ArrayList<>();
     }
 
     private void retrieveRestaurantInfo(ArrayList<String> hrefs)
@@ -135,7 +141,7 @@ public class UberMainMenu extends UberBase
         {
             _allRestaurantInfoRetrieved = true;
 
-            allRestaurantInfoRetrieved();
+            selectRestaurant();
         }
     }
 
@@ -160,26 +166,36 @@ public class UberMainMenu extends UberBase
         return restaurantName;
     }
 
-    private void allRestaurantInfoRetrieved()
+    private void handleRestaurantSelection()
     {
-        Log.e("UberEatsMainMenu", "Number of Restaurants - " + _restaurants.size());
-
         int random = (int) (Math.random() * _restaurants.size());
 
-        _selectedRestaurant = _restaurants.get(random);
+        Restaurant selectedRestaurant = _restaurants.get(random);
 
-        Log.e("UberEatsMainMenu", "_selectedRestaurant - " + _selectedRestaurant.name);
+        if (!_restaurantsAlreadyPicked.contains(selectedRestaurant))
+        {
+            _selectedRestaurant = selectedRestaurant;
 
-        String _restaurantUrl = UberActivity.uberEatsUrl + _selectedRestaurant.href;
-        _restaurantUrl = Helpers.removeLastCharacter(_restaurantUrl);
+            _restaurantsAlreadyPicked.add(_selectedRestaurant);
 
-        AppState.setUberEatsAppState(UberAppState.RestaurantMenuLoading);
+            Log.e("UberEatsMainMenu", "_selectedRestaurant - " + _selectedRestaurant.name);
 
-        webView.loadUrl(_restaurantUrl);
+            String _restaurantUrl = UberActivity.uberEatsUrl + _selectedRestaurant.href;
+            _restaurantUrl = Helpers.removeLastCharacter(_restaurantUrl);
+
+            AppState.setUberEatsAppState(UberAppState.RestaurantMenuLoading);
+
+            webView.loadUrl(_restaurantUrl);
+        }
+        else
+        {
+            handleRestaurantSelection();
+        }
     }
 
 
     private ArrayList<Restaurant> _restaurants;
+    private ArrayList<Restaurant> _restaurantsAlreadyPicked;
     private boolean _mainMenuComplete;
     private int _parseInnerTextCount;
     private boolean _allRestaurantInfoRetrieved;

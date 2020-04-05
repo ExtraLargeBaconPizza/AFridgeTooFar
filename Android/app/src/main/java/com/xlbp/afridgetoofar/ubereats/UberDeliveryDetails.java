@@ -8,12 +8,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.AppState;
-import com.xlbp.afridgetoofar.Javascript;
+import com.xlbp.afridgetoofar.helpers.Javascript;
+import com.xlbp.afridgetoofar.enums.UberAppState;
 
 
 public class UberDeliveryDetails extends UberBase
 {
-    // TODO handle address not available
+    // TODO - handle address not available
+    // TODO - ensure keyboard is never shown
     public UberDeliveryDetails(UberActivity uberActivity, WebView webView)
     {
         super(webView);

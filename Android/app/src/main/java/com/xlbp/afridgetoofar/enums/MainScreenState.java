@@ -1,4 +1,4 @@
-package com.xlbp.afridgetoofar;
+package com.xlbp.afridgetoofar.enums;
 
 public enum MainScreenState
 {

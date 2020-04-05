@@ -1,4 +1,4 @@
-package com.xlbp.afridgetoofar;
+package com.xlbp.afridgetoofar.helpers;
 
 import android.webkit.ValueCallback;
 import android.webkit.WebView;

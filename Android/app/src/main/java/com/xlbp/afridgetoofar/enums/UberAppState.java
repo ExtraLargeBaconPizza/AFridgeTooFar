@@ -1,4 +1,4 @@
-package com.xlbp.afridgetoofar.ubereats;
+package com.xlbp.afridgetoofar.enums;
 
 public enum UberAppState
 {

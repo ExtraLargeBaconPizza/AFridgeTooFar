@@ -1,15 +1,13 @@
-package com.xlbp.afridgetoofar;
+package com.xlbp.afridgetoofar.ubereats;
 
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.xlbp.afridgetoofar.Javascript;
-import com.xlbp.afridgetoofar.ubereats.UberActivity;
+import com.xlbp.afridgetoofar.helpers.Javascript;
 
-// TODO - can probably make this a more generic class and use for all apps
-public class XlbpWebViewClient extends WebViewClient
+public class UberWebViewClient extends WebViewClient
 {
-    public XlbpWebViewClient(UberActivity uberActivity)
+    public UberWebViewClient(UberActivity uberActivity)
     {
         _uberActivity = uberActivity;
     }
