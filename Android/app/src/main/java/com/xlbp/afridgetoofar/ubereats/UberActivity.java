@@ -82,8 +82,11 @@ public class UberActivity extends AppCompatActivity
 
     public void onFoodItemClicked(View view)
     {
-        // TODO navigate to uber eats app
-        Toast.makeText(getApplicationContext(), "Once implemented, you will be navigated to this exact food item on the Uber Eats app", Toast.LENGTH_SHORT).show();
+        if (AppState.getUberEatsAppState() == UberAppState.SearchComplete)
+        {
+            // TODO navigate to uber eats app
+            Toast.makeText(getApplicationContext(), "Once implemented, you will be navigated to this exact food item on the Uber Eats app", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onSameRestaurantClicked(View view)

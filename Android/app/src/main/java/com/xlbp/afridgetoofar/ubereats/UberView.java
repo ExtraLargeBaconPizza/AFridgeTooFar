@@ -302,6 +302,7 @@ public class UberView
         for (TextView searchAgainItem : _searchAgainItems)
         {
             searchAgainItem.setAlpha(0);
+            searchAgainItem.setClickable(false);
         }
     }
 
@@ -317,11 +318,10 @@ public class UberView
             _activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
 
             // The webView doesn't work correctly if its visibility is invisible or gone.
-            // So we just set its alpha to 0 and remove it touch listeners
+            // So we just set its alpha to 0 and remove it touch listeners. move it offscreen as well just in case
             _webView.setAlpha(0);
-//            _webView.setTranslationX(Helpers.getScreenWidth());
+            _webView.setTranslationX(Helpers.getScreenWidth());
             _webView.setOnTouchListener((v, event) -> false);
-//            _webView.setClickable(false);
         }
     }
 
@@ -337,6 +337,7 @@ public class UberView
         for (TextView searchAgainItem : _searchAgainItems)
         {
             searchAgainItem.setTranslationY(_searchAgainOffset);
+            searchAgainItem.setClickable(true);
         }
     }
 
