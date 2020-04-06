@@ -110,6 +110,7 @@ public class MainView
             if (selectionApp.getId() != _currentlySelectedView.getId())
             {
                 new Animation(selectionApp)
+                        .translationY(_selectionAppOffset)
                         .alpha(0)
                         .start();
             }
@@ -123,8 +124,7 @@ public class MainView
 
         new Animation(_searchingTextView)
                 .alpha(1)
-//                .translationY(0)
-                .startDelay(600)
+                .translationY(0)
                 .withEndAction(endAction)
                 .start();
     }
@@ -136,7 +136,7 @@ public class MainView
         // exit
         new Animation(_searchingTextView)
                 .alpha(0)
-//                .translationY(-_searchingTextView.getHeight() - Helpers.topMargin)
+                .translationY(-_searchingTextView.getHeight() - Helpers.topMargin)
                 .start();
 
         new Animation(_currentlySelectedView)
@@ -148,6 +148,8 @@ public class MainView
         {
             if (selectionApp != _currentlySelectedView)
             {
+                selectionApp.setTranslationY(0);
+
                 new Animation(selectionApp)
                         .alpha(1)
                         .startDelay(600)
@@ -186,23 +188,16 @@ public class MainView
 
         for (TextView selectionApp : _selectionApps)
         {
-            if (endActionRun)
-            {
-                new Animation(selectionApp)
-                        .alpha(1)
-                        .startDelay(600)
-                        .start();
-            }
-            else
-            {
-                endActionRun = true;
+            selectionApp.setTranslationY(_selectionAppOffset);
 
-                new Animation(selectionApp)
-                        .alpha(1)
-                        .startDelay(600)
-                        .withEndAction(endAction)
-                        .start();
-            }
+            Runnable endAction2 = endActionRun ? null : endAction;
+            endActionRun = true;
+
+            new Animation(selectionApp)
+                    .alpha(1)
+                    .translationY(0)
+                    .withEndAction(endAction2)
+                    .start();
         }
     }
 
@@ -256,12 +251,13 @@ public class MainView
         for (TextView app : _selectionApps)
         {
             app.setAlpha(0);
+            app.setClickable(false);
         }
     }
 
     private void initAnimationPositions()
     {
-//        _searchingTextView.setTranslationY(-_searchingTextView.getHeight() - Helpers.topMargin);
+        _searchingTextView.setTranslationY(-_searchingTextView.getHeight() - Helpers.topMargin);
 
         int[] location = new int[2];
         _selectionApps.get(0).getLocationOnScreen(location);
@@ -271,6 +267,7 @@ public class MainView
         for (TextView app : _selectionApps)
         {
             app.setTranslationY(_selectionAppOffset);
+            app.setClickable(true);
         }
     }
 

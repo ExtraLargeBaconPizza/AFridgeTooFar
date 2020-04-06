@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/gray2"
+    android:clickable="true"
     android:focusable="true"
     android:focusableInTouchMode="true">
 
@@ -69,22 +70,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/top_margin"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="40dp"
         android:layout_marginEnd="@dimen/side_margin"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="onFoodItemClicked"
         style="@style/mediumTitleTextView" />
 
     <TextView
         android:id="@+id/foodItemDetailsTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="40dp"
         android:layout_marginEnd="@dimen/side_margin"
         app:layout_constraintTop_toBottomOf="@id/foodItemTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="onFoodItemClicked"
         style="@style/searchingSubtitleTextView" />
 
     <TextView
@@ -101,7 +104,7 @@
         android:id="@+id/sameRestaurantTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="15dp"
         android:layout_marginEnd="40dp"
         app:layout_constraintBottom_toTopOf="@id/sameAppTextView"
         app:layout_constraintStart_toStartOf="parent"

@@ -8,6 +8,6 @@ public enum MainScreenState
     DeliveryAddressSelected,
     ModifyDeliveryAddress,
     AppSelection,
-    ScreenComplete,
+    SearchingApp,
     SearchComplete,
 }

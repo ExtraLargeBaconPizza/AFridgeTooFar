@@ -26,7 +26,7 @@ public class MainActivity extends AppCompatActivity
     {
         super.onResume();
 
-        if (AppState.getMainScreenState() == MainScreenState.ScreenComplete)
+        if (AppState.getMainScreenState() == MainScreenState.SearchingApp)
         {
             _view.animateSelectedAppDown(() -> AppState.setMainScreenState(MainScreenState.AppSelection));
         }
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         {
             _view.animateSelectedAppUp(selectedView, () ->
             {
-                AppState.setMainScreenState(MainScreenState.ScreenComplete);
+                AppState.setMainScreenState(MainScreenState.SearchingApp);
 
                 navigateToSearching(selectedView);
             });
@@ -136,15 +136,18 @@ public class MainActivity extends AppCompatActivity
     {
         Intent intent = new Intent(getBaseContext(), UberActivity.class);
 
+        String searchAddress = _view.getAutoCompleteTextView().getText().toString();
+
         switch (view.getId())
         {
             case R.id.foodTextView:
-                intent.putExtra("DebugMode", true);
+                intent.putExtra("SearchAddress", searchAddress);
+//                intent.putExtra("DebugMode", true);
                 break;
             case R.id.uberTextView:
             case R.id.doorTextView:
             case R.id.skipTextView:
-                intent.putExtra("DebugMode", false);
+                intent.putExtra("SearchAddress", searchAddress);
                 break;
         }
 

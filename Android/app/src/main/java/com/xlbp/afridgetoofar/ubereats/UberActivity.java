@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
+import android.widget.Toast;
 
 import com.xlbp.afridgetoofar.AppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
@@ -48,15 +49,20 @@ public class UberActivity extends AppCompatActivity
         }
     }
 
+    public View getLayout()
+    {
+        return _view.getLayout();
+    }
+
     public void onDocumentComplete()
     {
         switch (AppState.getUberEatsAppState())
         {
             case HomePageLoading:
-                _uberEatsInitial.onDocumentComplete();
+                _uberEatsHomePage.onDocumentComplete();
                 break;
             case DeliveryDetailsLoading:
-                _uberEatsInitial = null;
+                _uberEatsHomePage = null;
                 _uberEatsDeliveryDetails.onDocumentComplete();
                 break;
             case MainMenuLoading:
@@ -74,11 +80,17 @@ public class UberActivity extends AppCompatActivity
         handleSearchComplete();
     }
 
+    public void onFoodItemClicked(View view)
+    {
+        // TODO navigate to uber eats app
+        Toast.makeText(getApplicationContext(), "Once implemented, you will be navigated to this exact food item on the Uber Eats app", Toast.LENGTH_SHORT).show();
+    }
+
     public void onSameRestaurantClicked(View view)
     {
         if (AppState.getUberEatsAppState() != UberAppState.Animating)
         {
-//            _view.setSubtitleTextView(_uberEatsMainMenu.getSelectedRestaurant().name);
+            AppState.setMainScreenState(MainScreenState.SearchingApp);
 
             _view.animateSearchSameRestaurantAnimation(() ->
             {
@@ -93,6 +105,8 @@ public class UberActivity extends AppCompatActivity
     {
         if (AppState.getUberEatsAppState() != UberAppState.Animating)
         {
+            AppState.setMainScreenState(MainScreenState.SearchingApp);
+
             _view.setSubtitleTextView("Uber Eats");
 
             _view.animateSearchSameAppAnimation(() ->
@@ -140,8 +154,13 @@ public class UberActivity extends AppCompatActivity
 
         _view.setSubtitleTextView("Uber Eats");
 
-        _uberEatsInitial = new UberHomePage(_view.getWebView());
-        _uberEatsDeliveryDetails = new UberDeliveryDetails(this, _view.getWebView());
+        _firstSearch = true;
+
+        Bundle extras = getIntent().getExtras();
+        String searchAddress = extras.getString("SearchAddress");
+
+        _uberEatsHomePage = new UberHomePage(_view.getWebView());
+        _uberEatsDeliveryDetails = new UberDeliveryDetails(this, _view.getWebView(), searchAddress);
         _uberEatsMainMenu = new UberMainMenu(_view.getWebView());
         _uberEatsRestaurantMenu = new UberRestaurantMenu(this, _view.getWebView());
     }
@@ -151,14 +170,28 @@ public class UberActivity extends AppCompatActivity
         UberMainMenu.Restaurant selectedRestaurant = _uberEatsMainMenu.getSelectedRestaurant();
         UberRestaurantMenu.FoodItem foodItem = _uberEatsRestaurantMenu.getSelectedFoodItem();
 
-        _view.setSearchCompleteText(selectedRestaurant.name, foodItem.name, foodItem.price);
+        _view.setSearchCompleteText(selectedRestaurant.name, foodItem.name, foodItem.price + " • View");
 
-        _view.animateSearchComplete(() ->
+        if (_firstSearch)
         {
-            AppState.setMainScreenState(MainScreenState.SearchComplete);
+            _firstSearch = false;
 
-            AppState.setUberEatsAppState(UberAppState.SearchComplete);
-        });
+            _view.animateSearchComplete(() ->
+            {
+                AppState.setMainScreenState(MainScreenState.SearchComplete);
+
+                AppState.setUberEatsAppState(UberAppState.SearchComplete);
+            });
+        }
+        else
+        {
+            _view.animateSameSearchCompleteAnimation(() ->
+            {
+                AppState.setMainScreenState(MainScreenState.SearchComplete);
+
+                AppState.setUberEatsAppState(UberAppState.SearchComplete);
+            });
+        }
     }
 
     // TODO - figure out how to load specific food/restaurants
@@ -183,8 +216,12 @@ public class UberActivity extends AppCompatActivity
 
     private UberView _view;
 
-    private UberHomePage _uberEatsInitial;
+    private String _searchAddress;
+
+    private UberHomePage _uberEatsHomePage;
     private UberDeliveryDetails _uberEatsDeliveryDetails;
     private UberMainMenu _uberEatsMainMenu;
     private UberRestaurantMenu _uberEatsRestaurantMenu;
+
+    private boolean _firstSearch;
 }

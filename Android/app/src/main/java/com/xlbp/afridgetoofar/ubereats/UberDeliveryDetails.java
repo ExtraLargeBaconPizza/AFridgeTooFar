@@ -8,6 +8,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.AppState;
+import com.xlbp.afridgetoofar.helpers.Helpers;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 import com.xlbp.afridgetoofar.enums.UberAppState;
 
@@ -16,16 +17,19 @@ public class UberDeliveryDetails extends UberBase
 {
     // TODO - handle address not available
     // TODO - ensure keyboard is never shown
-    public UberDeliveryDetails(UberActivity uberActivity, WebView webView)
+    public UberDeliveryDetails(UberActivity uberActivity, WebView webView, String searchAddress)
     {
         super(webView);
 
         _uberActivity = uberActivity;
+        _searchAddress = searchAddress;
     }
 
     @Override
     public void parseHtml(String html)
     {
+        UberHomePage.deliveryDetailsLoaded = true;
+
         InputMethodManager imm = (InputMethodManager) _uberActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         if (imm != null)
@@ -44,10 +48,10 @@ public class UberDeliveryDetails extends UberBase
                 {
                     AppState.setUberEatsAppState(UberAppState.DeliveryDetailsReady);
 
-                    String addressFull = "211 summit Ave e Seattle";
+//                    String addressFull = "211 summit Ave e Seattle";
 
                     // convert the string to a char array
-                    char[] addressFullChars = addressFull.toCharArray();
+                    char[] addressFullChars = _searchAddress.toCharArray();
 
                     // need a KeyCharacterMap in order to call .getEvents
                     KeyCharacterMap fullKeyMap = KeyCharacterMap.load(KeyCharacterMap.FULL);
@@ -60,6 +64,8 @@ public class UberDeliveryDetails extends UberBase
                     {
                         _uberActivity.dispatchKeyEvent(keySequence[i]);
                     }
+
+                    Helpers.hideKeyboard(_uberActivity);
 
                     _addressEntered = true;
                 }
@@ -103,7 +109,8 @@ public class UberDeliveryDetails extends UberBase
     }
 
 
-    private Activity _uberActivity;
+    private UberActivity _uberActivity;
+    private String _searchAddress;
 
     private boolean _addressEntered;
     private boolean _addressClicked;

@@ -91,7 +91,7 @@ public class UberRestaurantMenu extends UberBase
             }
         }
 
-        if (foodItems.size() > 1)
+        if (foodItems.size() > 0)
         {
             _foodItems = foodItems;
 
@@ -116,6 +116,8 @@ public class UberRestaurantMenu extends UberBase
 
             foodItem.name = foodItem.name.replace("\\", "");
 
+            boolean keepFoodItem = false;
+
             for (int j = 1; j < values.length; j++)
             {
                 if (values[j].contains("$") && values[j].length() < 10)
@@ -124,33 +126,25 @@ public class UberRestaurantMenu extends UberBase
 
                     String currencyOnly = foodItem.price.replace("[^\\d.]", "").replace("$", "").replace("\"", "");
 
-                    boolean removeFoodItem = false;
-
-                    if (!(currencyOnly.isEmpty()
-                            || foodItem.price.contains("Customize")
-                            || foodItem.price == null))
+                    if (!currencyOnly.isEmpty())
                     {
                         float priceCheck = Float.parseFloat(currencyOnly);
 
-                        if (priceCheck < 4.99f)
+                        if (priceCheck >= 4.99f)
                         {
-                            removeFoodItem = true;
+                            keepFoodItem = true;
                         }
-                    }
-                    else
-                    {
-                        removeFoodItem = true;
-                    }
-
-                    if (removeFoodItem)
-                    {
-                        _foodItems.remove(foodItem);
                     }
                 }
             }
+
+            if (!keepFoodItem)
+            {
+                _foodItems.remove(foodItem);
+            }
         }
 
-        if (_foodItems.size() > 1)
+        if (_foodItems.size() > 0)
         {
             AppState.setUberEatsAppState(UberAppState.RestaurantMenuReady);
 

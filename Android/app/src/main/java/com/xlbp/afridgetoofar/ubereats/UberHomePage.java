@@ -1,5 +1,7 @@
 package com.xlbp.afridgetoofar.ubereats;
 
+import android.os.Handler;
+import android.util.Log;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.AppState;
@@ -11,15 +13,26 @@ public class UberHomePage extends UberBase
     public UberHomePage(WebView webView)
     {
         super(webView);
+
+        deliveryDetailsLoaded = false;
     }
+
+    public static boolean deliveryDetailsLoaded;
 
     @Override
     public void parseHtml(String html)
     {
-        AppState.setUberEatsAppState(UberAppState.HomePageReady);
+        // need to loop here because the find food button click can sometimes not work for slow connections
+        new Handler().postDelayed(() ->
+        {
+            if (!deliveryDetailsLoaded)
+            {
+                AppState.setUberEatsAppState(UberAppState.DeliveryDetailsLoading);
 
-        AppState.setUberEatsAppState(UberAppState.DeliveryDetailsLoading);
+                Javascript.clickElementByKeyword(webView, "a", "Find Food");
+            }
+        }, 500);
 
-        Javascript.clickElementByKeyword(webView, "a", "Find Food");
+
     }
 }
