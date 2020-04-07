@@ -119,12 +119,12 @@ public class MainView
         // enter
         // 64 = the top margin - the 10dp padding
         new Animation(_currentlySelectedView)
-                .translationY(-_currentlySelectedView.getY() + _searchingTextView.getHeight() + Helpers.dpToPixels(64))
+                .translationY(-_currentlySelectedView.getY() + _searchingTextView.getHeight() + Helpers.dpToPixels(64) + Helpers.getStatusBarHeight())
                 .start();
 
         new Animation(_searchingTextView)
                 .alpha(1)
-                .translationY(0)
+                .translationY(Helpers.getStatusBarHeight())
                 .withEndAction(endAction)
                 .start();
     }
@@ -238,6 +238,8 @@ public class MainView
         TextView doorTextView = _activity.findViewById(R.id.doorTextView);
         TextView skipTextView = _activity.findViewById(R.id.skipTextView);
         TextView foodTextView = _activity.findViewById(R.id.foodTextView);
+
+        Helpers.adjustViewTopMarginForNotch(_titleTextView);
 
         _selectionApps = new ArrayList<>();
 

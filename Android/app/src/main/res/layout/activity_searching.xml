@@ -117,7 +117,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toTopOf="@id/differentAppTextView"
+        app:layout_constraintBottom_toTopOf="@id/backTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:onClick="onSameAppClicked"
@@ -126,7 +126,7 @@
         style="@style/searchSelectionTextView" />
 
     <TextView
-        android:id="@+id/differentAppTextView"
+        android:id="@+id/backTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -135,9 +135,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="onDifferentAppClicked"
+        android:onClick="onBackClicked"
         android:padding="10dp"
-        android:text="Different App"
+        android:text="Back"
         style="@style/searchSelectionTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

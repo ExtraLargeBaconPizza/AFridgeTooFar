@@ -12,14 +12,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="com.xlbp.afridgetoofar.MainActivity">
+        <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:name="com.xlbp.afridgetoofar.MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.xlbp.afridgetoofar.ubereats.UberActivity" />
+        <activity
+            android:configChanges="orientation|keyboardHidden"
+            android:name="com.xlbp.afridgetoofar.ubereats.UberActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

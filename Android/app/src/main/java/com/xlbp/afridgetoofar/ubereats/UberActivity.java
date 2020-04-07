@@ -121,7 +121,7 @@ public class UberActivity extends AppCompatActivity
         }
     }
 
-    public void onDifferentAppClicked(View view)
+    public void onBackClicked(View view)
     {
         if (AppState.getUberEatsAppState() != UberAppState.Animating)
         {

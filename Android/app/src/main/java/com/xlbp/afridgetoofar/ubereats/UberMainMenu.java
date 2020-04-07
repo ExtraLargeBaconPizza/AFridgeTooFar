@@ -67,7 +67,8 @@ public class UberMainMenu extends UberBase
 
                 String substringToCheck = html.substring(fromIndex, farthestIndex);
 
-                if (!substringToCheck.contains("Currently unavailable"))
+                if (!substringToCheck.contains("Currently unavailable")
+                        && !substringToCheck.contains("Opens On"))
                 {
                     hrefs.add(href);
 
@@ -118,6 +119,8 @@ public class UberMainMenu extends UberBase
 
     private void parseInnerText(String href, String innerText, int hrefsSize)
     {
+        // since this function is called by a runnable, we must count the number of times its called
+        // and wait until all the javascript function calls have returned
         _parseInnerTextCount++;
 
         String[] values = innerText.split("\\\\n");
@@ -141,7 +144,7 @@ public class UberMainMenu extends UberBase
         {
             _allRestaurantInfoRetrieved = true;
 
-            selectRestaurant();
+            handleRestaurantSelection();
         }
     }
 
@@ -151,10 +154,12 @@ public class UberMainMenu extends UberBase
 
         for (int i = 0; i < 3; i++)
         {
+            // TODO restaurants with Min will get filtered and probably cause an error, but this is good enough for now
             if (!(values[i].contains("$")
                     || values[i].contains("\"")
                     || values[i].contains("Buy 1")
-                    || values[i].contains("Delivery Fee")))
+                    || values[i].contains("Delivery Fee")
+                    || values[i].contains("Min")))
             {
                 if (restaurantName.isEmpty())
                 {

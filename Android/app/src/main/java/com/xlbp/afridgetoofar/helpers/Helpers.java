@@ -4,13 +4,36 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 public class Helpers
 {
     // TODO - account for notch
-    public static final int topMargin = Helpers.dpToPixels(74);
-    public static final int bottomMargin = Helpers.dpToPixels(98);
+    public static final int topMargin = Helpers.dpToPixels(74) + getStatusBarHeight();
+
+    public static int getStatusBarHeight()
+    {
+        int statusBarHeight = 0;
+
+        int resourceId = Resources.getSystem().getIdentifier("status_bar_height", "dimen", "android");
+
+        if (resourceId > 0)
+        {
+            statusBarHeight = Resources.getSystem().getDimensionPixelSize(resourceId);
+        }
+
+        return statusBarHeight;
+    }
+
+    public static void adjustViewTopMarginForNotch(View view)
+    {
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+
+        layoutParams.topMargin += getStatusBarHeight();
+
+        view.setLayoutParams(layoutParams);
+    }
 
     public static String removeLastCharacter(String inputString)
     {

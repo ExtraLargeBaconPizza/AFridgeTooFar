@@ -135,7 +135,7 @@ public class UberView
             else
             {
                 new Animation(searchAgainItem)
-                        .translationY(-searchAgainItem.getY() + _searchingTitleTextView.getHeight() + Helpers.dpToPixels(64))
+                        .translationY(-searchAgainItem.getY() + _searchingTitleTextView.getHeight() + Helpers.dpToPixels(64) + Helpers.getStatusBarHeight())
                         .start();
             }
         }
@@ -176,7 +176,7 @@ public class UberView
             else
             {
                 new Animation(searchAgainItem)
-                        .translationY(-searchAgainItem.getY() + _searchingTitleTextView.getHeight() + Helpers.dpToPixels(64))
+                        .translationY(-searchAgainItem.getY() + _searchingTitleTextView.getHeight() + Helpers.dpToPixels(64) + Helpers.getStatusBarHeight())
                         .start();
             }
         }
@@ -287,14 +287,17 @@ public class UberView
         TextView searchAgain = _activity.findViewById(R.id.searchTextView);
         _sameRestaurantTextView = _activity.findViewById(R.id.sameRestaurantTextView);
         _sameAppTextView = _activity.findViewById(R.id.sameAppTextView);
-        TextView differentAppTextView = _activity.findViewById(R.id.differentAppTextView);
+        TextView backTextView = _activity.findViewById(R.id.backTextView);
+
+        Helpers.adjustViewTopMarginForNotch(_searchingTitleTextView);
+        Helpers.adjustViewTopMarginForNotch(_foodItemTextView);
 
         _searchAgainItems = new ArrayList<>();
 
         _searchAgainItems.add(searchAgain);
         _searchAgainItems.add(_sameRestaurantTextView);
         _searchAgainItems.add(_sameAppTextView);
-        _searchAgainItems.add(differentAppTextView);
+        _searchAgainItems.add(backTextView);
 
         _foodItemTextView.setAlpha(0);
         _foodItemDetailsTextView.setAlpha(0);
