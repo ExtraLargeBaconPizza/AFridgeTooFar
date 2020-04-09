@@ -6,7 +6,7 @@ import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 
-import com.xlbp.afridgetoofar.AppState;
+import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.helpers.Helpers;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 import com.xlbp.afridgetoofar.enums.UberAppState;
@@ -18,9 +18,8 @@ public class UberDeliveryDetails extends UberBase
     // TODO - ensure keyboard is never shown
     public UberDeliveryDetails(UberActivity uberActivity, WebView webView, String searchAddress)
     {
-        super(webView);
+        super(uberActivity, webView);
 
-        _uberActivity = uberActivity;
         _searchAddress = searchAddress;
     }
 
@@ -29,7 +28,7 @@ public class UberDeliveryDetails extends UberBase
     {
         UberHomePage.deliveryDetailsLoaded = true;
 
-        InputMethodManager imm = (InputMethodManager) _uberActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+        InputMethodManager imm = (InputMethodManager) uberActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         if (imm != null)
         {
@@ -59,10 +58,10 @@ public class UberDeliveryDetails extends UberBase
                     // dispatch all the key events
                     for (int i = 0; i < keySequence.length; i++)
                     {
-                        _uberActivity.dispatchKeyEvent(keySequence[i]);
+                        uberActivity.dispatchKeyEvent(keySequence[i]);
                     }
 
-                    Helpers.hideKeyboard(_uberActivity);
+                    Helpers.hideKeyboard(uberActivity);
 
                     _addressEntered = true;
                 }
@@ -106,7 +105,6 @@ public class UberDeliveryDetails extends UberBase
     }
 
 
-    private UberActivity _uberActivity;
     private String _searchAddress;
 
     private boolean _addressEntered;

@@ -1,18 +1,17 @@
 package com.xlbp.afridgetoofar.ubereats;
 
 import android.os.Handler;
-import android.util.Log;
 import android.webkit.WebView;
 
-import com.xlbp.afridgetoofar.AppState;
+import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 import com.xlbp.afridgetoofar.enums.UberAppState;
 
 public class UberHomePage extends UberBase
 {
-    public UberHomePage(WebView webView)
+    public UberHomePage(UberActivity uberActivity, WebView webView)
     {
-        super(webView);
+        super(uberActivity, webView);
 
         deliveryDetailsLoaded = false;
     }

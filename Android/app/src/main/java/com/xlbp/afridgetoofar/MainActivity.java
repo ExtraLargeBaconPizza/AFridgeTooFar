@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.google.PlaceAutoSuggestAdapter;
 import com.xlbp.afridgetoofar.ubereats.UberActivity;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
@@ -26,13 +27,19 @@ public class MainActivity extends AppCompatActivity
     {
         super.onResume();
 
-        if (AppState.getMainScreenState() == MainScreenState.SearchingApp)
+        switch (AppState.getMainScreenState())
         {
-            _view.animateSelectedAppDown(() -> AppState.setMainScreenState(MainScreenState.AppSelection));
-        }
-        else if (AppState.getMainScreenState() == MainScreenState.SearchComplete)
-        {
-            _view.animateReturnFromSearchComplete(() -> AppState.setMainScreenState(MainScreenState.AppSelection));
+            case Animating:
+                break;
+            case SearchingApp:
+                _view.animateSelectedAppDown(() -> AppState.setMainScreenState(MainScreenState.AppSelection));
+                break;
+            case AddressNotFound:
+                _view.animateReturnFromAddressNotFound(() -> AppState.setMainScreenState(MainScreenState.AddressNotFound));
+                break;
+            case SearchComplete:
+                _view.animateReturnFromSearchComplete(() -> AppState.setMainScreenState(MainScreenState.AppSelection));
+                break;
         }
     }
 
@@ -118,6 +125,10 @@ public class MainActivity extends AppCompatActivity
                     _view.clearFocus(_shortDeliveryAddress);
                     _view.animateAppSelectionOnToScreen(() ->
                             AppState.setMainScreenState(MainScreenState.AppSelection));
+                    break;
+                case AddressNotFound:
+                    _view.animateAddressNotFoundOffScreen(() ->
+                            AppState.setMainScreenState(MainScreenState.EnterDeliveryAddress));
                     break;
             }
         });

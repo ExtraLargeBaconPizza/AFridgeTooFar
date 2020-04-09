@@ -3,7 +3,8 @@ package com.xlbp.afridgetoofar.ubereats;
 import android.util.Log;
 import android.webkit.WebView;
 
-import com.xlbp.afridgetoofar.AppState;
+import com.xlbp.afridgetoofar.enums.AppState;
+import com.xlbp.afridgetoofar.enums.MainScreenState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 import com.xlbp.afridgetoofar.enums.UberAppState;
 
@@ -11,9 +12,9 @@ import java.util.ArrayList;
 
 public class UberMainMenu extends UberBase
 {
-    public UberMainMenu(WebView webView)
+    public UberMainMenu(UberActivity uberActivity, WebView webView)
     {
-        super(webView);
+        super(uberActivity, webView);
 
         init();
     }
@@ -21,7 +22,16 @@ public class UberMainMenu extends UberBase
     @Override
     protected void parseHtml(String html)
     {
-        Javascript.getAllHrefsAndInnerText(webView, this::parseHrefsAndInnerText);
+        if (html.contains("Sorry, we're not there yet"))
+        {
+            AppState.setMainScreenState(MainScreenState.AddressNotFound);
+
+            uberActivity.navigateBack();
+        }
+        else
+        {
+            Javascript.getAllHrefsAndInnerText(webView, this::parseHrefsAndInnerText);
+        }
     }
 
     public Restaurant getSelectedRestaurant()

@@ -9,5 +9,6 @@ public enum MainScreenState
     ModifyDeliveryAddress,
     AppSelection,
     SearchingApp,
+    AddressNotFound,
     SearchComplete,
 }

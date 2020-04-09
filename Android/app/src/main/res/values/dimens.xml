@@ -1,5 +1,5 @@
 <resources>
-    <dimen name="top_margin">74dp</dimen>
+    <dimen name="top_margin">50dp</dimen>
     <dimen name="bottom_margin">98dp</dimen>
     <dimen name="side_margin">50dp</dimen>
 </resources>

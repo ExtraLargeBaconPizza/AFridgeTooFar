@@ -20,18 +20,6 @@
         style="@style/mediumTitleTextView" />
 
     <TextView
-        android:id="@+id/searchingSubtitleTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="@dimen/side_margin"
-        app:layout_constraintTop_toBottomOf="@id/searchingTitleTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="@string/Uber_Eats"
-        style="@style/searchingSubtitleTextView" />
-
-    <TextView
         android:id="@+id/debugMessageTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -73,6 +61,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:onClick="onFoodItemClicked"
+        android:text="\n\n"
         style="@style/mediumTitleTextView" />
 
     <TextView
@@ -103,7 +92,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toTopOf="@id/sameAppTextView"
+        app:layout_constraintBottom_toTopOf="@id/selectedAppTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:onClick="onSameRestaurantClicked"
@@ -112,7 +101,7 @@
         style="@style/searchSelectionTextView" />
 
     <TextView
-        android:id="@+id/sameAppTextView"
+        android:id="@+id/selectedAppTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -120,7 +109,7 @@
         app:layout_constraintBottom_toTopOf="@id/backTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="onSameAppClicked"
+        android:onClick="onSelectedAppClicked"
         android:padding="10dp"
         android:text="Uber Eats"
         style="@style/searchSelectionTextView" />

@@ -1,10 +1,12 @@
 package com.xlbp.afridgetoofar;
 
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 
+import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
 import com.xlbp.afridgetoofar.helpers.Animation;
 import com.xlbp.afridgetoofar.helpers.Helpers;
@@ -31,20 +33,13 @@ public class MainView
     {
         AppState.setMainScreenState(MainScreenState.Animating);
 
-        if (!_animationPositionsSet)
-        {
-            _animationPositionsSet = true;
-
-            initAnimationPositions();
-        }
-
         new Animation(_titleTextView)
                 .alpha(0)
-                .translationY(-_titleTextView.getHeight() - Helpers.topMargin)
+                .translationY(_titleOffset)
                 .start();
 
         new Animation(_autoCompleteTextView)
-                .translationY(-_autoCompleteTextView.getY() + Helpers.topMargin)
+                .translationY(_autoCompleteOffset1)
                 .withEndAction(endAction)
                 .start();
     }
@@ -73,7 +68,6 @@ public class MainView
             new Animation(selectionApp)
                     .alpha(1)
                     .translationY(0)
-                    .startDelay(600)
                     .withEndAction(endAction)
                     .start();
         }
@@ -87,7 +81,7 @@ public class MainView
         {
             new Animation(selectionApp)
                     .alpha(0)
-                    .translationY(_selectionAppOffset)
+                    .translationY(_selectionAppsArrayListOffset)
                     .withEndAction(endAction)
                     .start();
         }
@@ -102,7 +96,7 @@ public class MainView
         // exit
         new Animation(_autoCompleteTextView)
                 .alpha(0)
-                .translationY(_autoCompleteTextView.getTranslationY() - _autoCompleteTextView.getHeight() - Helpers.topMargin)
+                .translationY(_autoCompleteOffset2)
                 .start();
 
         for (TextView selectionApp : _selectionApps)
@@ -110,21 +104,20 @@ public class MainView
             if (selectionApp.getId() != _currentlySelectedView.getId())
             {
                 new Animation(selectionApp)
-                        .translationY(_selectionAppOffset)
+                        .translationY(_selectionAppsArrayListOffset)
                         .alpha(0)
                         .start();
             }
         }
 
         // enter
-        // 64 = the top margin - the 10dp padding
         new Animation(_currentlySelectedView)
-                .translationY(-_currentlySelectedView.getY() + _searchingTextView.getHeight() + Helpers.dpToPixels(64) + Helpers.getStatusBarHeight())
+                .translationY(getSelectedAppOffset(_currentlySelectedView))
                 .start();
 
         new Animation(_searchingTextView)
                 .alpha(1)
-                .translationY(Helpers.getStatusBarHeight())
+                .translationY(0)
                 .withEndAction(endAction)
                 .start();
     }
@@ -136,7 +129,7 @@ public class MainView
         // exit
         new Animation(_searchingTextView)
                 .alpha(0)
-                .translationY(-_searchingTextView.getHeight() - Helpers.topMargin)
+                .translationY(_searchingOffset)
                 .start();
 
         new Animation(_currentlySelectedView)
@@ -159,7 +152,47 @@ public class MainView
 
         new Animation(_autoCompleteTextView)
                 .alpha(1)
-                .translationY(_autoCompleteTextView.getTranslationY() + _autoCompleteTextView.getHeight() + Helpers.topMargin)
+                .translationY(_autoCompleteOffset1)
+                .withEndAction(endAction)
+                .start();
+    }
+
+    public void animateReturnFromAddressNotFound(Runnable endAction)
+    {
+        AppState.setMainScreenState(MainScreenState.Animating);
+
+        // exit
+        new Animation(_searchingTextView)
+                .alpha(0)
+                .translationY(_searchingOffset)
+                .start();
+
+        for (TextView selectionApp : _selectionApps)
+        {
+            new Animation(selectionApp)
+                    .alpha(0)
+                    .translationY(0)
+                    .start();
+        }
+
+        // enter
+        new Animation(_autoCompleteTextView)
+                .alpha(1)
+                .translationY(_autoCompleteOffset1)
+                .start();
+
+        new Animation(_addressNotFoundTextView)
+                .alpha(1)
+                .translationY(0)
+                .withEndAction(endAction)
+                .start();
+    }
+
+    public void animateAddressNotFoundOffScreen(Runnable endAction)
+    {
+        new Animation(_addressNotFoundTextView)
+                .alpha(0)
+                .translationY(_addressNotFoundOffset)
                 .withEndAction(endAction)
                 .start();
     }
@@ -170,7 +203,7 @@ public class MainView
 
         // set starting position and alpha
         _searchingTextView.setAlpha(0);
-        _searchingTextView.setTranslationY(-_searchingTextView.getHeight() - Helpers.topMargin);
+        _searchingTextView.setTranslationY(_searchingOffset);
 
         for (TextView selectionApp : _selectionApps)
         {
@@ -179,26 +212,21 @@ public class MainView
         }
 
         // enter
-        new Animation(_autoCompleteTextView)
-                .alpha(1)
-                .translationY(_autoCompleteTextView.getTranslationY() + _autoCompleteTextView.getHeight() + Helpers.topMargin)
-                .start();
-
-        boolean endActionRun = false;
-
         for (TextView selectionApp : _selectionApps)
         {
-            selectionApp.setTranslationY(_selectionAppOffset);
-
-            Runnable endAction2 = endActionRun ? null : endAction;
-            endActionRun = true;
+            selectionApp.setTranslationY(_selectionAppsArrayListOffset);
 
             new Animation(selectionApp)
                     .alpha(1)
                     .translationY(0)
-                    .withEndAction(endAction2)
                     .start();
         }
+
+        new Animation(_autoCompleteTextView)
+                .alpha(1)
+                .translationY(_autoCompleteOffset1)
+                .withEndAction(endAction)
+                .start();
     }
 
     public void clearFocus(String currentDeliveryAddress)
@@ -217,9 +245,11 @@ public class MainView
 
     private void init()
     {
-        _activity.setContentView(R.layout.activity_main);
-
         initViews();
+
+        initViewAlphas();
+
+        initViewPositions();
 
         // Make fullscreen. Action bar height is 24dp. Navigation bar height is 48dp
         _activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
@@ -227,11 +257,12 @@ public class MainView
 
     private void initViews()
     {
+        _activity.setContentView(R.layout.activity_main);
+
         _layout = _activity.findViewById(R.id.layout);
         _titleTextView = _activity.findViewById(R.id.titleTextView);
-        // TODO - make the autocomplete overlap the underline, maybe
         _autoCompleteTextView = _activity.findViewById(R.id.autoCompleteTextView);
-
+        _addressNotFoundTextView = _activity.findViewById(R.id.addressNotFoundTextView);
         _searchingTextView = _activity.findViewById(R.id.searchingTextView);
 
         TextView uberTextView = _activity.findViewById(R.id.uberTextView);
@@ -239,52 +270,79 @@ public class MainView
         TextView skipTextView = _activity.findViewById(R.id.skipTextView);
         TextView foodTextView = _activity.findViewById(R.id.foodTextView);
 
-        Helpers.adjustViewTopMarginForNotch(_titleTextView);
-
         _selectionApps = new ArrayList<>();
 
         _selectionApps.add(uberTextView);
         _selectionApps.add(doorTextView);
         _selectionApps.add(skipTextView);
         _selectionApps.add(foodTextView);
+    }
 
+    private void initViewAlphas()
+    {
+        _addressNotFoundTextView.setAlpha(0);
         _searchingTextView.setAlpha(0);
+        _addressNotFoundTextView.setAlpha(0);
 
         for (TextView app : _selectionApps)
         {
             app.setAlpha(0);
-            app.setClickable(false);
         }
     }
 
-    private void initAnimationPositions()
+    private void initViewPositions()
     {
-        _searchingTextView.setTranslationY(-_searchingTextView.getHeight() - Helpers.topMargin);
+        Helpers.adjustViewTopMarginForNotch(_titleTextView);
+        Helpers.adjustViewTopMarginForNotch(_searchingTextView);
 
-        int[] location = new int[2];
-        _selectionApps.get(0).getLocationOnScreen(location);
-
-        _selectionAppOffset = Helpers.getScreenHeight() - location[1] + Helpers.dpToPixels(96);
-
-        for (TextView app : _selectionApps)
+        // this is needed so we only get positions/heights after onLayout has happened
+        _layout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
         {
-            app.setTranslationY(_selectionAppOffset);
-            app.setClickable(true);
-        }
+            @Override
+            public void onGlobalLayout()
+            {
+                _titleOffset = -_titleTextView.getHeight() - Helpers.topMargin;
+                _autoCompleteOffset1 = -_autoCompleteTextView.getY() + Helpers.topMargin;
+                _autoCompleteOffset2 = -_autoCompleteTextView.getY() - _autoCompleteTextView.getHeight();
+                _selectionAppsArrayListOffset = Helpers.getScreenHeight() - _selectionApps.get(0).getY() + Helpers.topMargin;
+                _searchingOffset = -_searchingTextView.getHeight() - Helpers.topMargin;
+                _addressNotFoundOffset = _autoCompleteTextView.getHeight() + Helpers.topMargin;
+
+                _searchingTextView.setTranslationY(_searchingOffset);
+                _addressNotFoundTextView.setTranslationY(_addressNotFoundOffset);
+
+                for (TextView seletionApp : _selectionApps)
+                {
+                    seletionApp.setTranslationY(_selectionAppsArrayListOffset);
+                }
+
+                // we need to remove the listener so positions are only set once
+                _layout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+            }
+        });
     }
 
+    private float getSelectedAppOffset(View view)
+    {
+        return -view.getY() + _searchingTextView.getHeight() + Helpers.topMargin - Helpers.dpToPixels(10);
+    }
 
     private MainActivity _activity;
 
     private ConstraintLayout _layout;
     private TextView _titleTextView;
     private AutoCompleteTextView _autoCompleteTextView;
+    private TextView _addressNotFoundTextView;
 
     private TextView _searchingTextView;
 
     private ArrayList<TextView> _selectionApps;
     private View _currentlySelectedView;
 
-    private boolean _animationPositionsSet;
-    private float _selectionAppOffset;
+    private float _titleOffset;
+    private float _autoCompleteOffset1;
+    private float _autoCompleteOffset2;
+    private float _selectionAppsArrayListOffset;
+    private float _searchingOffset;
+    private float _addressNotFoundOffset;
 }

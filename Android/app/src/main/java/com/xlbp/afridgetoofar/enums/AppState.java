@@ -1,9 +1,7 @@
-package com.xlbp.afridgetoofar;
+package com.xlbp.afridgetoofar.enums;
 
 import android.util.Log;
 
-import com.xlbp.afridgetoofar.enums.MainScreenState;
-import com.xlbp.afridgetoofar.enums.UberAppState;
 import com.xlbp.afridgetoofar.ubereats.UberView;
 
 public class AppState

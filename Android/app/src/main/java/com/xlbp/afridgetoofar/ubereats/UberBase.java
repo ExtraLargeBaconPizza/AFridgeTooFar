@@ -6,8 +6,9 @@ import com.xlbp.afridgetoofar.helpers.Javascript;
 
 public abstract class UberBase
 {
-    public UberBase(WebView webView)
+    public UberBase(UberActivity uberActivity, WebView webView)
     {
+        this.uberActivity = uberActivity;
         this.webView = webView;
     }
 
@@ -23,6 +24,6 @@ public abstract class UberBase
         Javascript.getRootInnerHtml(webView, this::parseHtml);
     }
 
-
+    protected UberActivity uberActivity;
     protected WebView webView;
 }

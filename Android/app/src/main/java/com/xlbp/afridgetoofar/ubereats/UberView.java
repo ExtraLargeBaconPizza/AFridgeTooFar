@@ -1,14 +1,14 @@
 package com.xlbp.afridgetoofar.ubereats;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.widget.TextView;
 
 import com.xlbp.afridgetoofar.helpers.Animation;
-import com.xlbp.afridgetoofar.AppState;
+import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.helpers.Helpers;
 import com.xlbp.afridgetoofar.R;
 import com.xlbp.afridgetoofar.enums.UberAppState;
@@ -29,16 +29,6 @@ public class UberView
         return _webView;
     }
 
-    public View getLayout()
-    {
-        return _activity.findViewById(R.id.layout);
-    }
-
-    public void setSubtitleTextView(String text)
-    {
-        _searchingSubtitleTextView.setText(text);
-    }
-
     public static void updateUberAppStateTextView(UberAppState appState)
     {
         _appStateTextView.setText("Current AppState - " + appState.toString());
@@ -46,99 +36,85 @@ public class UberView
 
     public void setSearchCompleteText(String selectedRestaurantName, String foodItemName, String foodItemPrice)
     {
-        Log.e("UberView", "Search Complete: selectedRestaurant - " + selectedRestaurantName + " - food item - " + foodItemName);
-
         _foodItemTextView.setText(foodItemName + "\n" + foodItemPrice);
-        _foodItemDetailsTextView.setText(selectedRestaurantName + "\nCustomize on Uber Eats");
+        _foodItemDetailsTextView.setText(selectedRestaurantName);
     }
 
     public void animateSearchComplete(Runnable endAction)
     {
         AppState.setUberEatsAppState(UberAppState.Animating);
 
-        if (!_animationPositionsSet)
-        {
-            _animationPositionsSet = true;
-
-            initAnimationPositions();
-        }
-
-        //exit
+        // exit
         new Animation(_searchingTitleTextView)
                 .alpha(0)
-                .translationY(_titleOffset)
+                .translationY(_searchingOffset)
                 .start();
 
-        new Animation(_searchingSubtitleTextView)
-                .alpha(0)
-                .translationY(_titleOffset)
-                .start();
+        _debugMessageTextView.setAlpha(0);
 
-        new Animation(_debugMessageTextView)
-                .alpha(0)
-                .start();
+        _appStateTextView.setAlpha(0);
 
-        new Animation(_appStateTextView)
-                .alpha(0)
-                .start();
-
-        // enter
-        new Animation(_foodItemTextView)
-                .alpha(1)
-                .translationY(0)
-                .startDelay(600)
-                .start();
-
-        new Animation(_foodItemDetailsTextView)
-                .alpha(1)
-                .translationY(0)
-                .startDelay(600)
-                .withEndAction(endAction)
-                .start();
-
+        // middle
         for (TextView searchAgainItem : _searchAgainItems)
         {
             new Animation(searchAgainItem)
-                    .alpha(1)
                     .translationY(0)
-                    .startDelay(600)
+                    .withEndAction(() ->
+                    {
+                        new Animation(searchAgainItem)
+                                .alpha(1)
+                                .withEndAction(() -> searchAgainItem.setClickable(true))
+                                .start();
+                    })
                     .start();
         }
+
+        // enter
+        new Animation(_foodItemTextView)
+                .alpha(1)
+                .translationY(0)
+                .start();
+
+        new Animation(_foodItemDetailsTextView)
+                .alpha(1)
+                .translationY(0)
+                .withEndAction(endAction)
+                .start();
     }
 
-    public void animateSearchSameRestaurantAnimation(Runnable endAction)
+    public void animateSearchAgainAnimation(View searchedView, Runnable endAction)
     {
         AppState.setUberEatsAppState(UberAppState.Animating);
 
         // exit
         new Animation(_foodItemTextView)
                 .alpha(0)
-                .translationY(-_foodItemTextView.getY() - _foodItemTextView.getHeight() - _foodItemDetailsTextView.getHeight())
+                .translationY(_foodItemOffset)
                 .start();
 
         new Animation(_foodItemDetailsTextView)
                 .alpha(0)
-                .translationY(-_foodItemDetailsTextView.getY() - _foodItemDetailsTextView.getHeight())
+                .translationY(_foodItemOffset)
                 .withEndAction(endAction)
                 .start();
 
-        // middle
         for (TextView searchAgainItem : _searchAgainItems)
         {
-            if (searchAgainItem.getId() != _sameRestaurantTextView.getId())
+            searchAgainItem.setClickable(false);
+
+            if (searchAgainItem != searchedView)
             {
                 new Animation(searchAgainItem)
                         .alpha(0)
-                        .translationY(_searchAgainOffset)
-                        .start();
-            }
-            else
-            {
-                new Animation(searchAgainItem)
-                        .translationY(-searchAgainItem.getY() + _searchingTitleTextView.getHeight() + Helpers.dpToPixels(64) + Helpers.getStatusBarHeight())
+                        .translationY(_searchAgainArrayListOffset)
                         .start();
             }
         }
+
+        // middle
+        new Animation(searchedView)
+                .translationY(getSelectedSearchOffset(searchedView))
+                .start();
 
         // enter
         new Animation(_searchingTitleTextView)
@@ -146,96 +122,6 @@ public class UberView
                 .translationY(0)
                 .withEndAction(endAction)
                 .start();
-    }
-
-    public void animateSearchSameAppAnimation(Runnable endAction)
-    {
-        AppState.setUberEatsAppState(UberAppState.Animating);
-
-        // exit
-        new Animation(_foodItemTextView)
-                .alpha(0)
-                .translationY(-_foodItemTextView.getY() - _foodItemTextView.getHeight() - _foodItemDetailsTextView.getHeight())
-                .start();
-
-        new Animation(_foodItemDetailsTextView)
-                .alpha(0)
-                .translationY(-_foodItemDetailsTextView.getY() - _foodItemDetailsTextView.getHeight())
-                .start();
-
-        // middle
-        for (TextView searchAgainItem : _searchAgainItems)
-        {
-            if (searchAgainItem.getId() != _sameAppTextView.getId())
-            {
-                new Animation(searchAgainItem)
-                        .alpha(0)
-                        .translationY(_searchAgainOffset)
-                        .start();
-            }
-            else
-            {
-                new Animation(searchAgainItem)
-                        .translationY(-searchAgainItem.getY() + _searchingTitleTextView.getHeight() + Helpers.dpToPixels(64) + Helpers.getStatusBarHeight())
-                        .start();
-            }
-        }
-
-        // enter
-        new Animation(_searchingTitleTextView)
-                .alpha(1)
-                .translationY(0)
-                .withEndAction(endAction)
-                .start();
-    }
-
-    public void animateSameSearchCompleteAnimation(Runnable endAction)
-    {
-        AppState.setUberEatsAppState(UberAppState.Animating);
-
-        //exit
-        new Animation(_searchingTitleTextView)
-                .alpha(0)
-                .translationY(_titleOffset)
-                .start();
-
-        //enter
-        new Animation(_foodItemTextView)
-                .alpha(1)
-                .translationY(0)
-                .start();
-
-        new Animation(_foodItemDetailsTextView)
-                .alpha(1)
-                .translationY(0)
-                .withEndAction(endAction)
-                .start();
-
-        boolean endActionRun = false;
-
-        for (TextView searchAgainItem : _searchAgainItems)
-        {
-            Runnable endAction2 = endActionRun ? null : endAction;
-            endActionRun = true;
-
-            if (searchAgainItem.getTranslationY() < 0)
-            {
-                new Animation(searchAgainItem)
-                        .translationY(0)
-                        .start();
-            }
-            else
-            {
-                searchAgainItem.setTranslationY(0);
-
-                new Animation(searchAgainItem)
-                        .alpha(1)
-                        .startDelay(600)
-                        .withEndAction(endAction2)
-                        .start();
-            }
-
-        }
     }
 
     public void animateNavigateBackAfterSearchComplete(Runnable endAction)
@@ -245,12 +131,12 @@ public class UberView
         // exit
         new Animation(_foodItemTextView)
                 .alpha(0)
-                .translationY(-_foodItemTextView.getY() - _foodItemTextView.getHeight() - _foodItemDetailsTextView.getHeight())
+                .translationY(_foodItemOffset)
                 .start();
 
         new Animation(_foodItemDetailsTextView)
                 .alpha(0)
-                .translationY(-_foodItemDetailsTextView.getY() - _foodItemDetailsTextView.getHeight())
+                .translationY(_foodItemOffset)
                 .withEndAction(endAction)
                 .start();
 
@@ -258,46 +144,45 @@ public class UberView
         {
             new Animation(searchAgainItem)
                     .alpha(0)
-                    .translationY(_searchAgainOffset)
+                    .translationY(_searchAgainArrayListOffset)
                     .start();
         }
     }
 
     private void init()
     {
-        _activity.setContentView(R.layout.activity_searching);
-
         initViews();
+
+        initViewAlphas();
+
+        initViewPositions();
 
         initIsDebugMode();
     }
 
     private void initViews()
     {
+        _activity.setContentView(R.layout.activity_searching);
+
         _searchingTitleTextView = _activity.findViewById(R.id.searchingTitleTextView);
-        _searchingSubtitleTextView = _activity.findViewById(R.id.searchingSubtitleTextView);
         _debugMessageTextView = _activity.findViewById(R.id.debugMessageTextView);
         _appStateTextView = _activity.findViewById(R.id.appStateTextView);
-
         _webView = _activity.findViewById(R.id.webview);
-
         _foodItemTextView = _activity.findViewById(R.id.foodItemTextView);
         _foodItemDetailsTextView = _activity.findViewById(R.id.foodItemDetailsTextView);
-
-        TextView searchAgain = _activity.findViewById(R.id.searchTextView);
         _sameRestaurantTextView = _activity.findViewById(R.id.sameRestaurantTextView);
-        _sameAppTextView = _activity.findViewById(R.id.sameAppTextView);
-        TextView backTextView = _activity.findViewById(R.id.backTextView);
-
-        Helpers.adjustViewTopMarginForNotch(_searchingTitleTextView);
-        Helpers.adjustViewTopMarginForNotch(_foodItemTextView);
+        _selectedAppTextView = _activity.findViewById(R.id.selectedAppTextView);
 
         _searchAgainItems = new ArrayList<>();
 
-        _searchAgainItems.add(searchAgain);
+        _searchAgainItems.add(_activity.findViewById(R.id.searchTextView));
         _searchAgainItems.add(_sameRestaurantTextView);
-        _searchAgainItems.add(_sameAppTextView);
-        _searchAgainItems.add(backTextView);
+        _searchAgainItems.add(_selectedAppTextView);
+        _searchAgainItems.add(_activity.findViewById(R.id.backTextView));
+    }
+
+    private void initViewAlphas()
+    {
 
         _foodItemTextView.setAlpha(0);
         _foodItemDetailsTextView.setAlpha(0);
@@ -307,6 +192,33 @@ public class UberView
             searchAgainItem.setAlpha(0);
             searchAgainItem.setClickable(false);
         }
+
+        _selectedAppTextView.setAlpha(1);
+    }
+
+    private void initViewPositions()
+    {
+        Helpers.adjustViewTopMarginForNotch(_searchingTitleTextView);
+        Helpers.adjustViewTopMarginForNotch(_foodItemTextView);
+
+        // this is needed so we only get positions/heights after onLayout has happened
+        _activity.findViewById(R.id.layout).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+        {
+            @Override
+            public void onGlobalLayout()
+            {
+                _searchingOffset = -_searchingTitleTextView.getHeight() - Helpers.topMargin;
+                _foodItemOffset = -_foodItemDetailsTextView.getY() - _foodItemDetailsTextView.getHeight();
+                _searchAgainArrayListOffset = Helpers.getScreenHeight() - _searchAgainItems.get(0).getY() + Helpers.topMargin + Helpers.dpToPixels(48);
+
+                _selectedAppTextView.setTranslationY(getSelectedSearchOffset(_selectedAppTextView));
+                _foodItemTextView.setTranslationY(_foodItemOffset);
+                _foodItemDetailsTextView.setTranslationY(_foodItemOffset);
+
+                // we need to remove the listener so positions are only set once
+                _activity.findViewById(R.id.layout).getViewTreeObserver().removeGlobalOnLayoutListener(this);
+            }
+        });
     }
 
     private void initIsDebugMode()
@@ -328,27 +240,15 @@ public class UberView
         }
     }
 
-    private void initAnimationPositions()
+    private float getSelectedSearchOffset(View view)
     {
-        _titleOffset = -_searchingSubtitleTextView.getY() - _searchingSubtitleTextView.getHeight();
-
-        _foodItemTextView.setTranslationY(_foodItemTextView.getHeight() - _foodItemDetailsTextView.getHeight() - Helpers.dpToPixels(Helpers.topMargin));
-        _foodItemDetailsTextView.setTranslationY(_foodItemDetailsTextView.getHeight() - Helpers.dpToPixels(Helpers.topMargin));
-
-        _searchAgainOffset = Helpers.getScreenHeight() - _searchAgainItems.get(0).getY() + Helpers.dpToPixels(48);
-
-        for (TextView searchAgainItem : _searchAgainItems)
-        {
-            searchAgainItem.setTranslationY(_searchAgainOffset);
-            searchAgainItem.setClickable(true);
-        }
+        return -view.getY() + _searchingTitleTextView.getHeight() + Helpers.topMargin - Helpers.dpToPixels(10);
     }
 
 
     private UberActivity _activity;
 
     private TextView _searchingTitleTextView;
-    private TextView _searchingSubtitleTextView;
     private TextView _debugMessageTextView;
     private static TextView _appStateTextView;
 
@@ -360,8 +260,9 @@ public class UberView
     private ArrayList<TextView> _searchAgainItems;
 
     private TextView _sameRestaurantTextView;
-    private TextView _sameAppTextView;
-    private boolean _animationPositionsSet;
-    private float _titleOffset;
-    private float _searchAgainOffset;
+    private TextView _selectedAppTextView;
+
+    private float _searchingOffset;
+    private float _foodItemOffset;
+    private float _searchAgainArrayListOffset;
 }

@@ -3,7 +3,7 @@ package com.xlbp.afridgetoofar.ubereats;
 import android.util.Log;
 import android.webkit.WebView;
 
-import com.xlbp.afridgetoofar.AppState;
+import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 import com.xlbp.afridgetoofar.enums.UberAppState;
 
@@ -13,9 +13,7 @@ public class UberRestaurantMenu extends UberBase
 {
     public UberRestaurantMenu(UberActivity uberActivity, WebView webView)
     {
-        super(webView);
-
-        _uberActivity = uberActivity;
+        super(uberActivity, webView);
 
         init();
     }
@@ -164,11 +162,9 @@ public class UberRestaurantMenu extends UberBase
 
         AppState.setUberEatsAppState(UberAppState.SearchComplete);
 
-        _uberActivity.searchComplete();
+        uberActivity.searchComplete();
     }
 
-
-    private UberActivity _uberActivity;
 
     private ArrayList<FoodItem> _foodItems;
 
