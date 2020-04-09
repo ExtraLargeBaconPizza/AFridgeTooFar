@@ -1,6 +1,5 @@
 package com.xlbp.afridgetoofar.ubereats;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
@@ -47,8 +46,6 @@ public class UberDeliveryDetails extends UberBase
                 if (!_addressEntered)
                 {
                     AppState.setUberEatsAppState(UberAppState.DeliveryDetailsReady);
-
-//                    String addressFull = "211 summit Ave e Seattle";
 
                     // convert the string to a char array
                     char[] addressFullChars = _searchAddress.toCharArray();

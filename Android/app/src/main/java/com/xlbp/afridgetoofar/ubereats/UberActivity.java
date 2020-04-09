@@ -3,11 +3,11 @@ package com.xlbp.afridgetoofar.ubereats;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
-import android.widget.Toast;
 
 import com.xlbp.afridgetoofar.AppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
@@ -26,9 +26,9 @@ public class UberActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onStop()
+    protected void onDestroy()
     {
-        super.onStop();
+        super.onDestroy();
 
         _view.getWebView().destroy();
     }
@@ -47,11 +47,6 @@ public class UberActivity extends AppCompatActivity
                 navigateBack();
             }
         }
-    }
-
-    public View getLayout()
-    {
-        return _view.getLayout();
     }
 
     public void onDocumentComplete()
@@ -84,8 +79,7 @@ public class UberActivity extends AppCompatActivity
     {
         if (AppState.getUberEatsAppState() == UberAppState.SearchComplete)
         {
-            // TODO navigate to uber eats app
-            Toast.makeText(getApplicationContext(), "Once implemented, you will be navigated to this exact food item on the Uber Eats app", Toast.LENGTH_SHORT).show();
+            launchUberEats();
         }
     }
 
@@ -173,7 +167,7 @@ public class UberActivity extends AppCompatActivity
         UberMainMenu.Restaurant selectedRestaurant = _uberEatsMainMenu.getSelectedRestaurant();
         UberRestaurantMenu.FoodItem foodItem = _uberEatsRestaurantMenu.getSelectedFoodItem();
 
-        _view.setSearchCompleteText(selectedRestaurant.name, foodItem.name, foodItem.price + " • View");
+        _view.setSearchCompleteText(selectedRestaurant.name, foodItem.name, foodItem.price);
 
         if (_firstSearch)
         {
@@ -197,15 +191,13 @@ public class UberActivity extends AppCompatActivity
         }
     }
 
-    // TODO - figure out how to load specific food/restaurants
     private void launchUberEats()
     {
-        Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.ubercab.eats");
+        String url = _uberEatsRestaurantMenu.getSelectedFoodItem().href;
 
-        if (launchIntent != null)
-        {
-            startActivity(launchIntent);
-        }
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+
+        startActivity(browserIntent);
     }
 
     private void navigateBack()
@@ -218,8 +210,6 @@ public class UberActivity extends AppCompatActivity
 
 
     private UberView _view;
-
-    private String _searchAddress;
 
     private UberHomePage _uberEatsHomePage;
     private UberDeliveryDetails _uberEatsDeliveryDetails;

@@ -48,8 +48,8 @@ public class UberView
     {
         Log.e("UberView", "Search Complete: selectedRestaurant - " + selectedRestaurantName + " - food item - " + foodItemName);
 
-        _foodItemTextView.setText(foodItemName);
-        _foodItemDetailsTextView.setText(selectedRestaurantName + "\n" + foodItemPrice);
+        _foodItemTextView.setText(foodItemName + "\n" + foodItemPrice);
+        _foodItemDetailsTextView.setText(selectedRestaurantName + "\nCustomize on Uber Eats");
     }
 
     public void animateSearchComplete(Runnable endAction)

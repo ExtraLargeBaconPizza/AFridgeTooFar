@@ -47,22 +47,18 @@ public class UberRestaurantMenu extends UberBase
 
     private void retrieveHrefAndFoodItemInfo()
     {
-        Javascript.getUberRestaurantMenuItemsHrefsAndInnerText(webView,
-                hrefsAndFoodItemInfo ->
-                {
-                    parseHrefsAndFoodItemInfo(hrefsAndFoodItemInfo);
-                });
+        Javascript.getAllHrefsAndInnerText(webView, this::parseHrefsAndInnerText);
     }
 
-    private void parseHrefsAndFoodItemInfo(String hrefsAndFoodItemInfo)
+    private void parseHrefsAndInnerText(String hrefsAndInnerText)
     {
         ArrayList<FoodItem> foodItems = new ArrayList<>();
 
-        String[] splitHrefsAndFoodItemInfo = hrefsAndFoodItemInfo.split("foodItem");
+        String[] hrefsAndInnerTextElements = hrefsAndInnerText.split("element");
 
-        for (int i = 0; i < splitHrefsAndFoodItemInfo.length; i++)
+        for (int i = 0; i < hrefsAndInnerTextElements.length; i++)
         {
-            String[] hrefInnerText = splitHrefsAndFoodItemInfo[i].split("innerText");
+            String[] hrefInnerText = hrefsAndInnerTextElements[i].split("innerText");
 
             if (hrefInnerText.length > 1)
             {

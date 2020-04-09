@@ -35,18 +35,6 @@ public class Helpers
         view.setLayoutParams(layoutParams);
     }
 
-    public static String removeLastCharacter(String inputString)
-    {
-        if ((!inputString.equals("")) && (inputString.length() > 0))
-        {
-            return inputString.substring(0, inputString.length() - 1);
-        }
-        else
-        {
-            return inputString;
-        }
-    }
-
     public static void hideKeyboard(Activity activity)
     {
         View view = activity.getCurrentFocus();

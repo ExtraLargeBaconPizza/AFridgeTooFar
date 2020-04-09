@@ -4,7 +4,6 @@ import android.util.Log;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.AppState;
-import com.xlbp.afridgetoofar.helpers.Helpers;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 import com.xlbp.afridgetoofar.enums.UberAppState;
 
@@ -12,7 +11,6 @@ import java.util.ArrayList;
 
 public class UberMainMenu extends UberBase
 {
-
     public UberMainMenu(WebView webView)
     {
         super(webView);
@@ -20,11 +18,10 @@ public class UberMainMenu extends UberBase
         init();
     }
 
-    public class Restaurant
+    @Override
+    protected void parseHtml(String html)
     {
-        String href;
-        String name;
-        String image;
+        Javascript.getAllHrefsAndInnerText(webView, this::parseHrefsAndInnerText);
     }
 
     public Restaurant getSelectedRestaurant()
@@ -37,50 +34,48 @@ public class UberMainMenu extends UberBase
         handleRestaurantSelection();
     }
 
-    // TODO - refactor this to match UberRestaurantMenu
-    @Override
-    protected void parseHtml(String html)
+    private void init()
     {
-        String strFind = "href=";
+        _restaurants = new ArrayList<>();
+        _restaurantsAlreadyPicked = new ArrayList<>();
+    }
 
-        int fromIndex = 0;
-        int restaurantCount = 0;
-        ArrayList<String> hrefs = new ArrayList<>();
+    private void parseHrefsAndInnerText(String hrefsAndInnerText)
+    {
+        ArrayList<Restaurant> restaurants = new ArrayList<>();
 
-        // loop through and find all href's in the html's body
-        while ((fromIndex = html.indexOf(strFind, fromIndex)) != -1)
+        String[] hrefsAndInnerTextElements = hrefsAndInnerText.split("element");
+
+        for (int i = 0; i < hrefsAndInnerTextElements.length; i++)
         {
-            int hrefIndex = fromIndex + 7;
-            String href = "";
+            String[] hrefInnerText = hrefsAndInnerTextElements[i].split("innerText");
 
-            while (html.charAt(hrefIndex) != '"')
+            if (hrefInnerText.length > 1)
             {
-                href += html.charAt(hrefIndex);
-                hrefIndex++;
-            }
+                String href = hrefInnerText[0];
+                String innerText = hrefInnerText[1];
 
-            // need to check to make sure its a potential food href
-            if (href.contains("food-delivery"))
-            {
-                // check for unavailable restaurants
-                int farthestIndex = Math.min(fromIndex + 1000, html.length());
-
-                String substringToCheck = html.substring(fromIndex, farthestIndex);
-
-                if (!substringToCheck.contains("Currently unavailable")
-                        && !substringToCheck.contains("Opens On"))
+                if (href.contains("food-delivery"))
                 {
-                    hrefs.add(href);
+                    if (!innerText.contains("Currently unavailable")
+                            && !innerText.contains("Opens On"))
+                    {
+                        Restaurant restaurant = new Restaurant();
 
-                    restaurantCount++;
+                        restaurant.href = href;
+                        restaurant.name = getRestaurantName(innerText.split("\\\\n"));
+
+                        if (!restaurant.name.isEmpty())
+                        {
+                            restaurants.add(restaurant);
+                        }
+                    }
                 }
             }
-
-            fromIndex++;
         }
 
         // if the data hasn't loaded yet, check again
-        if (restaurantCount > 3)
+        if (restaurants.size() > 3)
         {
             if (!_mainMenuComplete)
             {
@@ -88,7 +83,9 @@ public class UberMainMenu extends UberBase
 
                 AppState.setUberEatsAppState(UberAppState.MainMenuReady);
 
-                retrieveRestaurantInfo(hrefs);
+                _restaurants = restaurants;
+
+                handleRestaurantSelection();
             }
         }
         else
@@ -97,69 +94,22 @@ public class UberMainMenu extends UberBase
         }
     }
 
-    private void init()
-    {
-        _restaurants = new ArrayList<>();
-        _restaurantsAlreadyPicked = new ArrayList<>();
-    }
-
-    private void retrieveRestaurantInfo(ArrayList<String> hrefs)
-    {
-        int hrefsSize = hrefs.size();
-
-        for (String href : hrefs)
-        {
-            Javascript.getHrefsInnerText(webView, href,
-                    innerText ->
-                    {
-                        parseInnerText(href, innerText, hrefsSize);
-                    });
-        }
-    }
-
-    private void parseInnerText(String href, String innerText, int hrefsSize)
-    {
-        // since this function is called by a runnable, we must count the number of times its called
-        // and wait until all the javascript function calls have returned
-        _parseInnerTextCount++;
-
-        String[] values = innerText.split("\\\\n");
-
-        if (values.length > 3)
-        {
-            String restaurantName = getRestaurantName(values);
-
-            if (!restaurantName.isEmpty())
-            {
-                Restaurant restaurant = new Restaurant();
-
-                restaurant.href = href;
-                restaurant.name = restaurantName;
-
-                _restaurants.add(restaurant);
-            }
-        }
-
-        if (_parseInnerTextCount >= hrefsSize && !_allRestaurantInfoRetrieved)
-        {
-            _allRestaurantInfoRetrieved = true;
-
-            handleRestaurantSelection();
-        }
-    }
-
     private String getRestaurantName(String[] values)
     {
         String restaurantName = "";
 
-        for (int i = 0; i < 3; i++)
+        values[values.length - 1] = values[0].replace("\"", "");
+
+        for (int i = 0; i < values.length; i++)
         {
+            values[i] = values[i].replace("\"", "");
+
             // TODO restaurants with Min will get filtered and probably cause an error, but this is good enough for now
             if (!(values[i].contains("$")
-                    || values[i].contains("\"")
                     || values[i].contains("Buy 1")
                     || values[i].contains("Delivery Fee")
-                    || values[i].contains("Min")))
+                    || values[i].contains("Min")
+                    || values[i].isEmpty()))
             {
                 if (restaurantName.isEmpty())
                 {
@@ -183,14 +133,11 @@ public class UberMainMenu extends UberBase
 
             _restaurantsAlreadyPicked.add(_selectedRestaurant);
 
-            Log.e("UberEatsMainMenu", "_selectedRestaurant - " + _selectedRestaurant.name);
-
-            String _restaurantUrl = UberActivity.uberEatsUrl + _selectedRestaurant.href;
-            _restaurantUrl = Helpers.removeLastCharacter(_restaurantUrl);
+            Log.e("UberEatsMainMenu", "_selectedRestaurant - " + _selectedRestaurant.name + " href - " + _selectedRestaurant.href);
 
             AppState.setUberEatsAppState(UberAppState.RestaurantMenuLoading);
 
-            webView.loadUrl(_restaurantUrl);
+            webView.loadUrl(_selectedRestaurant.href);
         }
         else
         {
@@ -199,11 +146,17 @@ public class UberMainMenu extends UberBase
     }
 
 
+    public class Restaurant
+    {
+        String href;
+        String name;
+        String image;
+    }
+
+
     private ArrayList<Restaurant> _restaurants;
     private ArrayList<Restaurant> _restaurantsAlreadyPicked;
     private boolean _mainMenuComplete;
-    private int _parseInnerTextCount;
-    private boolean _allRestaurantInfoRetrieved;
 
     private Restaurant _selectedRestaurant;
 }

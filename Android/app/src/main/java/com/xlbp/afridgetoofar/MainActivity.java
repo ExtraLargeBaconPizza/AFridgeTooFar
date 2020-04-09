@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity
             if (AppState.getMainScreenState() == MainScreenState.EnterDeliveryAddress
                     || AppState.getMainScreenState() == MainScreenState.AppSelection)
             {
-                _currentDeliveryAddress = null;
+                _shortDeliveryAddress = null;
 
-                _view.clearFocus(_currentDeliveryAddress);
+                _view.clearFocus(_shortDeliveryAddress);
 
                 _view.animateAutoCompleteTextViewDown(null);
 
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity
 
     public void backgroundClicked(View view)
     {
-        _view.clearFocus(_currentDeliveryAddress);
+        _view.clearFocus(_shortDeliveryAddress);
     }
 
     public void appClicked(View selectedView)
@@ -115,7 +115,7 @@ public class MainActivity extends AppCompatActivity
                             AppState.setMainScreenState(MainScreenState.ModifyDeliveryAddress));
                     break;
                 case ModifyDeliveryAddress:
-                    _view.clearFocus(_currentDeliveryAddress);
+                    _view.clearFocus(_shortDeliveryAddress);
                     _view.animateAppSelectionOnToScreen(() ->
                             AppState.setMainScreenState(MainScreenState.AppSelection));
                     break;
@@ -126,9 +126,10 @@ public class MainActivity extends AppCompatActivity
         {
             AppState.setMainScreenState(MainScreenState.DeliveryAddressSelected);
 
-            _currentDeliveryAddress = _placeAutoSuggestAdapter.getMainText(position);
+            _fullDeliveryAddress = _placeAutoSuggestAdapter.getItem(position);
+            _shortDeliveryAddress = _placeAutoSuggestAdapter.getMainText(position);
 
-            _view.clearFocus(_currentDeliveryAddress);
+            _view.clearFocus(_shortDeliveryAddress);
         });
     }
 
@@ -136,18 +137,16 @@ public class MainActivity extends AppCompatActivity
     {
         Intent intent = new Intent(getBaseContext(), UberActivity.class);
 
-        String searchAddress = _view.getAutoCompleteTextView().getText().toString();
-
         switch (view.getId())
         {
             case R.id.foodTextView:
-                intent.putExtra("SearchAddress", searchAddress);
-//                intent.putExtra("DebugMode", true);
+                intent.putExtra("SearchAddress", _fullDeliveryAddress);
+                intent.putExtra("DebugMode", true);
                 break;
             case R.id.uberTextView:
             case R.id.doorTextView:
             case R.id.skipTextView:
-                intent.putExtra("SearchAddress", searchAddress);
+                intent.putExtra("SearchAddress", _fullDeliveryAddress);
                 break;
         }
 
@@ -159,5 +158,6 @@ public class MainActivity extends AppCompatActivity
 
     private PlaceAutoSuggestAdapter _placeAutoSuggestAdapter;
 
-    private String _currentDeliveryAddress;
+    private String _fullDeliveryAddress;
+    private String _shortDeliveryAddress;
 }

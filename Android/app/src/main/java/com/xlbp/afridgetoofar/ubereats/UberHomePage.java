@@ -22,7 +22,7 @@ public class UberHomePage extends UberBase
     @Override
     public void parseHtml(String html)
     {
-        // need to delay and loop here because the find food button click can sometimes not work for slow connections
+        // need to delay here because the find food button click can sometimes not work for slow connections
         new Handler().postDelayed(() ->
         {
             if (!deliveryDetailsLoaded)
@@ -30,8 +30,6 @@ public class UberHomePage extends UberBase
                 AppState.setUberEatsAppState(UberAppState.DeliveryDetailsLoading);
 
                 Javascript.clickElementByKeyword(webView, "a", "Find Food");
-
-                retrieveHtml();
             }
         }, 500);
     }

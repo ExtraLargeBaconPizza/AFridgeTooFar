@@ -43,9 +43,9 @@ public class Javascript
         webView.loadUrl(javascript);
     }
 
-    public static void getUberRestaurantMenuItemsHrefsAndInnerText(WebView webView, ValueCallback<String> valueCallBack)
+    public static void getAllHrefsAndInnerText(WebView webView, ValueCallback<String> valueCallBack)
     {
-        String javascript = "javascript: (function(){ var result = ''; var elem = document.getElementsByTagName('a'); for (var i = 0; i < elem.length; i++) { result += 'foodItem'; result += elem[i].href; result += 'innerText' + elem[i].innerText; } return result; })();";
+        String javascript = "javascript: (function(){ var result = ''; var elem = document.getElementsByTagName('a'); for (var i = 0; i < elem.length; i++) { result += 'element'; result += elem[i].href; result += 'innerText' + elem[i].innerText; } return result; })();";
 
         webView.evaluateJavascript(javascript, valueCallBack);
     }
