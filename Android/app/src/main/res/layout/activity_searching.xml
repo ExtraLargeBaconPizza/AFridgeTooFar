@@ -60,8 +60,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="onFoodItemClicked"
-        android:text="\n\n"
         style="@style/mediumTitleTextView" />
 
     <TextView
@@ -73,49 +71,52 @@
         app:layout_constraintTop_toBottomOf="@id/foodItemTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="onFoodItemClicked"
         style="@style/searchingSubtitleTextView" />
 
     <TextView
-        android:id="@+id/searchTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="@dimen/side_margin"
-        app:layout_constraintBottom_toTopOf="@id/sameRestaurantTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:text="SEARCH"
-        style="@style/searchTextView" />
-
-    <TextView
-        android:id="@+id/sameRestaurantTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toTopOf="@id/selectedAppTextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="onSameRestaurantClicked"
-        android:padding="10dp"
-        android:text="Same Restaurant"
-        style="@style/searchSelectionTextView" />
-
-    <TextView
         android:id="@+id/selectedAppTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintBottom_toTopOf="@id/searchAgainTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingEnd="10dp"
+        android:onClick="onViewOnClicked"
+        android:text="@string/Uber_Eats"
+        style="@style/searchSelectionTextView" />
+
+    <TextView
+        android:id="@+id/viewOnTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/searchAgainTextView"
+        app:layout_constraintEnd_toStartOf="@+id/selectedAppTextView"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="5dp"
+        android:onClick="onViewOnClicked"
+        android:text="@string/View_on"
+        style="@style/searchSelectionTextView" />
+
+    <TextView
+        android:id="@+id/searchAgainTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toTopOf="@id/backTextView"
+        app:layout_constraintBottom_toTopOf="@id/donateTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="onSelectedAppClicked"
+        android:onClick="onSearchAgainClicked"
         android:padding="10dp"
-        android:text="Uber Eats"
+        android:text="@string/Search_Again"
         style="@style/searchSelectionTextView" />
 
     <TextView
-        android:id="@+id/backTextView"
+        android:id="@+id/donateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -124,9 +125,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="onBackClicked"
+        android:onClick="onSearchAgainClicked"
         android:padding="10dp"
-        android:text="Back"
+        android:text="Donate"
         style="@style/searchSelectionTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

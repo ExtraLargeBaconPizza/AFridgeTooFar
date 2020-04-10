@@ -68,6 +68,7 @@ public class MainView
             new Animation(selectionApp)
                     .alpha(1)
                     .translationY(0)
+                    .startDelay(600)
                     .withEndAction(endAction)
                     .start();
         }
@@ -99,6 +100,11 @@ public class MainView
                 .translationY(_autoCompleteOffset2)
                 .start();
 
+        new Animation(_addressNotFoundTextView)
+                .alpha(0)
+                .translationY(_addressNotFoundOffset)
+                .start();
+
         for (TextView selectionApp : _selectionApps)
         {
             if (selectionApp.getId() != _currentlySelectedView.getId())
@@ -122,7 +128,7 @@ public class MainView
                 .start();
     }
 
-    public void animateSelectedAppDown(Runnable endAction)
+    public void animateReturnFromSearching(Runnable endAction)
     {
         AppState.setMainScreenState(MainScreenState.Animating);
 
@@ -132,22 +138,13 @@ public class MainView
                 .translationY(_searchingOffset)
                 .start();
 
-        new Animation(_currentlySelectedView)
-                .translationY(0)
-                .start();
-
         // enter
         for (TextView selectionApp : _selectionApps)
         {
-            if (selectionApp != _currentlySelectedView)
-            {
-                selectionApp.setTranslationY(0);
-
-                new Animation(selectionApp)
-                        .alpha(1)
-                        .startDelay(600)
-                        .start();
-            }
+            new Animation(selectionApp)
+                    .alpha(1)
+                    .translationY(0)
+                    .start();
         }
 
         new Animation(_autoCompleteTextView)
@@ -167,10 +164,11 @@ public class MainView
                 .translationY(_searchingOffset)
                 .start();
 
+        // middle
         for (TextView selectionApp : _selectionApps)
         {
             new Animation(selectionApp)
-                    .alpha(0)
+                    .alpha(1)
                     .translationY(0)
                     .start();
         }
@@ -190,11 +188,21 @@ public class MainView
 
     public void animateAddressNotFoundOffScreen(Runnable endAction)
     {
+        AppState.setMainScreenState(MainScreenState.Animating);
+
         new Animation(_addressNotFoundTextView)
                 .alpha(0)
                 .translationY(_addressNotFoundOffset)
                 .withEndAction(endAction)
                 .start();
+
+        for (TextView selectionApp : _selectionApps)
+        {
+            new Animation(selectionApp)
+                    .alpha(0)
+                    .translationY(_selectionAppsArrayListOffset)
+                    .start();
+        }
     }
 
     public void animateReturnFromSearchComplete(Runnable endAction)
@@ -292,15 +300,16 @@ public class MainView
 
     private void initViewPositions()
     {
-        Helpers.adjustViewTopMarginForNotch(_titleTextView);
-        Helpers.adjustViewTopMarginForNotch(_searchingTextView);
-
         // this is needed so we only get positions/heights after onLayout has happened
         _layout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
         {
             @Override
             public void onGlobalLayout()
             {
+                Helpers.initNotchHeight(_activity);
+                Helpers.adjustViewTopMarginForNotch(_titleTextView);
+                Helpers.adjustViewTopMarginForNotch(_searchingTextView);
+
                 _titleOffset = -_titleTextView.getHeight() - Helpers.topMargin;
                 _autoCompleteOffset1 = -_autoCompleteTextView.getY() + Helpers.topMargin;
                 _autoCompleteOffset2 = -_autoCompleteTextView.getY() - _autoCompleteTextView.getHeight();

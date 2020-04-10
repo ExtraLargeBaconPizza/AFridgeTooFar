@@ -162,7 +162,7 @@ public class UberRestaurantMenu extends UberBase
 
         AppState.setUberEatsAppState(UberAppState.SearchComplete);
 
-        uberActivity.searchComplete();
+        uberActivity.onSearchComplete();
     }
 
 

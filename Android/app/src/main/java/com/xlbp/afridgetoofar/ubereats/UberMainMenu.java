@@ -26,7 +26,7 @@ public class UberMainMenu extends UberBase
         {
             AppState.setMainScreenState(MainScreenState.AddressNotFound);
 
-            uberActivity.navigateBack();
+            uberActivity.onAddressNotFound();
         }
         else
         {

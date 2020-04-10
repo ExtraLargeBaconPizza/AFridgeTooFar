@@ -1,4 +1,4 @@
-// This app is dedicated to my dog Ruffles. He was the best.
+// This app is dedicated to my dog Ruffles. He was a good boy.
 package com.xlbp.afridgetoofar;
 
 import android.content.Intent;
@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity
             case Animating:
                 break;
             case SearchingApp:
-                _view.animateSelectedAppDown(() -> AppState.setMainScreenState(MainScreenState.AppSelection));
+                _view.animateReturnFromSearching(() -> AppState.setMainScreenState(MainScreenState.AppSelection));
                 break;
             case AddressNotFound:
                 _view.animateReturnFromAddressNotFound(() -> AppState.setMainScreenState(MainScreenState.AddressNotFound));
@@ -128,7 +128,7 @@ public class MainActivity extends AppCompatActivity
                     break;
                 case AddressNotFound:
                     _view.animateAddressNotFoundOffScreen(() ->
-                            AppState.setMainScreenState(MainScreenState.EnterDeliveryAddress));
+                            AppState.setMainScreenState(MainScreenState.ModifyDeliveryAddress));
                     break;
             }
         });

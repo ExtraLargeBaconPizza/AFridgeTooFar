@@ -37,6 +37,13 @@ public class UberActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
+        if (temp)
+        {
+            _view.getWebView().goBack();
+
+            return;
+        }
+
         if (AppState.getUberEatsAppState() != UberAppState.Animating)
         {
             if (AppState.getUberEatsAppState() == UberAppState.SearchComplete)
@@ -71,12 +78,17 @@ public class UberActivity extends AppCompatActivity
         }
     }
 
-    public void searchComplete()
+    public void onAddressNotFound()
+    {
+        navigateBack();
+    }
+
+    public void onSearchComplete()
     {
         handleSearchComplete();
     }
 
-    public void onFoodItemClicked(View view)
+    public void onViewOnClicked(View view)
     {
         if (AppState.getUberEatsAppState() == UberAppState.SearchComplete)
         {
@@ -84,50 +96,19 @@ public class UberActivity extends AppCompatActivity
         }
     }
 
-    public void onSameRestaurantClicked(View view)
+    public void onSearchAgainClicked(View view)
     {
         if (AppState.getUberEatsAppState() != UberAppState.Animating)
         {
             AppState.setMainScreenState(MainScreenState.SearchingApp);
 
-            _view.animateSearchAgainAnimation(view, () ->
-            {
-                AppState.setUberEatsAppState(UberAppState.RestaurantMenuLoading);
-
-                _uberEatsRestaurantMenu.onDocumentComplete();
-            });
-        }
-    }
-
-    public void onSelectedAppClicked(View view)
-    {
-        if (AppState.getUberEatsAppState() != UberAppState.Animating)
-        {
-            AppState.setMainScreenState(MainScreenState.SearchingApp);
-
-            _view.animateSearchAgainAnimation(view, () ->
+            _view.animateSearchAgainAnimation(() ->
             {
                 AppState.setUberEatsAppState(UberAppState.MainMenuReady);
 
                 _uberEatsMainMenu.selectRestaurant();
             });
         }
-    }
-
-    public void onBackClicked(View view)
-    {
-        if (AppState.getUberEatsAppState() != UberAppState.Animating)
-        {
-            _view.animateNavigateBackAfterSearchComplete(this::navigateBack);
-        }
-    }
-
-    public void navigateBack()
-    {
-        _view.getWebView().destroy();
-
-        finish();
-        return;
     }
 
     private void init()
@@ -170,7 +151,7 @@ public class UberActivity extends AppCompatActivity
         UberMainMenu.Restaurant selectedRestaurant = _uberEatsMainMenu.getSelectedRestaurant();
         UberRestaurantMenu.FoodItem foodItem = _uberEatsRestaurantMenu.getSelectedFoodItem();
 
-        _view.setSearchCompleteText(selectedRestaurant.name, foodItem.name, foodItem.price);
+        _view.setSearchCompleteText(foodItem.name, selectedRestaurant.name + "\n" + foodItem.price);
 
         Log.e("UberView", "Search Complete: selectedRestaurant - " + selectedRestaurant.name + " - food item - " + foodItem.name);
 
@@ -182,13 +163,28 @@ public class UberActivity extends AppCompatActivity
         });
     }
 
+    private boolean temp;
+
     private void launchUberEats()
     {
-        String url = _uberEatsRestaurantMenu.getSelectedFoodItem().href;
+        temp = true;
+//        String url = _uberEatsRestaurantMenu.getSelectedFoodItem().href;
+//
+//        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//
+//        startActivity(browserIntent);
+//        _view.getWebView().setAlpha(1);
+        _view.getWebView().loadUrl(_uberEatsRestaurantMenu.getSelectedFoodItem().href);
+        _view.getWebView().setTranslationX(0);
+//        _view.getWebView().setClickable(true);
+    }
 
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+    private void navigateBack()
+    {
+        _view.getWebView().destroy();
 
-        startActivity(browserIntent);
+        finish();
+        return;
     }
 
 

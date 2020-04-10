@@ -51,7 +51,7 @@
         app:layout_constraintTop_toTopOf="@+id/titleTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Address not available on Uber Eats"
+        android:text="Address not available on Uber Eats.\nPlease try a different address or app"
         style="@style/addressNotFoundTextView" />
 
     <TextView

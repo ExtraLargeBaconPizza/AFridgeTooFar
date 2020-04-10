@@ -2,14 +2,30 @@ package com.xlbp.afridgetoofar.helpers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.view.DisplayCutout;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 public class Helpers
 {
-    public static final int topMargin = Helpers.dpToPixels(50) + getStatusBarHeight();
+    public static int topMargin = Helpers.dpToPixels(50);
+
+    public static void initNotchHeight(Activity activity)
+    {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P)
+        {
+            DisplayCutout displayCutout = activity.getWindow().getDecorView().getRootWindowInsets().getDisplayCutout();
+
+            topMargin += displayCutout.getSafeInsetTop();
+        }
+        else
+        {
+            topMargin += Helpers.dpToPixels(24);
+        }
+    }
 
     public static void adjustViewTopMarginForNotch(View view)
     {
@@ -55,17 +71,22 @@ public class Helpers
         return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
-    private static int getStatusBarHeight()
+    public static boolean isAppInstalled(Context context, String uri)
     {
-        int statusBarHeight = 0;
+        PackageManager pm = context.getPackageManager();
 
-        int resourceId = Resources.getSystem().getIdentifier("status_bar_height", "dimen", "android");
+        boolean installed = false;
 
-        if (resourceId > 0)
+        try
         {
-            statusBarHeight = Resources.getSystem().getDimensionPixelSize(resourceId);
+            pm.getPackageInfo(uri, PackageManager.GET_ACTIVITIES);
+            installed = true;
+        }
+        catch (PackageManager.NameNotFoundException e)
+        {
+            installed = false;
         }
 
-        return statusBarHeight;
+        return installed;
     }
 }
