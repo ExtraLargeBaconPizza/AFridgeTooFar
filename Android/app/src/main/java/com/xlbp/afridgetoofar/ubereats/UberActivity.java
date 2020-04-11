@@ -16,6 +16,7 @@ import com.xlbp.afridgetoofar.enums.UberAppState;
 
 public class UberActivity extends AppCompatActivity
 {
+    // todo update initial website string to https://www.ubereats.com/delivery-details
     public static String uberEatsUrl = "https://www.ubereats.com";
 
     @Override
@@ -37,13 +38,6 @@ public class UberActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        if (temp)
-        {
-            _view.getWebView().goBack();
-
-            return;
-        }
-
         if (AppState.getUberEatsAppState() != UberAppState.Animating)
         {
             if (AppState.getUberEatsAppState() == UberAppState.SearchComplete)
@@ -61,11 +55,7 @@ public class UberActivity extends AppCompatActivity
     {
         switch (AppState.getUberEatsAppState())
         {
-            case HomePageLoading:
-                _uberEatsHomePage.onDocumentComplete();
-                break;
             case DeliveryDetailsLoading:
-                _uberEatsHomePage = null;
                 _uberEatsDeliveryDetails.onDocumentComplete();
                 break;
             case MainMenuLoading:
@@ -130,17 +120,16 @@ public class UberActivity extends AppCompatActivity
         CookieManager.getInstance().removeAllCookies(null);
         CookieManager.getInstance().flush();
 
-        _view.getWebView().loadUrl(uberEatsUrl);
+        _view.getWebView().loadUrl(uberEatsUrl + "/delivery-details");
     }
 
     private void initUberEats()
     {
-        AppState.setUberEatsAppState(UberAppState.HomePageLoading);
+        AppState.setUberEatsAppState(UberAppState.DeliveryDetailsLoading);
 
         Bundle extras = getIntent().getExtras();
         String searchAddress = extras.getString("SearchAddress");
 
-        _uberEatsHomePage = new UberHomePage(this, _view.getWebView());
         _uberEatsDeliveryDetails = new UberDeliveryDetails(this, _view.getWebView(), searchAddress);
         _uberEatsMainMenu = new UberMainMenu(this, _view.getWebView());
         _uberEatsRestaurantMenu = new UberRestaurantMenu(this, _view.getWebView());
@@ -163,20 +152,13 @@ public class UberActivity extends AppCompatActivity
         });
     }
 
-    private boolean temp;
-
     private void launchUberEats()
     {
-        temp = true;
-//        String url = _uberEatsRestaurantMenu.getSelectedFoodItem().href;
-//
-//        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-//
-//        startActivity(browserIntent);
-//        _view.getWebView().setAlpha(1);
-        _view.getWebView().loadUrl(_uberEatsRestaurantMenu.getSelectedFoodItem().href);
-        _view.getWebView().setTranslationX(0);
-//        _view.getWebView().setClickable(true);
+        String url = _uberEatsRestaurantMenu.getSelectedFoodItem().href;
+
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+
+        startActivity(browserIntent);
     }
 
     private void navigateBack()
@@ -190,7 +172,6 @@ public class UberActivity extends AppCompatActivity
 
     private UberView _view;
 
-    private UberHomePage _uberEatsHomePage;
     private UberDeliveryDetails _uberEatsDeliveryDetails;
     private UberMainMenu _uberEatsMainMenu;
     private UberRestaurantMenu _uberEatsRestaurantMenu;

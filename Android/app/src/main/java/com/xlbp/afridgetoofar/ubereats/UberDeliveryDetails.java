@@ -14,7 +14,6 @@ import com.xlbp.afridgetoofar.enums.UberAppState;
 
 public class UberDeliveryDetails extends UberBase
 {
-    // TODO - handle address not available
     // TODO - ensure keyboard is never shown
     public UberDeliveryDetails(UberActivity uberActivity, WebView webView, String searchAddress)
     {
@@ -26,8 +25,6 @@ public class UberDeliveryDetails extends UberBase
     @Override
     public void parseHtml(String html)
     {
-        UberHomePage.deliveryDetailsLoaded = true;
-
         InputMethodManager imm = (InputMethodManager) uberActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
 
         if (imm != null)

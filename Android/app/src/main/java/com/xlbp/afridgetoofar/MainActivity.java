@@ -12,6 +12,7 @@ import com.xlbp.afridgetoofar.enums.MainScreenState;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 public class MainActivity extends AppCompatActivity
 {
     @Override
