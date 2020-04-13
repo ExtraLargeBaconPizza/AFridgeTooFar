@@ -4,9 +4,11 @@ package com.xlbp.afridgetoofar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowManager;
 
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.google.PlaceAutoSuggestAdapter;
+import com.xlbp.afridgetoofar.helpers.Helpers;
 import com.xlbp.afridgetoofar.ubereats.UberActivity;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
 
@@ -54,7 +56,7 @@ public class MainActivity extends AppCompatActivity
             {
                 _shortDeliveryAddress = null;
 
-                _view.clearFocus(_shortDeliveryAddress);
+                clearFocus(_shortDeliveryAddress);
 
                 _view.animateAutoCompleteTextViewDown(null);
 
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity
 
     public void backgroundClicked(View view)
     {
-        _view.clearFocus(_shortDeliveryAddress);
+        clearFocus(_shortDeliveryAddress);
     }
 
     public void appClicked(View selectedView)
@@ -87,17 +89,31 @@ public class MainActivity extends AppCompatActivity
 
     private void init()
     {
-        _view = new MainView(this);
+        initView();
 
+        initMainScreen();
+
+        initAutoCompleteTextView();
+    }
+
+    private void initView()
+    {
+        _view = new MainView(this);
+        setContentView(_view);
+
+        // Make fullscreen. Action bar height is 24dp. Navigation bar height is 48dp
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
+    }
+
+    private void initMainScreen()
+    {
         AppState.setMainScreenState(MainScreenState.StartingScreen);
 
         _placeAutoSuggestAdapter = new PlaceAutoSuggestAdapter(this, android.R.layout.simple_list_item_1);
         _view.getAutoCompleteTextView().setAdapter(_placeAutoSuggestAdapter);
-
-        handleAutoCompleteTextView();
     }
 
-    private void handleAutoCompleteTextView()
+    private void initAutoCompleteTextView()
     {
         _view.getAutoCompleteTextView().setOnFocusChangeListener((view, hasFocus) ->
         {
@@ -110,7 +126,7 @@ public class MainActivity extends AppCompatActivity
                             AppState.setMainScreenState(MainScreenState.EnterDeliveryAddress));
                     break;
                 case EnterDeliveryAddress:
-                    _view.clearFocus(null);
+                    clearFocus(null);
                     _view.animateAutoCompleteTextViewDown(() ->
                             AppState.setMainScreenState(MainScreenState.StartingScreen));
                     break;
@@ -123,7 +139,7 @@ public class MainActivity extends AppCompatActivity
                             AppState.setMainScreenState(MainScreenState.ModifyDeliveryAddress));
                     break;
                 case ModifyDeliveryAddress:
-                    _view.clearFocus(_shortDeliveryAddress);
+                    clearFocus(_shortDeliveryAddress);
                     _view.animateAppSelectionOnToScreen(() ->
                             AppState.setMainScreenState(MainScreenState.AppSelection));
                     break;
@@ -141,7 +157,7 @@ public class MainActivity extends AppCompatActivity
             _fullDeliveryAddress = _placeAutoSuggestAdapter.getItem(position);
             _shortDeliveryAddress = _placeAutoSuggestAdapter.getMainText(position);
 
-            _view.clearFocus(_shortDeliveryAddress);
+            clearFocus(_shortDeliveryAddress);
         });
     }
 
@@ -163,6 +179,13 @@ public class MainActivity extends AppCompatActivity
         }
 
         startActivity(intent);
+    }
+
+    private void clearFocus(String currentDeliveryAddress)
+    {
+        _view.clearFocus(currentDeliveryAddress);
+
+        Helpers.hideKeyboard(this);
     }
 
 

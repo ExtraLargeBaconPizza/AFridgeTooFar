@@ -16,20 +16,35 @@ import java.util.Arrays;
 
 public class Helpers
 {
-    public static int topMargin = Helpers.dpToPixels(50);
+    public static int topMargin;
 
-    public static void initNotchHeight(Activity activity)
+    public static void initTopMargin(Context context)
     {
+        topMargin = Helpers.dpToPixels(50) + getSafeInsetTop(context);
+    }
+
+    public static int getSafeInsetTop(Context context)
+    {
+        int safeInsetTop = 0;
+
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.P)
         {
-            DisplayCutout displayCutout = activity.getWindow().getDecorView().getRootWindowInsets().getDisplayCutout();
+            DisplayCutout displayCutout =
+                    ((Activity) context)
+                            .getWindow()
+                            .getDecorView()
+                            .getRootWindowInsets()
+                            .getDisplayCutout();
 
-            topMargin += displayCutout.getSafeInsetTop();
+            assert displayCutout != null;
+            safeInsetTop = displayCutout.getSafeInsetTop();
         }
         else
         {
-            topMargin += Helpers.dpToPixels(24);
+            safeInsetTop = Helpers.dpToPixels(24);
         }
+
+        return safeInsetTop;
     }
 
     public static void adjustViewTopMarginForNotch(View view)

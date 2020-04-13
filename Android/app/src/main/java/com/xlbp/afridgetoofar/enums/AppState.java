@@ -33,8 +33,6 @@ public class AppState
             _uberAppState = uberAppState;
 
             Log.e("UberAppState", "" + _uberAppState);
-
-            UberView.updateUberAppStateTextView(uberAppState);
         }
     }
 

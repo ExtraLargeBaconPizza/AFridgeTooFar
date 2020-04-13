@@ -1,24 +1,23 @@
 package com.xlbp.afridgetoofar.ubereats;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
 
+import com.xlbp.afridgetoofar.DeliveryAppBaseActivity;
+import com.xlbp.afridgetoofar.XlbpWebViewClient;
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
 import com.xlbp.afridgetoofar.enums.UberAppState;
+import com.xlbp.afridgetoofar.helpers.Helpers;
 
-public class UberActivity extends AppCompatActivity
+public class UberActivity extends DeliveryAppBaseActivity
 {
-    // todo update initial website string to https://www.ubereats.com/delivery-details
-    public static String uberEatsUrl = "https://www.ubereats.com";
-
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -78,7 +77,7 @@ public class UberActivity extends AppCompatActivity
         handleSearchComplete();
     }
 
-    public void onViewOnClicked(View view)
+    public void onViewOnAppClicked(View view)
     {
         if (AppState.getUberEatsAppState() == UberAppState.SearchComplete)
         {
@@ -103,24 +102,20 @@ public class UberActivity extends AppCompatActivity
 
     private void init()
     {
-        _view = new UberView(this);
-
-        initWebView();
+        initView();
 
         initUberEats();
+
+        initWebView();
     }
 
-    private void initWebView()
+    private void initView()
     {
-        _view.getWebView().getSettings().setJavaScriptEnabled(true);
-        _view.getWebView().setWebViewClient(new UberWebViewClient(this));
-        _view.getWebView().setWebChromeClient(new WebChromeClient());
+        _view = new UberView(this);
+        setContentView(_view);
 
-        // The follow two lines remove uber eats cookies
-        CookieManager.getInstance().removeAllCookies(null);
-        CookieManager.getInstance().flush();
-
-        _view.getWebView().loadUrl(uberEatsUrl + "/delivery-details");
+        // Make fullscreen. Action bar height is 24dp. Navigation bar height is 48dp
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
     private void initUberEats()
@@ -129,10 +124,29 @@ public class UberActivity extends AppCompatActivity
 
         Bundle extras = getIntent().getExtras();
         String searchAddress = extras.getString("SearchAddress");
+        boolean isDebugMode = (extras != null) ? extras.getBoolean("DebugMode") : false;
+
+        if (!isDebugMode)
+        {
+            _view.getWebView().setTranslationX(Helpers.getScreenWidth());
+        }
 
         _uberEatsDeliveryDetails = new UberDeliveryDetails(this, _view.getWebView(), searchAddress);
         _uberEatsMainMenu = new UberMainMenu(this, _view.getWebView());
         _uberEatsRestaurantMenu = new UberRestaurantMenu(this, _view.getWebView());
+    }
+
+    private void initWebView()
+    {
+        _view.getWebView().getSettings().setJavaScriptEnabled(true);
+        _view.getWebView().setWebViewClient(new XlbpWebViewClient(this));
+        _view.getWebView().setWebChromeClient(new WebChromeClient());
+
+        // The follow two lines remove uber eats cookies
+        CookieManager.getInstance().removeAllCookies(null);
+        CookieManager.getInstance().flush();
+
+        _view.getWebView().loadUrl("https://www.ubereats.com/delivery-details");
     }
 
     private void handleSearchComplete()

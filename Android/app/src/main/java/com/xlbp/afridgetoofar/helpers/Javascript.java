@@ -14,6 +14,7 @@ public class Javascript
         // navigated to a new page through a button click.
         String javaScript = "javascript:var readyStateCheckInterval = setInterval(function() {if (document.readyState === 'complete') {clearInterval(readyStateCheckInterval); return('document complete');}}, 10);";
 
+        // We need to use evaluateJavascript so we have a callback once the document is complete
         webView.evaluateJavascript(javaScript, valueCallBack);
     }
 

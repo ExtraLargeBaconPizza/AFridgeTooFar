@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/transparent"
+    android:clipToPadding="false">
+
+    <View
+        android:id="@+id/loadingBar1View"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/loadingBar2View"
+        android:background="@color/grayE" />
+
+    <View
+        android:id="@+id/loadingBar2View"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/loadingBar3View"
+        android:background="@color/grayE" />
+
+    <View
+        android:id="@+id/loadingBar3View"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/loadingBar4View"
+        android:background="@color/grayE" />
+
+    <View
+        android:id="@+id/loadingBar4View"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginEnd="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/loadingBar5View"
+        android:background="@color/grayE" />
+
+    <View
+        android:id="@+id/loadingBar5View"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="@color/grayE" />
+
+    <View
+        android:id="@+id/loadingBar6View"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/loadingBar5View"
+        android:background="@color/grayE" />
+
+    <View
+        android:id="@+id/loadingBar7View"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/loadingBar6View"
+        android:background="@color/grayE" />
+
+    <View
+        android:id="@+id/loadingBar8View"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/loadingBar7View"
+        android:background="@color/grayE" />
+
+    <View
+        android:id="@+id/loadingBar9View"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/loadingBar8View"
+        android:background="@color/grayE" />
+
+    <View
+        android:id="@+id/loadingBar10View"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/loadingBar9View"
+        android:background="@color/grayE" />
+
+    <View
+        android:id="@+id/loadingBar11View"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/loadingBar10View"
+        android:background="@color/grayE" />
+
+    <View
+        android:id="@+id/loadingBar12View"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/loadingBar11View"
+        android:background="@color/grayE" />
+
+    <View
+        android:id="@+id/loadingBar13View"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/loadingBar12View"
+        android:background="@color/grayE" />
+
+    <View
+        android:id="@+id/loadingBar14View"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/loadingBar13View"
+        android:background="@color/grayE" />
+
+    <View
+        android:id="@+id/loadingBar15View"
+        android:layout_width="2dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/loadingBar14View"
+        android:background="@color/grayE" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

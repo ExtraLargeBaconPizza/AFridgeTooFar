@@ -117,16 +117,24 @@ public class UberRestaurantMenu extends UberBase
                 if (values[j].contains("$") && values[j].length() < 10)
                 {
                     foodItem.price = values[j].replace("US", "");
+                    foodItem.price = values[j].replace("CA", "");
 
                     String currencyOnly = foodItem.price.replace("[^\\d.]", "").replace("$", "").replace("\"", "");
 
                     if (!currencyOnly.isEmpty())
                     {
-                        float priceCheck = Float.parseFloat(currencyOnly);
-
-                        if (priceCheck >= 4.99f)
+                        try
                         {
-                            keepFoodItem = true;
+                            float priceCheck = Float.parseFloat(currencyOnly);
+
+                            if (priceCheck >= 4.99f)
+                            {
+                                keepFoodItem = true;
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            // do nothing
                         }
                     }
                 }

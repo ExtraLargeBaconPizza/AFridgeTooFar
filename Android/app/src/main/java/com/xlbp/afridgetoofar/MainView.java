@@ -1,9 +1,11 @@
 package com.xlbp.afridgetoofar;
 
+import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.xlbp.afridgetoofar.enums.AppState;
@@ -15,11 +17,11 @@ import java.util.ArrayList;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-public class MainView
+public class MainView extends FrameLayout
 {
-    public MainView(MainActivity activity)
+    public MainView(Context context)
     {
-        _activity = activity;
+        super(context);
 
         init();
     }
@@ -247,8 +249,6 @@ public class MainView
         }
 
         _layout.requestFocus();
-
-        Helpers.hideKeyboard(_activity);
     }
 
     private void init()
@@ -258,25 +258,22 @@ public class MainView
         initViewAlphas();
 
         initViewPositions();
-
-        // Make fullscreen. Action bar height is 24dp. Navigation bar height is 48dp
-        _activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
     private void initViews()
     {
-        _activity.setContentView(R.layout.activity_main);
+        LayoutInflater.from(getContext()).inflate(R.layout.activity_main, this, true);
 
-        _layout = _activity.findViewById(R.id.layout);
-        _titleTextView = _activity.findViewById(R.id.titleTextView);
-        _autoCompleteTextView = _activity.findViewById(R.id.autoCompleteTextView);
-        _addressNotFoundTextView = _activity.findViewById(R.id.addressNotFoundTextView);
-        _searchingTextView = _activity.findViewById(R.id.searchingTextView);
+        _layout = findViewById(R.id.layout);
+        _titleTextView = findViewById(R.id.titleTextView);
+        _autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
+        _addressNotFoundTextView = findViewById(R.id.addressNotFoundTextView);
+        _searchingTextView = findViewById(R.id.searchingTextView);
 
-        TextView uberTextView = _activity.findViewById(R.id.uberTextView);
-        TextView doorTextView = _activity.findViewById(R.id.doorTextView);
-        TextView skipTextView = _activity.findViewById(R.id.skipTextView);
-        TextView foodTextView = _activity.findViewById(R.id.foodTextView);
+        TextView uberTextView = findViewById(R.id.uberTextView);
+        TextView doorTextView = findViewById(R.id.doorTextView);
+        TextView skipTextView = findViewById(R.id.skipTextView);
+        TextView foodTextView = findViewById(R.id.foodTextView);
 
         _selectionApps = new ArrayList<>();
 
@@ -306,7 +303,7 @@ public class MainView
             @Override
             public void onGlobalLayout()
             {
-                Helpers.initNotchHeight(_activity);
+                Helpers.initTopMargin(getContext());
                 Helpers.adjustViewTopMarginForNotch(_titleTextView);
                 Helpers.adjustViewTopMarginForNotch(_searchingTextView);
 
@@ -336,7 +333,6 @@ public class MainView
         return -view.getY() + _searchingTextView.getHeight() + Helpers.topMargin - Helpers.dpToPixels(10);
     }
 
-    private MainActivity _activity;
 
     private ConstraintLayout _layout;
     private TextView _titleTextView;

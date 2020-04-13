@@ -113,6 +113,7 @@ public class UberMainMenu extends UberBase
         for (int i = 0; i < values.length; i++)
         {
             values[i] = values[i].replace("\"", "");
+            values[i] = values[i].replace("\\", "");
 
             // TODO restaurants with Min will get filtered and probably cause an error, but this is good enough for now
             if (!(values[i].contains("$")

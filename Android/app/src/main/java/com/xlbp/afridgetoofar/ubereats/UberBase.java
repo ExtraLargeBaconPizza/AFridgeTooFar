@@ -12,8 +12,6 @@ public abstract class UberBase
         this.webView = webView;
     }
 
-    abstract void parseHtml(String html);
-
     protected void onDocumentComplete()
     {
         retrieveHtml();
@@ -24,6 +22,9 @@ public abstract class UberBase
         Javascript.getRootInnerHtml(webView, this::parseHtml);
     }
 
+    abstract void parseHtml(String html);
+
+    
     protected UberActivity uberActivity;
     protected WebView webView;
 }

@@ -1,11 +1,15 @@
 package com.xlbp.afridgetoofar.ubereats;
 
-import android.os.Bundle;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.WindowManager;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.xlbp.afridgetoofar.SearchingAnimationView;
+import com.xlbp.afridgetoofar.SearchingAnimationView2;
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.enums.UberAppState;
 import com.xlbp.afridgetoofar.helpers.Animation;
@@ -14,11 +18,13 @@ import com.xlbp.afridgetoofar.R;
 
 import java.util.ArrayList;
 
-public class UberView
+import androidx.constraintlayout.widget.ConstraintLayout;
+
+public class UberView extends FrameLayout
 {
-    public UberView(UberActivity uberActivity)
+    public UberView(Context context)
     {
-        _activity = uberActivity;
+        super(context);
 
         init();
     }
@@ -28,17 +34,13 @@ public class UberView
         return _webView;
     }
 
-    public static void updateUberAppStateTextView(UberAppState appState)
-    {
-        _appStateTextView.setText("Current AppState - " + appState.toString());
-    }
-
     public void setSearchCompleteText(String foodItem, String foodItemDetails)
     {
         _foodItemTextView.setText(foodItem);
         _foodItemDetailsTextView.setText(foodItemDetails);
     }
 
+    // todo ony run this animation after the loading animation completes a cycle
     public void animateSearchComplete(Runnable endAction)
     {
         AppState.setUberEatsAppState(UberAppState.Animating);
@@ -49,9 +51,13 @@ public class UberView
                 .translationY(_searchingOffset)
                 .start();
 
-        _debugMessageTextView.setAlpha(0);
-
-        _appStateTextView.setAlpha(0);
+        new Animation(_searchingAnimationView)
+                .alpha(0)
+                .withEndAction(() ->
+                {
+                    _searchingAnimationView.stopAnimation();
+                })
+                .start();
 
         // middle
         for (TextView searchAgainItem : _searchAgainItems)
@@ -121,6 +127,11 @@ public class UberView
         // middle
         new Animation(_selectedAppTextView)
                 .translationY(_selectedAppOffset)
+                .withEndAction(() ->
+                {
+                    _searchingAnimationView.setAlpha(1);
+                    _searchingAnimationView.startAnimation();
+                })
                 .start();
 
         // enter
@@ -163,24 +174,21 @@ public class UberView
         initViewAlphas();
 
         initViewPositions();
-
-        initIsDebugMode();
     }
 
     private void initViews()
     {
-        _activity.setContentView(R.layout.activity_searching);
+        LayoutInflater.from(getContext()).inflate(R.layout.activity_searching, this, true);
 
-        _searchingTitleTextView = _activity.findViewById(R.id.searchingTitleTextView);
-        _debugMessageTextView = _activity.findViewById(R.id.debugMessageTextView);
-        _appStateTextView = _activity.findViewById(R.id.appStateTextView);
-        _webView = _activity.findViewById(R.id.webview);
-        _foodItemTextView = _activity.findViewById(R.id.foodItemTextView);
-        _foodItemDetailsTextView = _activity.findViewById(R.id.foodItemDetailsTextView);
-        _selectedAppTextView = _activity.findViewById(R.id.selectedAppTextView);
-        _viewOnTextView = _activity.findViewById(R.id.viewOnTextView);
-        _searchAgainTextView = _activity.findViewById(R.id.searchAgainTextView);
-        _donateTextView = _activity.findViewById(R.id.donateTextView);
+        _searchingTitleTextView = findViewById(R.id.searchingTitleTextView);
+        _searchingAnimationView = findViewById(R.id.searchingAnimationView);
+        _webView = findViewById(R.id.webview);
+        _foodItemTextView = findViewById(R.id.foodItemTextView);
+        _foodItemDetailsTextView = findViewById(R.id.foodItemDetailsTextView);
+        _selectedAppTextView = findViewById(R.id.selectedAppTextView);
+        _viewOnTextView = findViewById(R.id.viewOnTextView);
+        _searchAgainTextView = findViewById(R.id.searchAgainTextView);
+        _donateTextView = findViewById(R.id.donateTextView);
 
         _searchAgainItems = new ArrayList<>();
 
@@ -206,8 +214,10 @@ public class UberView
 
     private void initViewPositions()
     {
+        ConstraintLayout layout = findViewById(R.id.layout);
+
         // this is needed so we only get positions/heights after onLayout has happened
-        _activity.findViewById(R.id.layout).getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
+        layout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
         {
             @Override
             public void onGlobalLayout()
@@ -230,36 +240,14 @@ public class UberView
                 _foodItemDetailsTextView.setTranslationY(_foodItemOffset);
 
                 // we need to remove the listener so positions are only set once
-                _activity.findViewById(R.id.layout).getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                layout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
             }
         });
     }
 
-    private void initIsDebugMode()
-    {
-        Bundle extras = _activity.getIntent().getExtras();
-
-        boolean isDebugMode = (extras != null) ? extras.getBoolean("DebugMode") : false;
-
-        if (!isDebugMode)
-        {
-            // Make fullscreen. Action bar height is 24dp. Navigation bar height is 48dp
-            _activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
-
-            // The webView doesn't work correctly if its visibility is invisible or gone.
-            // So we just set its alpha to 0 and remove it touch listeners. move it offscreen as well just in case
-//            _webView.setAlpha(0);
-            _webView.setTranslationX(Helpers.getScreenWidth());
-//            _webView.setOnTouchListener((v, event) -> false);
-        }
-    }
-
-
-    private UberActivity _activity;
 
     private TextView _searchingTitleTextView;
-    private TextView _debugMessageTextView;
-    private static TextView _appStateTextView;
+    private SearchingAnimationView2 _searchingAnimationView;
 
     private WebView _webView;
 
