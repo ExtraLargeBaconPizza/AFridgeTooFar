@@ -272,8 +272,8 @@ public class MainView extends FrameLayout
 
         TextView uberTextView = findViewById(R.id.uberTextView);
         TextView doorTextView = findViewById(R.id.doorTextView);
-        TextView skipTextView = findViewById(R.id.skipTextView);
-        TextView foodTextView = findViewById(R.id.foodTextView);
+        TextView skipTextView = findViewById(R.id.grubTextView);
+        TextView foodTextView = findViewById(R.id.postTextView);
 
         _selectionApps = new ArrayList<>();
 

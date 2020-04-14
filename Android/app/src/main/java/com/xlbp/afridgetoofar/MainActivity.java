@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity
                 _view.animateReturnFromSearching(() -> AppState.setMainScreenState(MainScreenState.AppSelection));
                 break;
             case AddressNotFound:
+                // TODO passing in previously selected app
                 _view.animateReturnFromAddressNotFound(() -> AppState.setMainScreenState(MainScreenState.AddressNotFound));
                 break;
             case SearchComplete:
@@ -167,13 +168,13 @@ public class MainActivity extends AppCompatActivity
 
         switch (view.getId())
         {
-            case R.id.foodTextView:
+            case R.id.postTextView:
                 intent.putExtra("SearchAddress", _fullDeliveryAddress);
                 intent.putExtra("DebugMode", true);
                 break;
             case R.id.uberTextView:
             case R.id.doorTextView:
-            case R.id.skipTextView:
+            case R.id.grubTextView:
                 intent.putExtra("SearchAddress", _fullDeliveryAddress);
                 break;
         }

@@ -1,10 +1,12 @@
 package com.xlbp.afridgetoofar;
 
 import android.content.Context;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.xlbp.afridgetoofar.helpers.Animation;
 import com.xlbp.afridgetoofar.helpers.Helpers;
@@ -35,116 +37,94 @@ public class SearchingAnimationView extends FrameLayout
     private void init()
     {
         initViews();
-
-        startAnimation();
     }
 
     private void initViews()
     {
-        LayoutInflater.from(getContext()).inflate(R.layout.searching_animation4, this, true);
+        LayoutInflater.from(getContext()).inflate(R.layout.searching_animation, this, true);
 
-        _loadingBarTopView = findViewById(R.id.loadingBarTopView);
-        _loadingBarBottomView = findViewById(R.id.loadingBarBottomView);
+        _loadingBars = new ArrayList<>();
 
-        _topPosition = -Helpers.dpToPixels(250);
-        _bottomPosition = Helpers.dpToPixels(250);
+        LinearLayout loadingBarsLinearLayout = findViewById(R.id.loadingBarsLinearLayout);
+
+        for (int index = 0; index < loadingBarsLinearLayout.getChildCount(); index++)
+        {
+            _loadingBars.add(loadingBarsLinearLayout.getChildAt(index));
+        }
+
+        _bottonPosition = Helpers.dpToPixels(150);
+        _topPoisiton = -_bottonPosition;
+
+        _delayTime = 25;
     }
 
     private void runAnimation()
     {
-        _loadingBarTopView.setAlpha(0);
-        _loadingBarBottomView.setAlpha(0);
-
-//        _loadingBarTopView.setTranslationY(_topPosition);
-        _loadingBarBottomView.setTranslationY(_topPosition);
-
-//        _loadingBarTopView.setScaleX(0);
-        _loadingBarBottomView.setScaleX(1);
+        for (View loadingBar : _loadingBars)
+        {
+            loadingBar.setAlpha(0);
+            loadingBar.setTranslationY(_bottonPosition);
+        }
 
         animateToMiddle();
     }
 
     private void animateToMiddle()
     {
-        if (_loopAnimation)
+        for (int i = 0; i < _loadingBars.size(); i++)
         {
-//            new Animation(_loadingBarTopView)
-//                    .alpha(1)
-//                    .translationY(0)
-//                    .start();
+            View loadingBar = _loadingBars.get(i);
 
-            new Animation(_loadingBarBottomView)
+            new Animation(loadingBar)
                     .alpha(1)
-                    .translationY(_bottomPosition)
-                    .withEndAction(() -> animateToTop())
+                    .translationY(0)
+                    .startDelay(i * _delayTime)
                     .start();
         }
-    }
 
-    private void animateToCenter()
-    {
-        if (_loopAnimation)
+        int fullAnimationTime = (_loadingBars.size() * _delayTime) + 800;
+
+        new Handler().postDelayed(() ->
         {
-            new Animation(_loadingBarTopView)
-                    .scaleX(0)
-                    .start();
-
-            new Animation(_loadingBarBottomView)
-                    .scaleX(0)
-                    .withEndAction(() -> animateFromCenter())
-                    .start();
-        }
-    }
-
-    private void animateFromCenter()
-    {
-        if (_loopAnimation)
-        {
-            new Animation(_loadingBarTopView)
-                    .scaleX(1)
-                    .start();
-
-            new Animation(_loadingBarBottomView)
-                    .scaleX(1)
-                    .withEndAction(() -> animateFromMiddle())
-                    .start();
-        }
-    }
-
-    private void animateFromMiddle()
-    {
-        if (_loopAnimation)
-        {
-            new Animation(_loadingBarTopView)
-                    .alpha(0)
-                    .translationY(_topPosition)
-                    .start();
-
-            new Animation(_loadingBarBottomView)
-                    .alpha(0)
-                    .translationY(_bottomPosition)
-                    .withEndAction(() -> runAnimation())
-                    .start();
-        }
+            if (_loopAnimation)
+            {
+                animateToTop();
+            }
+        }, fullAnimationTime);
     }
 
     private void animateToTop()
     {
-        if (_loopAnimation)
+        for (int i = 0; i < _loadingBars.size(); i++)
         {
-            new Animation(_loadingBarBottomView)
-                    .scaleX(0)
-                    .withEndAction(() -> runAnimation())
+            View loadingBar = _loadingBars.get(i);
+
+            new Animation(loadingBar)
+                    .alpha(0)
+                    .translationY(_topPoisiton)
+                    .easeIn()
+                    .startDelay(i * _delayTime)
                     .start();
         }
+
+        int fullAnimationTime = (_loadingBars.size() * _delayTime) + 800;
+
+        new Handler().postDelayed(() ->
+        {
+            if (_loopAnimation)
+            {
+                runAnimation();
+            }
+        }, fullAnimationTime);
     }
 
 
-    private View _loadingBarTopView;
-    private View _loadingBarBottomView;
+    private ArrayList<View> _loadingBars;
 
-    private int _topPosition;
-    private int _bottomPosition;
+    private int _topPoisiton;
+    private int _bottonPosition;
+
+    private int _delayTime;
 
     private boolean _loopAnimation;
 }

@@ -2,14 +2,12 @@ package com.xlbp.afridgetoofar.ubereats;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewTreeObserver;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.xlbp.afridgetoofar.SearchingAnimationView;
-import com.xlbp.afridgetoofar.SearchingAnimationView2;
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.enums.UberAppState;
 import com.xlbp.afridgetoofar.helpers.Animation;
@@ -40,7 +38,6 @@ public class UberView extends FrameLayout
         _foodItemDetailsTextView.setText(foodItemDetails);
     }
 
-    // todo ony run this animation after the loading animation completes a cycle
     public void animateSearchComplete(Runnable endAction)
     {
         AppState.setUberEatsAppState(UberAppState.Animating);
@@ -51,12 +48,10 @@ public class UberView extends FrameLayout
                 .translationY(_searchingOffset)
                 .start();
 
+        _searchingAnimationView.stopAnimation();
+
         new Animation(_searchingAnimationView)
                 .alpha(0)
-                .withEndAction(() ->
-                {
-                    _searchingAnimationView.stopAnimation();
-                })
                 .start();
 
         // middle
@@ -107,22 +102,15 @@ public class UberView extends FrameLayout
         for (TextView searchAgainItem : _searchAgainItems)
         {
             searchAgainItem.setClickable(false);
+
+            if (searchAgainItem != _selectedAppTextView)
+            {
+                new Animation(searchAgainItem)
+                        .alpha(0)
+                        .translationY(_searchAgainArrayListOffset)
+                        .start();
+            }
         }
-
-        new Animation(_viewOnTextView)
-                .alpha(0)
-                .translationY(_searchAgainArrayListOffset)
-                .start();
-
-        new Animation(_searchAgainTextView)
-                .alpha(0)
-                .translationY(_searchAgainArrayListOffset)
-                .start();
-
-        new Animation(_donateTextView)
-                .alpha(0)
-                .translationY(_searchAgainArrayListOffset)
-                .start();
 
         // middle
         new Animation(_selectedAppTextView)
@@ -174,6 +162,8 @@ public class UberView extends FrameLayout
         initViewAlphas();
 
         initViewPositions();
+
+        _searchingAnimationView.startAnimation();
     }
 
     private void initViews()
@@ -196,6 +186,9 @@ public class UberView extends FrameLayout
         _searchAgainItems.add(_viewOnTextView);
         _searchAgainItems.add(_searchAgainTextView);
         _searchAgainItems.add(_donateTextView);
+
+        Helpers.adjustViewTopMarginForNotch(_searchingTitleTextView);
+        Helpers.adjustViewTopMarginForNotch(_foodItemTextView);
     }
 
     private void initViewAlphas()
@@ -222,9 +215,6 @@ public class UberView extends FrameLayout
             @Override
             public void onGlobalLayout()
             {
-                Helpers.adjustViewTopMarginForNotch(_searchingTitleTextView);
-                Helpers.adjustViewTopMarginForNotch(_foodItemTextView);
-
                 _selectedAppOffset = -_selectedAppTextView.getY() + _searchingTitleTextView.getHeight() + Helpers.topMargin - Helpers.dpToPixels(10);
                 _searchingOffset = -_searchingTitleTextView.getHeight() - Helpers.topMargin;
                 _foodItemOffset = -_foodItemDetailsTextView.getY() - _foodItemDetailsTextView.getHeight();
@@ -247,7 +237,7 @@ public class UberView extends FrameLayout
 
 
     private TextView _searchingTitleTextView;
-    private SearchingAnimationView2 _searchingAnimationView;
+    private SearchingAnimationView _searchingAnimationView;
 
     private WebView _webView;
 

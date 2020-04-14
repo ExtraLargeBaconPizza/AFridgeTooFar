@@ -51,7 +51,7 @@
         app:layout_constraintTop_toTopOf="@+id/titleTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:text="Address not available on Uber Eats.\nPlease try a different address or app"
+        android:text="@string/Address_not_available"
         style="@style/addressNotFoundTextView" />
 
     <TextView
@@ -66,25 +66,12 @@
         style="@style/mediumTitleTextView" />
 
     <TextView
-        android:id="@+id/uberTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/doorTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="appClicked"
-        android:padding="10dp"
-        android:text="@string/Uber_Eats"
-        style="@style/appSelectionTextView" />
-
-    <TextView
         android:id="@+id/doorTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/skipTextView"
+        app:layout_constraintBottom_toTopOf="@+id/grubTextView"
         app:layout_constraintEnd_toEndOf="parent"
         android:onClick="appClicked"
         android:padding="10dp"
@@ -92,20 +79,33 @@
         style="@style/appSelectionTextView" />
 
     <TextView
-        android:id="@+id/skipTextView"
+        android:id="@+id/grubTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/foodTextView"
+        app:layout_constraintBottom_toTopOf="@+id/postTextView"
         app:layout_constraintEnd_toEndOf="parent"
         android:onClick="appClicked"
         android:padding="10dp"
-        android:text="@string/SkipTheDishes"
+        android:text="@string/Grubhub"
         style="@style/appSelectionTextView" />
 
     <TextView
-        android:id="@+id/foodTextView"
+        android:id="@+id/postTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintBottom_toTopOf="@+id/uberTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:onClick="appClicked"
+        android:padding="10dp"
+        android:text="@string/Postmates"
+        style="@style/appSelectionTextView" />
+
+    <TextView
+        android:id="@+id/uberTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
@@ -115,7 +115,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:onClick="appClicked"
         android:padding="10dp"
-        android:text="@string/foodora"
+        android:text="@string/Uber_Eats"
         style="@style/appSelectionTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

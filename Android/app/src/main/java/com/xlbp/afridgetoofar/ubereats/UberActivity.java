@@ -100,6 +100,24 @@ public class UberActivity extends DeliveryAppBaseActivity
         }
     }
 
+    public void onDonateClicked(View view)
+    {
+        if (AppState.getUberEatsAppState() != UberAppState.Animating)
+        {
+            AppState.setMainScreenState(MainScreenState.SearchingApp);
+
+            // TODO navigate to give me money
+        }
+    }
+
+    public void onBackClicked(View view)
+    {
+        if (AppState.getUberEatsAppState() != UberAppState.Animating)
+        {
+            _view.animateNavigateBackAfterSearchComplete(this::navigateBack);
+        }
+    }
+
     private void init()
     {
         initView();

@@ -1,14 +1,15 @@
 <resources>
     <string name="app_name">A Fridge Too Far</string>
-    <string name="UBER_EATS">UBER EATS</string>
     <string name="A_FRIDGE_TOO_FAR">A\nFRIDGE\nTOO\nFAR</string>
     <string name="Enter_Delivery_Address">Enter Delivery Address</string>
-    <string name="Uber_Eats">Uber Eats</string>
     <string name="DoorDash">DoorDash</string>
-    <string name="SkipTheDishes">SkipTheDishes</string>
-    <string name="foodora">foodora</string>
+    <string name="Uber_Eats">Uber Eats</string>
+    <string name="Grubhub">Grubhub</string>
+    <string name="Postmates">Postmates</string>
     <string name="SEARCHING">SEARCHING</string>
-    <string name="SELECTION">SELECTION</string>
     <string name="View_on">View on</string>
     <string name="Search_Again">Search Again</string>
+    <string name="Back">Back</string>
+    <string name="Donate">Donate</string>
+    <string name="Address_not_available">Address not available on Uber Eats.\nPlease try a different address or app</string>
 </resources>

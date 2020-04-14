@@ -15,10 +15,7 @@ public class Animation
         _view = view;
         _alpha = _view.getAlpha();
         _timeInterpolator = new DecelerateInterpolator(f_animationFactor);
-        _translationX = _view.getTranslationX();
         _translationY = _view.getTranslationY();
-        _scaleX = 1;
-        _scaleY = 1;
         _startDelay = 0;
 
         _endAction = () ->
@@ -32,27 +29,9 @@ public class Animation
         return this;
     }
 
-    public Animation translationX(float translationX)
-    {
-        _translationX = translationX;
-        return this;
-    }
-
     public Animation translationY(float translationY)
     {
         _translationY = translationY;
-        return this;
-    }
-
-    public Animation scaleX(float scaleX)
-    {
-        _scaleX = scaleX;
-        return this;
-    }
-
-    public Animation scaleY(float scaleY)
-    {
-        _scaleY = scaleY;
         return this;
     }
 
@@ -93,10 +72,7 @@ public class Animation
         {
             _view.animate()
                     .alpha(_alpha)
-                    .translationX(_translationX)
                     .translationY(_translationY)
-                    .scaleX(_scaleX)
-                    .scaleY(_scaleY)
                     .setDuration(f_animationTime)
                     .setInterpolator(_timeInterpolator)
                     .setStartDelay(_startDelay)
@@ -109,10 +85,7 @@ public class Animation
     private View _view;
     private float _alpha;
     private TimeInterpolator _timeInterpolator;
-    private float _translationX;
     private float _translationY;
-    private float _scaleX;
-    private float _scaleY;
     private long _startDelay;
     private Runnable _endAction;
 

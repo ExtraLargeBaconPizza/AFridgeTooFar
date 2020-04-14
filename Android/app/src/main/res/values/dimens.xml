@@ -2,4 +2,8 @@
     <dimen name="top_margin">50dp</dimen>
     <dimen name="bottom_margin">98dp</dimen>
     <dimen name="side_margin">50dp</dimen>
+
+    <dimen name="search_bar_width">5dp</dimen>
+    <dimen name="search_bar_height">30dp</dimen>
+    <dimen name="search_bar_margin">0dp</dimen>
 </resources>
