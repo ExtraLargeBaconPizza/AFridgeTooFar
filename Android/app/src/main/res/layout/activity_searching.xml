@@ -25,18 +25,6 @@
         android:layout_marginStart="@dimen/side_margin"
         android:layout_marginEnd="@dimen/side_margin" />
 
-    <WebView
-        android:id="@+id/webview"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:alpha="0"
-        android:focusable="true"
-        android:focusableInTouchMode="true" />
-
     <TextView
         android:id="@+id/foodItemTextView"
         android:layout_width="match_parent"
@@ -92,7 +80,6 @@
         android:id="@+id/searchAgainTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:layout_marginEnd="40dp"
         app:layout_constraintBottom_toTopOf="@id/donateTextView"
         app:layout_constraintStart_toStartOf="parent"
@@ -106,7 +93,6 @@
         android:id="@+id/donateTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:layout_marginBottom="88dp"
         android:layout_marginEnd="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -116,5 +102,16 @@
         android:padding="10dp"
         android:text="@string/Donate"
         style="@style/searchSelectionTextView" />
+
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

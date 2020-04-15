@@ -160,7 +160,7 @@ public class UberActivity extends DeliveryAppBaseActivity
         _view.getWebView().setWebViewClient(new XlbpWebViewClient(this));
         _view.getWebView().setWebChromeClient(new WebChromeClient());
 
-        // The follow two lines remove uber eats cookies
+        // The follow two lines remove te webview's cookies
         CookieManager.getInstance().removeAllCookies(null);
         CookieManager.getInstance().flush();
 

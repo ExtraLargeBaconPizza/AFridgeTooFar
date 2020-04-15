@@ -46,52 +46,52 @@ public class UberDeliveryDetails extends UberBase
                     // convert the string to a char array
                     char[] addressFullChars = _searchAddress.toCharArray();
 
-                    // need a KeyCharacterMap in order to call .getEvents
-                    KeyCharacterMap fullKeyMap = KeyCharacterMap.load(KeyCharacterMap.FULL);
+                    // need a KeyCharacterMap in order to call getEvents
+                    KeyCharacterMap fullKeyMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD);
 
                     // map the chars into key event
                     KeyEvent[] keySequence = fullKeyMap.getEvents(addressFullChars);
 
                     // dispatch all the key events
-                    for (int i = 0; i < keySequence.length; i++)
+                    for (KeyEvent keyEvent : keySequence)
                     {
-                        uberActivity.dispatchKeyEvent(keySequence[i]);
+                        uberActivity.dispatchKeyEvent(keyEvent);
                     }
 
                     Helpers.hideKeyboard(uberActivity);
 
                     _addressEntered = true;
                 }
+            }
 
-                if (_addressEntered && !_addressClicked)
+            if (_addressEntered && !_addressClicked)
+            {
+                // Loop until the address option appears
+                if (html.contains("location-typeahead-item-0"))
                 {
-                    // Loop until the address option appears
-                    if (html.contains("location-typeahead-item-0"))
-                    {
-                        _addressClicked = true;
+                    _addressClicked = true;
 
-                        Javascript.clickElementById(webView, "location-typeahead-item-0");
-                    }
-                    else
-                    {
-                        retrieveHtml();
-                    }
+                    Javascript.clickElementById(webView, "location-typeahead-item-0");
                 }
-
-                if (_addressClicked && !_doneClicked)
+                else
                 {
-                    if (html.contains("Choose a time"))
-                    {
-                        _doneClicked = true;
+                    retrieveHtml();
+                }
+            }
 
-                        AppState.setUberEatsAppState(UberAppState.MainMenuLoading);
+            if (_addressClicked && !_doneClicked)
+            {
+                if (html.contains("Choose a time"))
+                {
+                    _doneClicked = true;
 
-                        Javascript.clickElementByKeyword(webView, "button", "Done");
-                    }
-                    else
-                    {
-                        retrieveHtml();
-                    }
+                    AppState.setUberEatsAppState(UberAppState.MainMenuLoading);
+
+                    Javascript.clickElementByKeyword(webView, "button", "Done");
+                }
+                else
+                {
+                    retrieveHtml();
                 }
             }
         }

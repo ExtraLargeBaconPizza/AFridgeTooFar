@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.xlbp.afridgetoofar.doordash.DoorActivity;
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.google.PlaceAutoSuggestAdapter;
 import com.xlbp.afridgetoofar.helpers.Helpers;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity
 
                 _view.animateAutoCompleteTextViewDown(null);
 
-                _view.animateAppSelectionOffScreen(() -> AppState.setMainScreenState(MainScreenState.StartingScreen));
+                _view.animateInstalledAppOffScreen(() -> AppState.setMainScreenState(MainScreenState.StartingScreen));
             }
             else
             {
@@ -95,6 +96,8 @@ public class MainActivity extends AppCompatActivity
         initMainScreen();
 
         initAutoCompleteTextView();
+
+        initIsAppInstalled();
     }
 
     private void initView()
@@ -132,16 +135,16 @@ public class MainActivity extends AppCompatActivity
                             AppState.setMainScreenState(MainScreenState.StartingScreen));
                     break;
                 case DeliveryAddressSelected:
-                    _view.animateAppSelectionOnToScreen(() ->
+                    _view.animateInstalledAppsOnToScreen(() ->
                             AppState.setMainScreenState(MainScreenState.AppSelection));
                     break;
                 case AppSelection:
-                    _view.animateAppSelectionOffScreen(() ->
+                    _view.animateInstalledAppOffScreen(() ->
                             AppState.setMainScreenState(MainScreenState.ModifyDeliveryAddress));
                     break;
                 case ModifyDeliveryAddress:
                     clearFocus(_shortDeliveryAddress);
-                    _view.animateAppSelectionOnToScreen(() ->
+                    _view.animateInstalledAppsOnToScreen(() ->
                             AppState.setMainScreenState(MainScreenState.AppSelection));
                     break;
                 case AddressNotFound:
@@ -162,24 +165,48 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    private void initIsAppInstalled()
+    {
+        String doorPackageName = "com.dd.doordash";
+        String grubPackageName = "com.grubhub.android";
+        String postPackageName = "com.postmates.android";
+        String uberPackageName = "com.ubercab.eats";
+
+        boolean[] isAppInstalled = new boolean[4];
+
+        isAppInstalled[0] = Helpers.isAppInstalled(this, doorPackageName);
+        isAppInstalled[1] = Helpers.isAppInstalled(this, grubPackageName);
+        isAppInstalled[2] = Helpers.isAppInstalled(this, postPackageName);
+        isAppInstalled[3] = Helpers.isAppInstalled(this, uberPackageName);
+
+        _view.initInstalledApps(isAppInstalled);
+    }
+
     private void navigateToSearching(View view)
     {
-        Intent intent = new Intent(getBaseContext(), UberActivity.class);
+        Intent intent;
 
+        // TODO - refactor UberActivity into a more general SearchingActivity
+        // TODO - also refactor deliveryDetails, MainMenu, Restaurant into general views.
         switch (view.getId())
         {
-            case R.id.postTextView:
+            case R.id.doorTextView:
+                intent = new Intent(getBaseContext(), DoorActivity.class);
                 intent.putExtra("SearchAddress", _fullDeliveryAddress);
+                break;
+            case R.id.grubTextView:
+                break;
+            case R.id.postTextView:
+                intent = new Intent(getBaseContext(), UberActivity.class);
                 intent.putExtra("DebugMode", true);
                 break;
             case R.id.uberTextView:
-            case R.id.doorTextView:
-            case R.id.grubTextView:
+                intent = new Intent(getBaseContext(), UberActivity.class);
                 intent.putExtra("SearchAddress", _fullDeliveryAddress);
+
+                startActivity(intent);
                 break;
         }
-
-        startActivity(intent);
     }
 
     private void clearFocus(String currentDeliveryAddress)

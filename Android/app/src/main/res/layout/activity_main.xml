@@ -7,6 +7,8 @@
     android:layout_height="match_parent"
     android:animateLayoutChanges="true"
     android:background="@color/gray2"
+    android:clipChildren="false"
+    android:clipToPadding="false"
     android:focusable="true"
     android:focusableInTouchMode="true"
     android:onClick="backgroundClicked">
@@ -65,57 +67,51 @@
         android:text="@string/SEARCHING"
         style="@style/mediumTitleTextView" />
 
-    <TextView
-        android:id="@+id/doorTextView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/installedAppsLinearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/grubTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="appClicked"
-        android:padding="10dp"
-        android:text="@string/DoorDash"
-        style="@style/appSelectionTextView" />
-
-    <TextView
-        android:id="@+id/grubTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/postTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="appClicked"
-        android:padding="10dp"
-        android:text="@string/Grubhub"
-        style="@style/appSelectionTextView" />
-
-    <TextView
-        android:id="@+id/postTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/uberTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="appClicked"
-        android:padding="10dp"
-        android:text="@string/Postmates"
-        style="@style/appSelectionTextView" />
-
-    <TextView
-        android:id="@+id/uberTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
         android:layout_marginBottom="@dimen/bottom_margin"
         android:layout_marginEnd="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:onClick="appClicked"
-        android:padding="10dp"
-        android:text="@string/Uber_Eats"
-        style="@style/appSelectionTextView" />
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/doorTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="appClicked"
+            android:padding="10dp"
+            android:text="@string/DoorDash"
+            style="@style/appSelectionTextView" />
+
+        <TextView
+            android:id="@+id/grubTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="appClicked"
+            android:padding="10dp"
+            android:text="@string/Grubhub"
+            style="@style/appSelectionTextView" />
+
+        <TextView
+            android:id="@+id/postTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="appClicked"
+            android:padding="10dp"
+            android:text="@string/Postmates"
+            style="@style/appSelectionTextView" />
+
+        <TextView
+            android:id="@+id/uberTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="appClicked"
+            android:padding="10dp"
+            android:text="@string/Uber_Eats"
+            style="@style/appSelectionTextView" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

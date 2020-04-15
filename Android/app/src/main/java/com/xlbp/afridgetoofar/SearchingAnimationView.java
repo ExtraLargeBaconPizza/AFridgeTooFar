@@ -47,9 +47,9 @@ public class SearchingAnimationView extends FrameLayout
 
         LinearLayout loadingBarsLinearLayout = findViewById(R.id.loadingBarsLinearLayout);
 
-        for (int index = 0; index < loadingBarsLinearLayout.getChildCount(); index++)
+        for (int i = 0; i < loadingBarsLinearLayout.getChildCount(); i++)
         {
-            _loadingBars.add(loadingBarsLinearLayout.getChildAt(index));
+            _loadingBars.add(loadingBarsLinearLayout.getChildAt(i));
         }
 
         _bottonPosition = Helpers.dpToPixels(150);

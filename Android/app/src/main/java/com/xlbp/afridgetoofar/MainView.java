@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.xlbp.afridgetoofar.enums.AppState;
@@ -29,6 +30,17 @@ public class MainView extends FrameLayout
     public AutoCompleteTextView getAutoCompleteTextView()
     {
         return _autoCompleteTextView;
+    }
+
+    public void initInstalledApps(boolean[] isAppInstalled)
+    {
+        for (int i = 0; i < isAppInstalled.length; i++)
+        {
+            if (!isAppInstalled[i])
+            {
+                _installedApps.get(i).setVisibility(GONE);
+            }
+        }
     }
 
     public void animateAutoCompleteTextViewUp(Runnable endAction)
@@ -61,13 +73,13 @@ public class MainView extends FrameLayout
                 .start();
     }
 
-    public void animateAppSelectionOnToScreen(Runnable endAction)
+    public void animateInstalledAppsOnToScreen(Runnable endAction)
     {
         AppState.setMainScreenState(MainScreenState.Animating);
 
-        for (TextView selectionApp : _selectionApps)
+        for (TextView installedApp : _installedApps)
         {
-            new Animation(selectionApp)
+            new Animation(installedApp)
                     .alpha(1)
                     .translationY(0)
                     .startDelay(600)
@@ -76,15 +88,15 @@ public class MainView extends FrameLayout
         }
     }
 
-    public void animateAppSelectionOffScreen(Runnable endAction)
+    public void animateInstalledAppOffScreen(Runnable endAction)
     {
         AppState.setMainScreenState(MainScreenState.Animating);
 
-        for (TextView selectionApp : _selectionApps)
+        for (TextView installedApp : _installedApps)
         {
-            new Animation(selectionApp)
+            new Animation(installedApp)
                     .alpha(0)
-                    .translationY(_selectionAppsArrayListOffset)
+                    .translationY(_installedAppsLinearLayoutOffset)
                     .withEndAction(endAction)
                     .start();
         }
@@ -107,12 +119,12 @@ public class MainView extends FrameLayout
                 .translationY(_addressNotFoundOffset)
                 .start();
 
-        for (TextView selectionApp : _selectionApps)
+        for (TextView selectionApp : _installedApps)
         {
             if (selectionApp.getId() != _currentlySelectedView.getId())
             {
                 new Animation(selectionApp)
-                        .translationY(_selectionAppsArrayListOffset)
+                        .translationY(_installedAppsLinearLayoutOffset)
                         .alpha(0)
                         .start();
             }
@@ -141,9 +153,9 @@ public class MainView extends FrameLayout
                 .start();
 
         // enter
-        for (TextView selectionApp : _selectionApps)
+        for (TextView installedApp : _installedApps)
         {
-            new Animation(selectionApp)
+            new Animation(installedApp)
                     .alpha(1)
                     .translationY(0)
                     .start();
@@ -167,9 +179,9 @@ public class MainView extends FrameLayout
                 .start();
 
         // middle
-        for (TextView selectionApp : _selectionApps)
+        for (TextView installedApp : _installedApps)
         {
-            new Animation(selectionApp)
+            new Animation(installedApp)
                     .alpha(1)
                     .translationY(0)
                     .start();
@@ -198,11 +210,11 @@ public class MainView extends FrameLayout
                 .withEndAction(endAction)
                 .start();
 
-        for (TextView selectionApp : _selectionApps)
+        for (TextView installedApp : _installedApps)
         {
-            new Animation(selectionApp)
+            new Animation(installedApp)
                     .alpha(0)
-                    .translationY(_selectionAppsArrayListOffset)
+                    .translationY(_installedAppsLinearLayoutOffset)
                     .start();
         }
     }
@@ -215,18 +227,18 @@ public class MainView extends FrameLayout
         _searchingTextView.setAlpha(0);
         _searchingTextView.setTranslationY(_searchingOffset);
 
-        for (TextView selectionApp : _selectionApps)
+        for (TextView selectionApp : _installedApps)
         {
             selectionApp.setAlpha(0);
             selectionApp.setTranslationY(0);
         }
 
         // enter
-        for (TextView selectionApp : _selectionApps)
+        for (TextView installedApp : _installedApps)
         {
-            selectionApp.setTranslationY(_selectionAppsArrayListOffset);
+            installedApp.setTranslationY(_installedAppsLinearLayoutOffset);
 
-            new Animation(selectionApp)
+            new Animation(installedApp)
                     .alpha(1)
                     .translationY(0)
                     .start();
@@ -267,20 +279,16 @@ public class MainView extends FrameLayout
         _layout = findViewById(R.id.layout);
         _titleTextView = findViewById(R.id.titleTextView);
         _autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
+        _installedAppsLinearLayout = findViewById(R.id.installedAppsLinearLayout);
         _addressNotFoundTextView = findViewById(R.id.addressNotFoundTextView);
         _searchingTextView = findViewById(R.id.searchingTextView);
 
-        TextView uberTextView = findViewById(R.id.uberTextView);
-        TextView doorTextView = findViewById(R.id.doorTextView);
-        TextView skipTextView = findViewById(R.id.grubTextView);
-        TextView foodTextView = findViewById(R.id.postTextView);
+        _installedApps = new ArrayList<>();
 
-        _selectionApps = new ArrayList<>();
-
-        _selectionApps.add(uberTextView);
-        _selectionApps.add(doorTextView);
-        _selectionApps.add(skipTextView);
-        _selectionApps.add(foodTextView);
+        for (int i = 0; i < _installedAppsLinearLayout.getChildCount(); i++)
+        {
+            _installedApps.add((TextView) _installedAppsLinearLayout.getChildAt(i));
+        }
     }
 
     private void initViewAlphas()
@@ -289,9 +297,9 @@ public class MainView extends FrameLayout
         _searchingTextView.setAlpha(0);
         _addressNotFoundTextView.setAlpha(0);
 
-        for (TextView app : _selectionApps)
+        for (TextView installedApp : _installedApps)
         {
-            app.setAlpha(0);
+            installedApp.setAlpha(0);
         }
     }
 
@@ -310,16 +318,16 @@ public class MainView extends FrameLayout
                 _titleOffset = -_titleTextView.getHeight() - Helpers.topMargin;
                 _autoCompleteOffset1 = -_autoCompleteTextView.getY() + Helpers.topMargin;
                 _autoCompleteOffset2 = -_autoCompleteTextView.getY() - _autoCompleteTextView.getHeight();
-                _selectionAppsArrayListOffset = Helpers.getScreenHeight() - _selectionApps.get(0).getY() + Helpers.topMargin;
+                _installedAppsLinearLayoutOffset = Helpers.getScreenHeight() - _installedAppsLinearLayout.getY() + Helpers.topMargin;
                 _searchingOffset = -_searchingTextView.getHeight() - Helpers.topMargin;
                 _addressNotFoundOffset = _autoCompleteTextView.getHeight() + Helpers.topMargin;
 
                 _searchingTextView.setTranslationY(_searchingOffset);
                 _addressNotFoundTextView.setTranslationY(_addressNotFoundOffset);
 
-                for (TextView seletionApp : _selectionApps)
+                for (TextView installedApp : _installedApps)
                 {
-                    seletionApp.setTranslationY(_selectionAppsArrayListOffset);
+                    installedApp.setTranslationY(_installedAppsLinearLayoutOffset);
                 }
 
                 // we need to remove the listener so positions are only set once
@@ -330,7 +338,10 @@ public class MainView extends FrameLayout
 
     private float getSelectedAppOffset(View view)
     {
-        return -view.getY() + _searchingTextView.getHeight() + Helpers.topMargin - Helpers.dpToPixels(10);
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+
+        return -location[1] + _searchingTextView.getHeight() + Helpers.topMargin - Helpers.dpToPixels(10);
     }
 
 
@@ -341,13 +352,14 @@ public class MainView extends FrameLayout
 
     private TextView _searchingTextView;
 
-    private ArrayList<TextView> _selectionApps;
+    private LinearLayout _installedAppsLinearLayout;
+    private ArrayList<TextView> _installedApps;
     private View _currentlySelectedView;
 
     private float _titleOffset;
     private float _autoCompleteOffset1;
     private float _autoCompleteOffset2;
-    private float _selectionAppsArrayListOffset;
+    private float _installedAppsLinearLayoutOffset;
     private float _searchingOffset;
     private float _addressNotFoundOffset;
 }
