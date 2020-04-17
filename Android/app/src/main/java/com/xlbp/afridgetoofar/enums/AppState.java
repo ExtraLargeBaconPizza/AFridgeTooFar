@@ -2,8 +2,6 @@ package com.xlbp.afridgetoofar.enums;
 
 import android.util.Log;
 
-import com.xlbp.afridgetoofar.ubereats.UberView;
-
 public class AppState
 {
     public static MainScreenState getMainScreenState()
@@ -51,6 +49,21 @@ public class AppState
         }
     }
 
+    public static PostAppState getPostmatesAppState()
+    {
+        return _postAppState;
+    }
+
+    public static void setPostmatesAppState(PostAppState postAppState)
+    {
+        if (_postAppState != postAppState)
+        {
+            _postAppState = postAppState;
+
+            Log.e("PostAppState", "" + _postAppState);
+        }
+    }
+
     public static UberAppState getUberEatsAppState()
     {
         return _uberAppState;
@@ -70,5 +83,6 @@ public class AppState
     private static MainScreenState _mainScreenState;
     private static DoorAppState _doorAppState;
     private static GrubAppState _grubAppState;
+    private static PostAppState _postAppState;
     private static UberAppState _uberAppState;
 }

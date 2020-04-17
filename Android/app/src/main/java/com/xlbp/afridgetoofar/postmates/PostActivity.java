@@ -1,4 +1,4 @@
-package com.xlbp.afridgetoofar.grubhub;
+package com.xlbp.afridgetoofar.postmates;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -12,11 +12,11 @@ import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.DeliveryAppBaseActivity;
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.GrubAppState;
+import com.xlbp.afridgetoofar.enums.PostAppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
 import com.xlbp.afridgetoofar.helpers.Helpers;
 
-public class GrubActivity extends DeliveryAppBaseActivity
+public class PostActivity extends DeliveryAppBaseActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,9 +38,9 @@ public class GrubActivity extends DeliveryAppBaseActivity
     @Override
     public void onBackPressed()
     {
-        if (AppState.getGrubhubAppState() != GrubAppState.Animating)
+        if (AppState.getPostmatesAppState() != PostAppState.Animating)
         {
-            if (AppState.getGrubhubAppState() == GrubAppState.SearchComplete)
+            if (AppState.getPostmatesAppState() == PostAppState.SearchComplete)
             {
                 _view.animateNavigateBackAfterSearchComplete(this::navigateBack);
             }
@@ -53,17 +53,17 @@ public class GrubActivity extends DeliveryAppBaseActivity
 
     public void onDocumentComplete()
     {
-        switch (AppState.getGrubhubAppState())
+        switch (AppState.getPostmatesAppState())
         {
             case DeliveryDetailsLoading:
-                _grubhubDeliveryDetails.onDocumentComplete();
+                _postmatesDeliveryDetails.onDocumentComplete();
                 break;
             case MainMenuLoading:
-                _grubhubDeliveryDetails = null;
-                _grubhubMainMenu.onDocumentComplete();
+                _postmatesDeliveryDetails = null;
+                _postmatesMainMenu.onDocumentComplete();
                 break;
             case RestaurantMenuLoading:
-                _grubhubRestaurantMenu.onDocumentComplete();
+                _postmatesRestaurantMenu.onDocumentComplete();
                 break;
         }
     }
@@ -80,7 +80,7 @@ public class GrubActivity extends DeliveryAppBaseActivity
 
     public void onViewOnAppClicked(View view)
     {
-        if (AppState.getGrubhubAppState() == GrubAppState.SearchComplete)
+        if (AppState.getPostmatesAppState() == PostAppState.SearchComplete)
         {
             launchUberEats();
         }
@@ -88,22 +88,22 @@ public class GrubActivity extends DeliveryAppBaseActivity
 
     public void onSearchAgainClicked(View view)
     {
-        if (AppState.getGrubhubAppState() != GrubAppState.Animating)
+        if (AppState.getPostmatesAppState() != PostAppState.Animating)
         {
             AppState.setMainScreenState(MainScreenState.SearchingApp);
 
             _view.animateSearchAgainAnimation(() ->
             {
-                AppState.setGrubhubAppState(GrubAppState.MainMenuReady);
+                AppState.setPostmatesAppState(PostAppState.MainMenuReady);
 
-                _grubhubMainMenu.selectRestaurant();
+                _postmatesMainMenu.selectRestaurant();
             });
         }
     }
 
     public void onDonateClicked(View view)
     {
-        if (AppState.getGrubhubAppState() != GrubAppState.Animating)
+        if (AppState.getPostmatesAppState() != PostAppState.Animating)
         {
             AppState.setMainScreenState(MainScreenState.SearchingApp);
 
@@ -118,14 +118,14 @@ public class GrubActivity extends DeliveryAppBaseActivity
     {
         initView();
 
-        initGrubhub();
+        initPostmates();
 
         initWebView();
     }
 
     private void initView()
     {
-        _view = new GrubView(this);
+        _view = new PostView(this);
         setContentView(_view);
 
         _webView = _view.getWebView();
@@ -134,9 +134,9 @@ public class GrubActivity extends DeliveryAppBaseActivity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
-    private void initGrubhub()
+    private void initPostmates()
     {
-        AppState.setGrubhubAppState(GrubAppState.DeliveryDetailsLoading);
+        AppState.setPostmatesAppState(PostAppState.DeliveryDetailsLoading);
 
         Bundle extras = getIntent().getExtras();
         String searchAddress = extras.getString("SearchAddress");
@@ -147,30 +147,30 @@ public class GrubActivity extends DeliveryAppBaseActivity
             _webView.setTranslationX(Helpers.getScreenWidth());
         }
 
-        _view.setSelectedAppTextView("Grubhub");
+        _view.setSelectedAppTextView("Postmates");
 
-        _grubhubDeliveryDetails = new GrubDeliveryDetails(this, _webView, searchAddress);
-        _grubhubMainMenu = new GrubMainMenu(this, _webView);
-        _grubhubRestaurantMenu = new GrubRestaurantMenu(this, _webView);
+        _postmatesDeliveryDetails = new PostDeliveryDetails(this, _webView, searchAddress);
+        _postmatesMainMenu = new PostMainMenu(this, _webView);
+        _postmatesRestaurantMenu = new PostRestaurantMenu(this, _webView);
     }
 
     private void initWebView()
     {
         _webView.getSettings().setJavaScriptEnabled(true);
-        _webView.setWebViewClient(new GrubWebViewClient(this));
+        _webView.setWebViewClient(new PostWebViewClient(this));
         _webView.setWebChromeClient(new WebChromeClient());
 
         // The follow two lines remove te webview's cookies
         CookieManager.getInstance().removeAllCookies(null);
         CookieManager.getInstance().flush();
 
-        _webView.loadUrl("https://www.grubhub.com/search?orderMethod=delivery&locationMode=DELIVERY&facetSet=umamiV2&pageSize=20&hideHateos=true&searchMetrics=true&facet=open_now%3Atrue&sortSetId=umamiv3&countOmittingTimes=true");
+        _webView.loadUrl("https://postmates.com");
     }
 
     private void handleSearchComplete()
     {
-        GrubMainMenu.Restaurant selectedRestaurant = _grubhubMainMenu.getSelectedRestaurant();
-        GrubRestaurantMenu.FoodItem foodItem = _grubhubRestaurantMenu.getSelectedFoodItem();
+        PostMainMenu.Restaurant selectedRestaurant = _postmatesMainMenu.getSelectedRestaurant();
+        PostRestaurantMenu.FoodItem foodItem = _postmatesRestaurantMenu.getSelectedFoodItem();
 
         _view.setSearchCompleteText(foodItem.name, selectedRestaurant.name + "\n" + foodItem.price);
 
@@ -180,13 +180,13 @@ public class GrubActivity extends DeliveryAppBaseActivity
         {
             AppState.setMainScreenState(MainScreenState.SearchComplete);
 
-            AppState.setGrubhubAppState(GrubAppState.SearchComplete);
+            AppState.setPostmatesAppState(PostAppState.SearchComplete);
         });
     }
 
     private void launchUberEats()
     {
-        String url = _grubhubMainMenu.getSelectedRestaurant().href;
+        String url = _postmatesMainMenu.getSelectedRestaurant().href;
 
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 
@@ -202,10 +202,10 @@ public class GrubActivity extends DeliveryAppBaseActivity
     }
 
 
-    private GrubView _view;
+    private PostView _view;
     private WebView _webView;
 
-    private GrubDeliveryDetails _grubhubDeliveryDetails;
-    private GrubMainMenu _grubhubMainMenu;
-    private GrubRestaurantMenu _grubhubRestaurantMenu;
+    private PostDeliveryDetails _postmatesDeliveryDetails;
+    private PostMainMenu _postmatesMainMenu;
+    private PostRestaurantMenu _postmatesRestaurantMenu;
 }

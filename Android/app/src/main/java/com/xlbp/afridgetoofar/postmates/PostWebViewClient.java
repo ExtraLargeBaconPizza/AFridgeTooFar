@@ -1,17 +1,24 @@
-package com.xlbp.afridgetoofar.ubereats;
+package com.xlbp.afridgetoofar.postmates;
 
-import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.xlbp.afridgetoofar.DeliveryAppBaseActivity;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 
-public class UberWebViewClient extends WebViewClient
+public class PostWebViewClient extends WebViewClient
 {
-    public UberWebViewClient(DeliveryAppBaseActivity activity)
+    public PostWebViewClient(DeliveryAppBaseActivity activity)
     {
         _activity = activity;
+    }
+
+    // need this for debugging, otherwise the webview would just be a blank white screen
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, String url)
+    {
+        view.loadUrl(url);
+        return true;
     }
 
     @Override

@@ -1,19 +1,19 @@
-package com.xlbp.afridgetoofar.grubhub;
+package com.xlbp.afridgetoofar.postmates;
 
 import android.util.Log;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.GrubAppState;
+import com.xlbp.afridgetoofar.enums.PostAppState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 
 import java.util.ArrayList;
 
-public class GrubRestaurantMenu extends GrubBase
+public class PostRestaurantMenu extends PostBase
 {
-    public GrubRestaurantMenu(GrubActivity grubActivity, WebView webView)
+    public PostRestaurantMenu(PostActivity postActivity, WebView webView)
     {
-        super(grubActivity, webView);
+        super(postActivity, webView);
 
         init();
     }
@@ -138,7 +138,7 @@ public class GrubRestaurantMenu extends GrubBase
 
         if (_foodItems.size() > 5)
         {
-            AppState.setGrubhubAppState(GrubAppState.RestaurantMenuReady);
+            AppState.setPostmatesAppState(PostAppState.RestaurantMenuReady);
 
             allRestaurantInfoParsed();
         }
@@ -150,7 +150,7 @@ public class GrubRestaurantMenu extends GrubBase
 
     private void allRestaurantInfoParsed()
     {
-        Log.e("GrubhubMainMenu", "Number of Food Items - " + _foodItems.size());
+        Log.e("PostmatesMainMenu", "Number of Food Items - " + _foodItems.size());
 
         // need to set this to false so that the menu headers can be expanded when we search again
         _allMenuHeadersClicked = false;
@@ -159,11 +159,11 @@ public class GrubRestaurantMenu extends GrubBase
 
         _selectedFoodItem = _foodItems.get(random);
 
-        Log.e("GrubhubMainMenu", "_selectedFoodItem - " + _selectedFoodItem.name);
+        Log.e("PostmatesMainMenu", "_selectedFoodItem - " + _selectedFoodItem.name);
 
-        AppState.setGrubhubAppState(GrubAppState.SearchComplete);
+        AppState.setPostmatesAppState(PostAppState.SearchComplete);
 
-        grubActivity.onSearchComplete();
+        postActivity.onSearchComplete();
     }
 
 

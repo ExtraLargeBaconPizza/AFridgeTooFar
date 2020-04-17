@@ -12,7 +12,7 @@ public class Javascript
         // We need to get determine that the document loading is complete through this javascript
         // function because the WebViews onPageFinished callback will not trigger when we've
         // navigated to a new page through a button click.
-        String javaScript = "javascript:var readyStateCheckInterval = setInterval(function() {if (document.readyState === 'complete') {clearInterval(readyStateCheckInterval); return('document complete');}}, 10);";
+        String javaScript = "(function() { var readyStateCheckInterval = setInterval(function() {if (document.readyState === 'complete') {clearInterval(readyStateCheckInterval); return('document complete');}}, 10); } )();";
 
         // We need to use evaluateJavascript so we have a callback once the document is complete
         webView.evaluateJavascript(javaScript, valueCallBack);
@@ -39,21 +39,21 @@ public class Javascript
 
     public static void clickElementByKeyword(WebView webView, String elementTag, String keyword)
     {
-        String javaScript = "javascript: (function(){var elements = document.getElementsByTagName('" + elementTag + "'); for(var i=0; i < elements.length; i++){ var innerHtml = elements[i].innerHTML; if(innerHtml != '' && innerHtml.includes('" + keyword + "')){ elements[i].click(); }}})();";
+        String javaScript = "(function(){var elements = document.getElementsByTagName('" + elementTag + "'); for(var i=0; i < elements.length; i++){ var innerHtml = elements[i].innerHTML; if(innerHtml != '' && innerHtml.includes('" + keyword + "')){ elements[i].click(); }}})();";
 
         webView.loadUrl(javaScript);
     }
 
     public static void clickElementById(WebView webView, String id)
     {
-        String javaScript = "javascript: (function(){ document.getElementById('" + id + "').click(); })();";
+        String javaScript = "(function(){ document.getElementById('" + id + "').click(); })();";
 
         webView.loadUrl(javaScript);
     }
 
     public static void getAllHrefsAndInnerText(WebView webView, ValueCallback<String> valueCallBack)
     {
-        String javascript = "javascript: (function(){ var result = ''; var elem = document.getElementsByTagName('a'); for (var i = 0; i < elem.length; i++) { result += 'element'; result += elem[i].href; result += 'innerText' + elem[i].innerText; } return result; })();";
+        String javascript = "(function(){ var result = ''; var elem = document.getElementsByTagName('a'); for (var i = 0; i < elem.length; i++) { result += 'element'; result += elem[i].href; result += 'innerText' + elem[i].innerText; } return result; })();";
 
         webView.evaluateJavascript(javascript, valueCallBack);
     }
@@ -72,16 +72,16 @@ public class Javascript
         webView.evaluateJavascript(javaScript, valueCallBack);
     }
 
-    public static void grubHubClickAllMenuHeaders(WebView webView)
+    public static void grubHubClickAllMenuHeaders(WebView webView, ValueCallback<String> valueCallBack)
     {
-        String javaScript = "(function(){ var result = ''; var elem = document.getElementsByClassName('menuSection-header u-background--tinted isClosed'); for (var i = 0; i < elem.length; i++) { elem[i].click(); }})();";
+        String javaScript = "(function() { var expandMenuHeadersInterval = setInterval(function(){ var elem = document.getElementsByClassName('menuSection-header u-background--tinted isClosed'); if (elem.length > 0){ clearInterval(expandMenuHeadersInterval); for (var i = 0; i < elem.length; i++) { elem[i].click(); }}}, 50); })();";
 
-        webView.loadUrl(javaScript);
+        webView.evaluateJavascript(javaScript, valueCallBack);
     }
 
     public static void getGrubhubRestaurantMenuInnerText(WebView webView, ValueCallback<String> valueCallBack)
     {
-        String javaScript = "(function(){ var result = ''; var elem = document.getElementsByTagName('ghs-restaurant-menu-item'); for (var i = 0; i < elem.length; i++) { result += 'element'; result += elem[i].innerText; } return result; })();";
+        String javaScript = "(function(){ var result = ''; var elem = document.getElementsByTagName('ghs-restaurant-menu-item'); for (var i = 0; i < elem.length; i++) { result += elem[i].innerText + 'element';  } return result; })();";
 
         webView.evaluateJavascript(javaScript, valueCallBack);
     }

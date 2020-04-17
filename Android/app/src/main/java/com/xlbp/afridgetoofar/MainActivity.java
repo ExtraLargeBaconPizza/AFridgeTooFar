@@ -12,6 +12,7 @@ import com.xlbp.afridgetoofar.enums.MainScreenState;
 import com.xlbp.afridgetoofar.google.PlaceAutoSuggestAdapter;
 import com.xlbp.afridgetoofar.grubhub.GrubActivity;
 import com.xlbp.afridgetoofar.helpers.Helpers;
+import com.xlbp.afridgetoofar.postmates.PostActivity;
 import com.xlbp.afridgetoofar.ubereats.UberActivity;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -175,7 +176,7 @@ public class MainActivity extends AppCompatActivity
         boolean[] isAppInstalled = new boolean[4];
 
         // TODO doordash shelved door due to strange loading sequence. possibly caused by slow internet
-        isAppInstalled[0] = false;//Helpers.isAppInstalled(this, doorPackageName);
+        isAppInstalled[0] = Helpers.isAppInstalled(this, doorPackageName);
         isAppInstalled[1] = Helpers.isAppInstalled(this, grubPackageName);
         isAppInstalled[2] = Helpers.isAppInstalled(this, postPackageName);
         isAppInstalled[3] = Helpers.isAppInstalled(this, uberPackageName);
@@ -200,9 +201,12 @@ public class MainActivity extends AppCompatActivity
             case R.id.grubTextView:
                 intent = new Intent(getBaseContext(), GrubActivity.class);
                 intent.putExtra("SearchAddress", _fullDeliveryAddress);
-                intent.putExtra("DebugMode", false);
                 startActivity(intent);
             case R.id.postTextView:
+                intent = new Intent(getBaseContext(), PostActivity.class);
+                intent.putExtra("SearchAddress", _fullDeliveryAddress);
+                intent.putExtra("DebugMode", true);
+                startActivity(intent);
                 break;
             case R.id.uberTextView:
                 intent = new Intent(getBaseContext(), UberActivity.class);
