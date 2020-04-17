@@ -70,6 +70,8 @@ public class PostActivity extends DeliveryAppBaseActivity
 
     public void onAddressNotFound()
     {
+        AppState.setMainScreenState(MainScreenState.AddressNotFound);
+
         navigateBack();
     }
 
@@ -128,6 +130,8 @@ public class PostActivity extends DeliveryAppBaseActivity
         _view = new PostView(this);
         setContentView(_view);
 
+        _view.setSelectedAppTextView("Postmates");
+
         _webView = _view.getWebView();
 
         // Make fullscreen. Action bar height is 24dp. Navigation bar height is 48dp
@@ -146,8 +150,6 @@ public class PostActivity extends DeliveryAppBaseActivity
         {
             _webView.setTranslationX(Helpers.getScreenWidth());
         }
-
-        _view.setSelectedAppTextView("Postmates");
 
         _postmatesDeliveryDetails = new PostDeliveryDetails(this, _webView, searchAddress);
         _postmatesMainMenu = new PostMainMenu(this, _webView);

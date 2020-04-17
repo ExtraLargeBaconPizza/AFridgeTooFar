@@ -26,16 +26,9 @@ public class PostRestaurantMenu extends PostBase
     @Override
     protected void parseHtml(String html)
     {
-        if (html.contains("Menu"))
+        if (html.contains("Popular"))
         {
-            if (!_allMenuHeadersClicked)
-            {
-                Javascript.grubHubClickAllMenuHeaders(webView, this::allMenuHeadersExpanded);
-            }
-            else
-            {
-                retrieveFoodItemInfo();
-            }
+            retrieveFoodItemInfo();
         }
         else
         {
@@ -48,16 +41,9 @@ public class PostRestaurantMenu extends PostBase
         _foodItems = new ArrayList<>();
     }
 
-    private void allMenuHeadersExpanded(String expansionComplete)
-    {
-        _allMenuHeadersClicked = true;
-
-        retrieveFoodItemInfo();
-    }
-
     private void retrieveFoodItemInfo()
     {
-        Javascript.getGrubhubRestaurantMenuInnerText(webView, this::parseInnerText);
+        Javascript.getPostMatesRestaurantMenuInnerText(webView, this::parseInnerText);
     }
 
     private void parseInnerText(String allInnerTexts)
@@ -75,7 +61,7 @@ public class PostRestaurantMenu extends PostBase
             foodItems.add(foodItem);
         }
 
-        if (foodItems.size() > 9)
+        if (foodItems.size() > 1)
         {
             _foodItems = foodItems;
 
@@ -136,7 +122,7 @@ public class PostRestaurantMenu extends PostBase
             }
         }
 
-        if (_foodItems.size() > 5)
+        if (_foodItems.size() > 1)
         {
             AppState.setPostmatesAppState(PostAppState.RestaurantMenuReady);
 
@@ -151,9 +137,6 @@ public class PostRestaurantMenu extends PostBase
     private void allRestaurantInfoParsed()
     {
         Log.e("PostmatesMainMenu", "Number of Food Items - " + _foodItems.size());
-
-        // need to set this to false so that the menu headers can be expanded when we search again
-        _allMenuHeadersClicked = false;
 
         int random = (int) (Math.random() * _foodItems.size());
 
@@ -175,7 +158,6 @@ public class PostRestaurantMenu extends PostBase
     }
 
 
-    private boolean _allMenuHeadersClicked;
     private ArrayList<FoodItem> _foodItems;
     private FoodItem _selectedFoodItem;
 }

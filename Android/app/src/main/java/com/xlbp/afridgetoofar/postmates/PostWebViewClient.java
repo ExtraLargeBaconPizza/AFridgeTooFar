@@ -26,6 +26,19 @@ public class PostWebViewClient extends WebViewClient
     {
         super.doUpdateVisitedHistory(webView, url, isReload);
 
+        if (url.equals("https://postmates.com/"))
+        {
+            if (!_alreadyLoadedHomepage)
+            {
+                _alreadyLoadedHomepage = true;
+            }
+            else
+            {
+                _activity.onAddressNotFound();
+                return;
+            }
+        }
+
         Javascript.startDocumentReadyStateCheck(webView,
                 complete ->
                 {
@@ -35,4 +48,5 @@ public class PostWebViewClient extends WebViewClient
 
 
     private DeliveryAppBaseActivity _activity;
+    private boolean _alreadyLoadedHomepage;
 }

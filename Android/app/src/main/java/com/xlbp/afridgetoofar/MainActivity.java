@@ -188,8 +188,6 @@ public class MainActivity extends AppCompatActivity
     {
         Intent intent;
 
-        // TODO - refactor UberActivity into a more general SearchingActivity
-        // TODO - also refactor deliveryDetails, MainMenu, Restaurant into general views.
         switch (view.getId())
         {
             case R.id.doorTextView:
@@ -202,10 +200,10 @@ public class MainActivity extends AppCompatActivity
                 intent = new Intent(getBaseContext(), GrubActivity.class);
                 intent.putExtra("SearchAddress", _fullDeliveryAddress);
                 startActivity(intent);
+                break;
             case R.id.postTextView:
                 intent = new Intent(getBaseContext(), PostActivity.class);
                 intent.putExtra("SearchAddress", _fullDeliveryAddress);
-                intent.putExtra("DebugMode", true);
                 startActivity(intent);
                 break;
             case R.id.uberTextView:

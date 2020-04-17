@@ -85,4 +85,18 @@ public class Javascript
 
         webView.evaluateJavascript(javaScript, valueCallBack);
     }
+
+    public static void getPostMatesMainMenuHrefsInnerText(WebView webView, ValueCallback<String> valueCallBack)
+    {
+        String javaScript = "(function(){ var result = ''; var elem = document.querySelectorAll('[role=\"presentation\"]'); for (var i = 0; i < elem.length; i++) { result += 'element'; result += elem[i].getElementsByTagName('a')[0]; result += 'innerText' + elem[i].innerText;  } return result; })();";
+
+        webView.evaluateJavascript(javaScript, valueCallBack);
+    }
+
+    public static void getPostMatesRestaurantMenuInnerText(WebView webView, ValueCallback<String> valueCallBack)
+    {
+        String javaScript = "(function(){ var result = ''; var elem = document.getElementsByClassName('product-container'); for (var i = 0; i < elem.length; i++) { result += elem[i].innerText + 'element';  } return result; })();";
+
+        webView.evaluateJavascript(javaScript, valueCallBack);
+    }
 }

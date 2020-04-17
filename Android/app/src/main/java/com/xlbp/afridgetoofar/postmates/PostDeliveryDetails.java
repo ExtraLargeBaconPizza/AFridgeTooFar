@@ -23,7 +23,7 @@ public class PostDeliveryDetails extends PostBase
     @Override
     public void parseHtml(String html)
     {
-        if (html.contains("You want it"))
+        if (html.contains("Use Current Location"))
         {
             AppState.setPostmatesAppState(PostAppState.DeliveryDetailsReady);
 
@@ -61,12 +61,18 @@ public class PostDeliveryDetails extends PostBase
 
                 AppState.setPostmatesAppState(PostAppState.MainMenuLoading);
 
+                // need to press enter twice
                 KeyEvent enterKeyEventDown = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER);
+                postActivity.dispatchKeyEvent(enterKeyEventDown);
                 postActivity.dispatchKeyEvent(enterKeyEventDown);
 
                 Helpers.hideKeyboard(postActivity);
 
                 postActivity.onDocumentComplete();
+            }
+            else
+            {
+                retrieveHtml();
             }
         }
     }

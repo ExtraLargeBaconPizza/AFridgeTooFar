@@ -70,6 +70,8 @@ public class GrubActivity extends DeliveryAppBaseActivity
 
     public void onAddressNotFound()
     {
+        AppState.setMainScreenState(MainScreenState.AddressNotFound);
+
         navigateBack();
     }
 
@@ -128,6 +130,8 @@ public class GrubActivity extends DeliveryAppBaseActivity
         _view = new GrubView(this);
         setContentView(_view);
 
+        _view.setSelectedAppTextView("Grubhub");
+
         _webView = _view.getWebView();
 
         // Make fullscreen. Action bar height is 24dp. Navigation bar height is 48dp
@@ -146,8 +150,6 @@ public class GrubActivity extends DeliveryAppBaseActivity
         {
             _webView.setTranslationX(Helpers.getScreenWidth());
         }
-
-        _view.setSelectedAppTextView("Grubhub");
 
         _grubhubDeliveryDetails = new GrubDeliveryDetails(this, _webView, searchAddress);
         _grubhubMainMenu = new GrubMainMenu(this, _webView);

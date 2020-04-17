@@ -28,9 +28,9 @@ public class PostMainMenu extends PostBase
 
             postActivity.onAddressNotFound();
         }
-        else if (html.contains("Most popular near you"))
+        else if (html.contains("Only on Postmates"))
         {
-            Javascript.getGrubHubMainMenuHrefsInnerText(webView, this::parseHrefsAndInnerText);
+            Javascript.getPostMatesMainMenuHrefsInnerText(webView, this::parseHrefsAndInnerText);
         }
         else
         {
@@ -72,7 +72,7 @@ public class PostMainMenu extends PostBase
                 Restaurant restaurant = new Restaurant();
 
                 restaurant.href = href;
-                restaurant.name = innerText.split("\\\\n")[1];
+                restaurant.name = innerText.split("\\\\n")[0];
 
                 if (!restaurant.name.isEmpty())
                 {

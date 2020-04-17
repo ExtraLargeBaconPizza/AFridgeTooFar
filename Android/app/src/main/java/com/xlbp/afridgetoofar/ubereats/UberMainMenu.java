@@ -24,8 +24,6 @@ public class UberMainMenu extends UberBase
     {
         if (html.contains("Sorry, we're not there yet"))
         {
-            AppState.setMainScreenState(MainScreenState.AddressNotFound);
-
             uberActivity.onAddressNotFound();
         }
         else

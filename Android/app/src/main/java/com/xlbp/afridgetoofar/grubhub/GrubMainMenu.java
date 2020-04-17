@@ -5,7 +5,6 @@ import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.enums.GrubAppState;
-import com.xlbp.afridgetoofar.enums.MainScreenState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 
 import java.util.ArrayList;
@@ -24,8 +23,6 @@ public class GrubMainMenu extends GrubBase
     {
         if (html.contains("Sorry, no results were found"))
         {
-            AppState.setMainScreenState(MainScreenState.AddressNotFound);
-
             grubActivity.onAddressNotFound();
         }
         else if (html.contains("Most popular near you"))
