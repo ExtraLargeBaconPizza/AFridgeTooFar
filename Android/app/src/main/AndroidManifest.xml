@@ -14,7 +14,6 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:configChanges="orientation|keyboardHidden"
             android:name="com.xlbp.afridgetoofar.MainActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity">
@@ -26,6 +25,14 @@
         </activity>
         <activity
             android:configChanges="orientation|keyboardHidden"
+            android:name="com.xlbp.afridgetoofar.doordash.DoorActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name="com.xlbp.afridgetoofar.grubhub.GrubActivity"
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
             android:name="com.xlbp.afridgetoofar.ubereats.UberActivity"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />

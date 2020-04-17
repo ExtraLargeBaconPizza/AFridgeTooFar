@@ -4,26 +4,18 @@ import android.util.Log;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.UberAppState;
+import com.xlbp.afridgetoofar.enums.DoorAppState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 
 import java.util.ArrayList;
 
 public class DoorRestaurantMenu extends DoorBase
 {
-    public DoorRestaurantMenu(DoorActivity uberActivity, WebView webView)
+    public DoorRestaurantMenu(DoorActivity doorActivity, WebView webView)
     {
-        super(uberActivity, webView);
+        super(doorActivity, webView);
 
         init();
-    }
-
-    public class FoodItem
-    {
-        String href;
-        String innerText;
-        String name;
-        String price;
     }
 
     public FoodItem getSelectedFoodItem()
@@ -31,16 +23,15 @@ public class DoorRestaurantMenu extends DoorBase
         return _selectedFoodItem;
     }
 
-
-    private void init()
-    {
-        _foodItems = new ArrayList<>();
-    }
-
     @Override
     protected void parseHtml(String html)
     {
         retrieveHrefAndFoodItemInfo();
+    }
+
+    private void init()
+    {
+        _foodItems = new ArrayList<>();
     }
 
     private void retrieveHrefAndFoodItemInfo()
@@ -97,7 +88,6 @@ public class DoorRestaurantMenu extends DoorBase
         }
     }
 
-    // TODO - get picture will probably have to navigate to food item, or delay to ensure images have loaded...
     private void parseFoodItemsNamePrice()
     {
         for (int i = _foodItems.size() - 1; i >= 0; i--)
@@ -148,7 +138,7 @@ public class DoorRestaurantMenu extends DoorBase
 
         if (_foodItems.size() > 0)
         {
-            AppState.setUberEatsAppState(UberAppState.RestaurantMenuReady);
+            AppState.setDoorDashAppState(DoorAppState.RestaurantMenuReady);
 
             allRestaurantInfoParsed();
         }
@@ -160,17 +150,26 @@ public class DoorRestaurantMenu extends DoorBase
 
     private void allRestaurantInfoParsed()
     {
-        Log.e("UberEatsMainMenu", "Number of Food Items - " + _foodItems.size());
+        Log.e("DoorDashMainMenu", "Number of Food Items - " + _foodItems.size());
 
         int random = (int) (Math.random() * _foodItems.size());
 
         _selectedFoodItem = _foodItems.get(random);
 
-        Log.e("UberEatsMainMenu", "_selectedFoodItem - " + _selectedFoodItem.name);
+        Log.e("DoorDashMainMenu", "_selectedFoodItem - " + _selectedFoodItem.name);
 
-        AppState.setUberEatsAppState(UberAppState.SearchComplete);
+        AppState.setDoorDashAppState(DoorAppState.SearchComplete);
 
-        uberActivity.onSearchComplete();
+        doorActivity.onSearchComplete();
+    }
+
+
+    public class FoodItem
+    {
+        String href;
+        String innerText;
+        String name;
+        String price;
     }
 
 

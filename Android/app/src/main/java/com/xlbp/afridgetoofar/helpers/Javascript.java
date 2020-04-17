@@ -30,18 +30,25 @@ public class Javascript
         webView.evaluateJavascript(javaScript, valueCallback);
     }
 
+    public static void getBodyInnerHtml(WebView webView, ValueCallback<String> valueCallback)
+    {
+        String javaScript = "(function() { return (document.body.innerHTML); })();";
+
+        webView.evaluateJavascript(javaScript, valueCallback);
+    }
+
     public static void clickElementByKeyword(WebView webView, String elementTag, String keyword)
     {
-        String javascript = "javascript: (function(){var elements = document.getElementsByTagName('" + elementTag + "'); for(var i=0; i < elements.length; i++){ var innerHtml = elements[i].innerHTML; if(innerHtml != '' && innerHtml.includes('" + keyword + "')){ elements[i].click(); }}})();";
+        String javaScript = "javascript: (function(){var elements = document.getElementsByTagName('" + elementTag + "'); for(var i=0; i < elements.length; i++){ var innerHtml = elements[i].innerHTML; if(innerHtml != '' && innerHtml.includes('" + keyword + "')){ elements[i].click(); }}})();";
 
-        webView.loadUrl(javascript);
+        webView.loadUrl(javaScript);
     }
 
     public static void clickElementById(WebView webView, String id)
     {
-        String javascript = "javascript: (function(){ document.getElementById('" + id + "').click(); })();";
+        String javaScript = "javascript: (function(){ document.getElementById('" + id + "').click(); })();";
 
-        webView.loadUrl(javascript);
+        webView.loadUrl(javaScript);
     }
 
     public static void getAllHrefsAndInnerText(WebView webView, ValueCallback<String> valueCallBack)
@@ -51,10 +58,31 @@ public class Javascript
         webView.evaluateJavascript(javascript, valueCallBack);
     }
 
-    public static void getHrefsInnerText(WebView webView, String href, ValueCallback<String> valueCallBack)
+    public static void getActiveElementPlaceHolderText(WebView webView, ValueCallback<String> valueCallBack)
     {
-        String javascriptFunction = "javascript: (function(){ return(document.querySelectorAll(\"a[href='" + href + "']\")[0].parentElement.innerText); })();";
+        String javaScript = "(function(){ return document.activeElement.placeholder })();";
 
-        webView.evaluateJavascript(javascriptFunction, valueCallBack);
+        webView.evaluateJavascript(javaScript, valueCallBack);
+    }
+
+    public static void getGrubHubMainMenuHrefsInnerText(WebView webView, ValueCallback<String> valueCallBack)
+    {
+        String javaScript = "(function(){ var result = ''; var elem = document.getElementsByTagName('ghs-restaurant-card'); for (var i = 0; i < elem.length; i++) { result += 'element'; result += elem[i].getElementsByTagName('a')[1]; result += 'innerText' + elem[i].innerText; } return result; })();";
+
+        webView.evaluateJavascript(javaScript, valueCallBack);
+    }
+
+    public static void grubHubClickAllMenuHeaders(WebView webView)
+    {
+        String javaScript = "(function(){ var result = ''; var elem = document.getElementsByClassName('menuSection-header u-background--tinted isClosed'); for (var i = 0; i < elem.length; i++) { elem[i].click(); }})();";
+
+        webView.loadUrl(javaScript);
+    }
+
+    public static void getGrubhubRestaurantMenuInnerText(WebView webView, ValueCallback<String> valueCallBack)
+    {
+        String javaScript = "(function(){ var result = ''; var elem = document.getElementsByTagName('ghs-restaurant-menu-item'); for (var i = 0; i < elem.length; i++) { result += 'element'; result += elem[i].innerText; } return result; })();";
+
+        webView.evaluateJavascript(javaScript, valueCallBack);
     }
 }

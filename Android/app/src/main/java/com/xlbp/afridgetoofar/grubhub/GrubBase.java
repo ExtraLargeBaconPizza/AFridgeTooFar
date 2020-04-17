@@ -1,14 +1,14 @@
-package com.xlbp.afridgetoofar.doordash;
+package com.xlbp.afridgetoofar.grubhub;
 
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.helpers.Javascript;
 
-public abstract class DoorBase
+public abstract class GrubBase
 {
-    public DoorBase(DoorActivity doorActivity, WebView webView)
+    public GrubBase(GrubActivity grubActivity, WebView webView)
     {
-        this.doorActivity = doorActivity;
+        this.grubActivity = grubActivity;
         this.webView = webView;
     }
 
@@ -22,14 +22,9 @@ public abstract class DoorBase
         Javascript.getBodyInnerHtml(webView, this::parseHtml);
     }
 
-    protected void retrieveRootInnerHtml()
-    {
-        Javascript.getRootInnerHtml(webView, this::parseHtml);
-    }
-
     abstract void parseHtml(String html);
 
 
-    protected DoorActivity doorActivity;
+    protected GrubActivity grubActivity;
     protected WebView webView;
 }

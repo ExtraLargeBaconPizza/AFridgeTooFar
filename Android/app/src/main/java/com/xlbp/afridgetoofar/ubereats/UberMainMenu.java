@@ -161,7 +161,6 @@ public class UberMainMenu extends UberBase
     {
         String href;
         String name;
-        String image;
     }
 
 

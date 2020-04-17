@@ -32,6 +32,11 @@ public class UberView extends FrameLayout
         return _webView;
     }
 
+    public void setSelectedAppTextView(String selectedApp)
+    {
+        _selectedAppTextView.setText(selectedApp);
+    }
+
     public void setSearchCompleteText(String foodItem, String foodItemDetails)
     {
         _foodItemTextView.setText(foodItem);
@@ -96,7 +101,6 @@ public class UberView extends FrameLayout
         new Animation(_foodItemDetailsTextView)
                 .alpha(0)
                 .translationY(_foodItemOffset)
-                .withEndAction(endAction)
                 .start();
 
         for (TextView searchAgainItem : _searchAgainItems)

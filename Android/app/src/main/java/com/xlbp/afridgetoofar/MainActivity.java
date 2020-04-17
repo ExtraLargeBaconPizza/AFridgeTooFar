@@ -8,10 +8,11 @@ import android.view.WindowManager;
 
 import com.xlbp.afridgetoofar.doordash.DoorActivity;
 import com.xlbp.afridgetoofar.enums.AppState;
+import com.xlbp.afridgetoofar.enums.MainScreenState;
 import com.xlbp.afridgetoofar.google.PlaceAutoSuggestAdapter;
+import com.xlbp.afridgetoofar.grubhub.GrubActivity;
 import com.xlbp.afridgetoofar.helpers.Helpers;
 import com.xlbp.afridgetoofar.ubereats.UberActivity;
-import com.xlbp.afridgetoofar.enums.MainScreenState;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -39,7 +40,6 @@ public class MainActivity extends AppCompatActivity
                 _view.animateReturnFromSearching(() -> AppState.setMainScreenState(MainScreenState.AppSelection));
                 break;
             case AddressNotFound:
-                // TODO passing in previously selected app
                 _view.animateReturnFromAddressNotFound(() -> AppState.setMainScreenState(MainScreenState.AddressNotFound));
                 break;
             case SearchComplete:
@@ -174,7 +174,8 @@ public class MainActivity extends AppCompatActivity
 
         boolean[] isAppInstalled = new boolean[4];
 
-        isAppInstalled[0] = Helpers.isAppInstalled(this, doorPackageName);
+        // TODO doordash shelved door due to strange loading sequence. possibly caused by slow internet
+        isAppInstalled[0] = false;//Helpers.isAppInstalled(this, doorPackageName);
         isAppInstalled[1] = Helpers.isAppInstalled(this, grubPackageName);
         isAppInstalled[2] = Helpers.isAppInstalled(this, postPackageName);
         isAppInstalled[3] = Helpers.isAppInstalled(this, uberPackageName);
@@ -193,17 +194,19 @@ public class MainActivity extends AppCompatActivity
             case R.id.doorTextView:
                 intent = new Intent(getBaseContext(), DoorActivity.class);
                 intent.putExtra("SearchAddress", _fullDeliveryAddress);
+                intent.putExtra("DebugMode", true);
+                startActivity(intent);
                 break;
             case R.id.grubTextView:
-                break;
+                intent = new Intent(getBaseContext(), GrubActivity.class);
+                intent.putExtra("SearchAddress", _fullDeliveryAddress);
+                intent.putExtra("DebugMode", false);
+                startActivity(intent);
             case R.id.postTextView:
-                intent = new Intent(getBaseContext(), UberActivity.class);
-                intent.putExtra("DebugMode", true);
                 break;
             case R.id.uberTextView:
                 intent = new Intent(getBaseContext(), UberActivity.class);
                 intent.putExtra("SearchAddress", _fullDeliveryAddress);
-
                 startActivity(intent);
                 break;
         }

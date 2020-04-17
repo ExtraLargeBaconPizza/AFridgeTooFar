@@ -21,6 +21,36 @@ public class AppState
         }
     }
 
+    public static DoorAppState getDoorDashAppState()
+    {
+        return _doorAppState;
+    }
+
+    public static void setDoorDashAppState(DoorAppState doorAppState)
+    {
+        if (_doorAppState != doorAppState)
+        {
+            _doorAppState = doorAppState;
+
+            Log.e("DoorAppState", "" + _doorAppState);
+        }
+    }
+
+    public static GrubAppState getGrubhubAppState()
+    {
+        return _grubAppState;
+    }
+
+    public static void setGrubhubAppState(GrubAppState grubAppState)
+    {
+        if (_grubAppState != grubAppState)
+        {
+            _grubAppState = grubAppState;
+
+            Log.e("GrubAppState", "" + _grubAppState);
+        }
+    }
+
     public static UberAppState getUberEatsAppState()
     {
         return _uberAppState;
@@ -38,5 +68,7 @@ public class AppState
 
 
     private static MainScreenState _mainScreenState;
+    private static DoorAppState _doorAppState;
+    private static GrubAppState _grubAppState;
     private static UberAppState _uberAppState;
 }

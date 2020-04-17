@@ -8,9 +8,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
+import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.DeliveryAppBaseActivity;
-import com.xlbp.afridgetoofar.XlbpWebViewClient;
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
 import com.xlbp.afridgetoofar.enums.UberAppState;
@@ -31,7 +31,8 @@ public class UberActivity extends DeliveryAppBaseActivity
     {
         super.onDestroy();
 
-        _view.getWebView().destroy();
+        _webView.destroy();
+        finish();
     }
 
     @Override
@@ -106,15 +107,10 @@ public class UberActivity extends DeliveryAppBaseActivity
         {
             AppState.setMainScreenState(MainScreenState.SearchingApp);
 
-            // TODO navigate to give me money
-        }
-    }
+            // TODO - remove joke
+            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=SIdxVR_7ikg"));
 
-    public void onBackClicked(View view)
-    {
-        if (AppState.getUberEatsAppState() != UberAppState.Animating)
-        {
-            _view.animateNavigateBackAfterSearchComplete(this::navigateBack);
+            startActivity(browserIntent);
         }
     }
 
@@ -132,6 +128,8 @@ public class UberActivity extends DeliveryAppBaseActivity
         _view = new UberView(this);
         setContentView(_view);
 
+        _webView = _view.getWebView();
+
         // Make fullscreen. Action bar height is 24dp. Navigation bar height is 48dp
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
@@ -146,25 +144,27 @@ public class UberActivity extends DeliveryAppBaseActivity
 
         if (!isDebugMode)
         {
-            _view.getWebView().setTranslationX(Helpers.getScreenWidth());
+            _webView.setTranslationX(Helpers.getScreenWidth());
         }
 
-        _uberEatsDeliveryDetails = new UberDeliveryDetails(this, _view.getWebView(), searchAddress);
-        _uberEatsMainMenu = new UberMainMenu(this, _view.getWebView());
-        _uberEatsRestaurantMenu = new UberRestaurantMenu(this, _view.getWebView());
+        _view.setSelectedAppTextView("Uber Eats");
+
+        _uberEatsDeliveryDetails = new UberDeliveryDetails(this, _webView, searchAddress);
+        _uberEatsMainMenu = new UberMainMenu(this, _webView);
+        _uberEatsRestaurantMenu = new UberRestaurantMenu(this, _webView);
     }
 
     private void initWebView()
     {
-        _view.getWebView().getSettings().setJavaScriptEnabled(true);
-        _view.getWebView().setWebViewClient(new XlbpWebViewClient(this));
-        _view.getWebView().setWebChromeClient(new WebChromeClient());
+        _webView.getSettings().setJavaScriptEnabled(true);
+        _webView.setWebViewClient(new UberWebViewClient(this));
+        _webView.setWebChromeClient(new WebChromeClient());
 
         // The follow two lines remove te webview's cookies
         CookieManager.getInstance().removeAllCookies(null);
         CookieManager.getInstance().flush();
 
-        _view.getWebView().loadUrl("https://www.ubereats.com/delivery-details");
+        _webView.loadUrl("https://www.ubereats.com/delivery-details");
     }
 
     private void handleSearchComplete()
@@ -195,7 +195,7 @@ public class UberActivity extends DeliveryAppBaseActivity
 
     private void navigateBack()
     {
-        _view.getWebView().destroy();
+        _webView.destroy();
 
         finish();
         return;
@@ -203,6 +203,7 @@ public class UberActivity extends DeliveryAppBaseActivity
 
 
     private UberView _view;
+    private WebView _webView;
 
     private UberDeliveryDetails _uberEatsDeliveryDetails;
     private UberMainMenu _uberEatsMainMenu;

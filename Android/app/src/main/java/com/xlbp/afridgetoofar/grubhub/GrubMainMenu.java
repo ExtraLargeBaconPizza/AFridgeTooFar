@@ -1,20 +1,20 @@
-package com.xlbp.afridgetoofar.doordash;
+package com.xlbp.afridgetoofar.grubhub;
 
 import android.util.Log;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.DoorAppState;
+import com.xlbp.afridgetoofar.enums.GrubAppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 
 import java.util.ArrayList;
 
-public class DoorMainMenu extends DoorBase
+public class GrubMainMenu extends GrubBase
 {
-    public DoorMainMenu(DoorActivity doorActivity, WebView webView)
+    public GrubMainMenu(GrubActivity grubActivity, WebView webView)
     {
-        super(doorActivity, webView);
+        super(grubActivity, webView);
 
         init();
     }
@@ -22,15 +22,19 @@ public class DoorMainMenu extends DoorBase
     @Override
     protected void parseHtml(String html)
     {
-        if (html.contains("Sorry, we're not there yet"))
+        if (html.contains("Sorry, no results were found"))
         {
             AppState.setMainScreenState(MainScreenState.AddressNotFound);
 
-            doorActivity.onAddressNotFound();
+            grubActivity.onAddressNotFound();
+        }
+        else if (html.contains("Most popular near you"))
+        {
+            Javascript.getGrubHubMainMenuHrefsInnerText(webView, this::parseHrefsAndInnerText);
         }
         else
         {
-            Javascript.getAllHrefsAndInnerText(webView, this::parseHrefsAndInnerText);
+            retrieveHtml();
         }
     }
 
@@ -65,21 +69,14 @@ public class DoorMainMenu extends DoorBase
                 String href = hrefInnerText[0];
                 String innerText = hrefInnerText[1];
 
-                if (href.contains("food-delivery"))
+                Restaurant restaurant = new Restaurant();
+
+                restaurant.href = href;
+                restaurant.name = innerText.split("\\\\n")[1];
+
+                if (!restaurant.name.isEmpty())
                 {
-                    if (!innerText.contains("Currently unavailable")
-                            && !innerText.contains("Opens On"))
-                    {
-                        Restaurant restaurant = new Restaurant();
-
-                        restaurant.href = href;
-                        restaurant.name = getRestaurantName(innerText.split("\\\\n"));
-
-                        if (!restaurant.name.isEmpty())
-                        {
-                            restaurants.add(restaurant);
-                        }
-                    }
+                    restaurants.add(restaurant);
                 }
             }
         }
@@ -91,7 +88,7 @@ public class DoorMainMenu extends DoorBase
             {
                 _mainMenuComplete = true;
 
-                AppState.setDoorDashAppState(DoorAppState.MainMenuReady);
+                AppState.setGrubhubAppState(GrubAppState.MainMenuReady);
 
                 _restaurants = restaurants;
 
@@ -102,34 +99,6 @@ public class DoorMainMenu extends DoorBase
         {
             retrieveHtml();
         }
-    }
-
-    private String getRestaurantName(String[] values)
-    {
-        String restaurantName = "";
-
-        values[values.length - 1] = values[0].replace("\"", "");
-
-        for (int i = 0; i < values.length; i++)
-        {
-            values[i] = values[i].replace("\"", "");
-            values[i] = values[i].replace("\\", "");
-
-            // TODO restaurants with Min will get filtered and probably cause an error, but this is good enough for now
-            if (!(values[i].contains("$")
-                    || values[i].contains("Buy 1")
-                    || values[i].contains("Delivery Fee")
-                    || values[i].contains("Min")
-                    || values[i].isEmpty()))
-            {
-                if (restaurantName.isEmpty())
-                {
-                    restaurantName = values[i];
-                }
-            }
-        }
-
-        return restaurantName;
     }
 
     private void handleRestaurantSelection()
@@ -144,9 +113,9 @@ public class DoorMainMenu extends DoorBase
 
             _restaurantsAlreadyPicked.add(_selectedRestaurant);
 
-            Log.e("DoorDashMainMenu", "_selectedRestaurant - " + _selectedRestaurant.name + " href - " + _selectedRestaurant.href);
+            Log.e("GrubhubMainMenu", "_selectedRestaurant - " + _selectedRestaurant.name + " - href - " + _selectedRestaurant.href);
 
-            AppState.setDoorDashAppState(DoorAppState.RestaurantMenuLoading);
+            AppState.setGrubhubAppState(GrubAppState.RestaurantMenuLoading);
 
             webView.loadUrl(_selectedRestaurant.href);
         }

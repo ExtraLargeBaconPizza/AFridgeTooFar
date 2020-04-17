@@ -1,4 +1,4 @@
-package com.xlbp.afridgetoofar.doordash;
+package com.xlbp.afridgetoofar.grubhub;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.xlbp.afridgetoofar.R;
 import com.xlbp.afridgetoofar.SearchingAnimationView;
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.DoorAppState;
+import com.xlbp.afridgetoofar.enums.GrubAppState;
 import com.xlbp.afridgetoofar.helpers.Animation;
 import com.xlbp.afridgetoofar.helpers.Helpers;
 
@@ -18,9 +18,9 @@ import java.util.ArrayList;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
-public class DoorView extends FrameLayout
+public class GrubView extends FrameLayout
 {
-    public DoorView(Context context)
+    public GrubView(Context context)
     {
         super(context);
 
@@ -45,7 +45,7 @@ public class DoorView extends FrameLayout
 
     public void animateSearchComplete(Runnable endAction)
     {
-        AppState.setDoorDashAppState(DoorAppState.Animating);
+        AppState.setGrubhubAppState(GrubAppState.Animating);
 
         // exit
         new Animation(_searchingTitleTextView)
@@ -90,7 +90,7 @@ public class DoorView extends FrameLayout
 
     public void animateSearchAgainAnimation(Runnable endAction)
     {
-        AppState.setDoorDashAppState(DoorAppState.Animating);
+        AppState.setGrubhubAppState(GrubAppState.Animating);
 
         // exit
         new Animation(_foodItemTextView)
@@ -101,7 +101,6 @@ public class DoorView extends FrameLayout
         new Animation(_foodItemDetailsTextView)
                 .alpha(0)
                 .translationY(_foodItemOffset)
-                .withEndAction(endAction)
                 .start();
 
         for (TextView searchAgainItem : _searchAgainItems)
@@ -137,7 +136,7 @@ public class DoorView extends FrameLayout
 
     public void animateNavigateBackAfterSearchComplete(Runnable endAction)
     {
-        AppState.setDoorDashAppState(DoorAppState.Animating);
+        AppState.setGrubhubAppState(GrubAppState.Animating);
 
         // exit
         new Animation(_foodItemTextView)
@@ -164,11 +163,11 @@ public class DoorView extends FrameLayout
     {
         initViews();
 
-//        initViewAlphas();
-//
-//        initViewPositions();
-//
-//        _searchingAnimationView.startAnimation();
+        initViewAlphas();
+
+        initViewPositions();
+
+        _searchingAnimationView.startAnimation();
     }
 
     private void initViews()

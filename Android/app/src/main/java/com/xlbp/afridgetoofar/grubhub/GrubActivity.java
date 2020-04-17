@@ -1,4 +1,4 @@
-package com.xlbp.afridgetoofar.doordash;
+package com.xlbp.afridgetoofar.grubhub;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -11,13 +11,12 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.DeliveryAppBaseActivity;
-import com.xlbp.afridgetoofar.ubereats.UberWebViewClient;
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.DoorAppState;
+import com.xlbp.afridgetoofar.enums.GrubAppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
 import com.xlbp.afridgetoofar.helpers.Helpers;
 
-public class DoorActivity extends DeliveryAppBaseActivity
+public class GrubActivity extends DeliveryAppBaseActivity
 {
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,9 +38,9 @@ public class DoorActivity extends DeliveryAppBaseActivity
     @Override
     public void onBackPressed()
     {
-        if (AppState.getDoorDashAppState() != DoorAppState.Animating)
+        if (AppState.getGrubhubAppState() != GrubAppState.Animating)
         {
-            if (AppState.getDoorDashAppState() == DoorAppState.SearchComplete)
+            if (AppState.getGrubhubAppState() == GrubAppState.SearchComplete)
             {
                 _view.animateNavigateBackAfterSearchComplete(this::navigateBack);
             }
@@ -54,17 +53,17 @@ public class DoorActivity extends DeliveryAppBaseActivity
 
     public void onDocumentComplete()
     {
-        switch (AppState.getDoorDashAppState())
+        switch (AppState.getGrubhubAppState())
         {
             case DeliveryDetailsLoading:
-                _doorDashDeliveryDetails.onDocumentComplete();
+                _grubhubDeliveryDetails.onDocumentComplete();
                 break;
             case MainMenuLoading:
-                _doorDashDeliveryDetails = null;
-                _doorDashMainMenu.onDocumentComplete();
+                _grubhubDeliveryDetails = null;
+                _grubhubMainMenu.onDocumentComplete();
                 break;
             case RestaurantMenuLoading:
-                _doorDashRestaurantMenu.onDocumentComplete();
+                _grubhubRestaurantMenu.onDocumentComplete();
                 break;
         }
     }
@@ -81,30 +80,30 @@ public class DoorActivity extends DeliveryAppBaseActivity
 
     public void onViewOnAppClicked(View view)
     {
-        if (AppState.getDoorDashAppState() == DoorAppState.SearchComplete)
+        if (AppState.getGrubhubAppState() == GrubAppState.SearchComplete)
         {
-            launchDoorDash();
+            launchUberEats();
         }
     }
 
     public void onSearchAgainClicked(View view)
     {
-        if (AppState.getDoorDashAppState() != DoorAppState.Animating)
+        if (AppState.getGrubhubAppState() != GrubAppState.Animating)
         {
             AppState.setMainScreenState(MainScreenState.SearchingApp);
 
             _view.animateSearchAgainAnimation(() ->
             {
-                AppState.setDoorDashAppState(DoorAppState.MainMenuReady);
+                AppState.setGrubhubAppState(GrubAppState.MainMenuReady);
 
-                _doorDashMainMenu.selectRestaurant();
+                _grubhubMainMenu.selectRestaurant();
             });
         }
     }
 
     public void onDonateClicked(View view)
     {
-        if (AppState.getDoorDashAppState() != DoorAppState.Animating)
+        if (AppState.getGrubhubAppState() != GrubAppState.Animating)
         {
             AppState.setMainScreenState(MainScreenState.SearchingApp);
 
@@ -119,14 +118,14 @@ public class DoorActivity extends DeliveryAppBaseActivity
     {
         initView();
 
-        initDoorDash();
+        initGrubhub();
 
         initWebView();
     }
 
     private void initView()
     {
-        _view = new DoorView(this);
+        _view = new GrubView(this);
         setContentView(_view);
 
         _webView = _view.getWebView();
@@ -135,9 +134,9 @@ public class DoorActivity extends DeliveryAppBaseActivity
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS, WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
     }
 
-    private void initDoorDash()
+    private void initGrubhub()
     {
-        AppState.setDoorDashAppState(DoorAppState.DeliveryDetailsLoading);
+        AppState.setGrubhubAppState(GrubAppState.DeliveryDetailsLoading);
 
         Bundle extras = getIntent().getExtras();
         String searchAddress = extras.getString("SearchAddress");
@@ -148,50 +147,52 @@ public class DoorActivity extends DeliveryAppBaseActivity
             _webView.setTranslationX(Helpers.getScreenWidth());
         }
 
-        _view.setSelectedAppTextView("DoorDash");
+        _view.setSelectedAppTextView("Grubhub");
 
-        _doorDashDeliveryDetails = new DoorDeliveryDetails(this, _webView, searchAddress);
-        _doorDashMainMenu = new DoorMainMenu(this, _webView);
-        _doorDashRestaurantMenu = new DoorRestaurantMenu(this, _webView);
+        _grubhubDeliveryDetails = new GrubDeliveryDetails(this, _webView, searchAddress);
+        _grubhubMainMenu = new GrubMainMenu(this, _webView);
+        _grubhubRestaurantMenu = new GrubRestaurantMenu(this, _webView);
     }
 
     private void initWebView()
     {
         _webView.getSettings().setJavaScriptEnabled(true);
-        _webView.setWebViewClient(new UberWebViewClient(this));
+        _webView.setWebViewClient(new GrubWebViewClient(this));
         _webView.setWebChromeClient(new WebChromeClient());
 
-//        // The follow two lines remove te webview's cookies
+        // The follow two lines remove te webview's cookies
         CookieManager.getInstance().removeAllCookies(null);
         CookieManager.getInstance().flush();
 
-        _webView.loadUrl("https://www.doordash.com/en-US");
+        _webView.loadUrl("https://www.grubhub.com/search?orderMethod=delivery&locationMode=DELIVERY&facetSet=umamiV2&pageSize=20&hideHateos=true&searchMetrics=true&facet=open_now%3Atrue&sortSetId=umamiv3&countOmittingTimes=true");
     }
 
     private void handleSearchComplete()
     {
-        DoorMainMenu.Restaurant selectedRestaurant = _doorDashMainMenu.getSelectedRestaurant();
-        DoorRestaurantMenu.FoodItem foodItem = _doorDashRestaurantMenu.getSelectedFoodItem();
+        GrubMainMenu.Restaurant selectedRestaurant = _grubhubMainMenu.getSelectedRestaurant();
+        GrubRestaurantMenu.FoodItem foodItem = _grubhubRestaurantMenu.getSelectedFoodItem();
 
         _view.setSearchCompleteText(foodItem.name, selectedRestaurant.name + "\n" + foodItem.price);
 
-        Log.e("DoorActivity", "Search Complete: selectedRestaurant - " + selectedRestaurant.name + " - food item - " + foodItem.name);
+        _webView.setTranslationX(Helpers.getScreenWidth());
+
+        Log.e("UberView", "Search Complete: selectedRestaurant - " + selectedRestaurant.name + " - food item - " + foodItem.name + " - food price - " + foodItem.price);
 
         _view.animateSearchComplete(() ->
         {
             AppState.setMainScreenState(MainScreenState.SearchComplete);
 
-            AppState.setDoorDashAppState(DoorAppState.SearchComplete);
+            AppState.setGrubhubAppState(GrubAppState.SearchComplete);
         });
     }
 
-    private void launchDoorDash()
+    private void launchUberEats()
     {
-        String url = _doorDashRestaurantMenu.getSelectedFoodItem().href;
-
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-
-        startActivity(browserIntent);
+//        String url = _grubhubRestaurantMenu.getSelectedFoodItem().href;
+//
+//        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+//
+//        startActivity(browserIntent);
     }
 
     private void navigateBack()
@@ -203,12 +204,10 @@ public class DoorActivity extends DeliveryAppBaseActivity
     }
 
 
-    private DoorView _view;
+    private GrubView _view;
     private WebView _webView;
 
-    private DoorDeliveryDetails _doorDashDeliveryDetails;
-    private DoorMainMenu _doorDashMainMenu;
-    private DoorRestaurantMenu _doorDashRestaurantMenu;
+    private GrubDeliveryDetails _grubhubDeliveryDetails;
+    private GrubMainMenu _grubhubMainMenu;
+    private GrubRestaurantMenu _grubhubRestaurantMenu;
 }
-
-

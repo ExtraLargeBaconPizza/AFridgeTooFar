@@ -1,19 +1,19 @@
-package com.xlbp.afridgetoofar.ubereats;
+package com.xlbp.afridgetoofar.grubhub;
 
 import android.util.Log;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.enums.AppState;
+import com.xlbp.afridgetoofar.enums.GrubAppState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
-import com.xlbp.afridgetoofar.enums.UberAppState;
 
 import java.util.ArrayList;
 
-public class UberRestaurantMenu extends UberBase
+public class GrubRestaurantMenu extends GrubBase
 {
-    public UberRestaurantMenu(UberActivity uberActivity, WebView webView)
+    public GrubRestaurantMenu(GrubActivity grubActivity, WebView webView)
     {
-        super(uberActivity, webView);
+        super(grubActivity, webView);
 
         init();
     }
@@ -23,57 +23,54 @@ public class UberRestaurantMenu extends UberBase
         return _selectedFoodItem;
     }
 
+    private boolean _allMenuHeadersClicked;
+
     @Override
     protected void parseHtml(String html)
     {
-        retrieveHrefAndFoodItemInfo();
+        if (html.contains("Menu") && !_allMenuHeadersClicked)
+        {
+            _allMenuHeadersClicked = true;
+
+            Javascript.grubHubClickAllMenuHeaders(webView);
+
+            retrieveHrefAndFoodItemInfo();
+        }
+        else
+        {
+            Log.e("GrubRestaurantMenu", "retrieveHtml");
+
+            retrieveHtml();
+        }
     }
 
     private void init()
     {
+        _allMenuHeadersClicked = false;
+
         _foodItems = new ArrayList<>();
     }
 
     private void retrieveHrefAndFoodItemInfo()
     {
-        Javascript.getAllHrefsAndInnerText(webView, this::parseHrefsAndInnerText);
+        Log.e("GrubRestaurantMenu", "retrieveHrefAndFoodItemInfo");
+        Javascript.getGrubhubRestaurantMenuInnerText(webView, this::parseInnerText);
     }
 
-    private void parseHrefsAndInnerText(String hrefsAndInnerText)
+    private void parseInnerText(String allInnerTexts)
     {
+        Log.e("GrubRestaurantMenu", "parseInnerText");
         ArrayList<FoodItem> foodItems = new ArrayList<>();
 
-        String[] hrefsAndInnerTextElements = hrefsAndInnerText.split("element");
+        String[] innerTextElements = allInnerTexts.split("element");
 
-        for (int i = 0; i < hrefsAndInnerTextElements.length; i++)
+        for (String innerText : innerTextElements)
         {
-            String[] hrefInnerText = hrefsAndInnerTextElements[i].split("innerText");
+            FoodItem foodItem = new FoodItem();
 
-            if (hrefInnerText.length > 1)
-            {
-                String href = hrefInnerText[0];
-                String innerText = hrefInnerText[1];
+            foodItem.innerText = innerText;
 
-                if (href.contains("food-delivery")
-                        && !href.contains("location-and-hours"))
-                {
-                    if (!(innerText.contains("Sign In")
-                            || innerText.contains("Deliver now")
-                            || innerText.contains("Menu")
-                            || innerText.contains("Sold out")
-                            || innerText.contains("Breakfast")
-                            || innerText.contains("Lunch")
-                            || innerText.contains("Dinner")))
-                    {
-                        FoodItem foodItem = new FoodItem();
-
-                        foodItem.href = href;
-                        foodItem.innerText = innerText;
-
-                        foodItems.add(foodItem);
-                    }
-                }
-            }
+            foodItems.add(foodItem);
         }
 
         if (foodItems.size() > 0)
@@ -90,8 +87,11 @@ public class UberRestaurantMenu extends UberBase
 
     private void parseFoodItemsNamePrice()
     {
+        Log.e("GrubRestaurantMenu", "parseFoodItemsNamePrice");
         for (int i = _foodItems.size() - 1; i >= 0; i--)
         {
+            Log.e("GrubRestaurantMenu", "1");
+
             FoodItem foodItem = _foodItems.get(i);
 
             String[] values = foodItem.innerText.split("\\\\n");
@@ -102,14 +102,22 @@ public class UberRestaurantMenu extends UberBase
 
             boolean keepFoodItem = false;
 
+            Log.e("GrubRestaurantMenu", "2");
+
             for (int j = 1; j < values.length; j++)
             {
+                Log.e("GrubRestaurantMenu", "3");
+
                 if (values[j].contains("$") && values[j].length() < 10)
                 {
-                    foodItem.price = values[j].replace("US", "");
-                    foodItem.price = values[j].replace("CA", "");
+                    Log.e("GrubRestaurantMenu", "4");
+                    // remove anything non currency
+                    foodItem.price = values[j].replace("\"", "");
+                    foodItem.price = values[j].replace("[^\\d.]", "");
 
-                    String currencyOnly = foodItem.price.replace("[^\\d.]", "").replace("$", "").replace("\"", "");
+                    String currencyOnly = foodItem.price.replace("$", "");
+
+                    Log.e("GrubRestaurantMenu", "5");
 
                     if (!currencyOnly.isEmpty())
                     {
@@ -138,35 +146,35 @@ public class UberRestaurantMenu extends UberBase
 
         if (_foodItems.size() > 0)
         {
-            AppState.setUberEatsAppState(UberAppState.RestaurantMenuReady);
+            AppState.setGrubhubAppState(GrubAppState.RestaurantMenuReady);
 
             allRestaurantInfoParsed();
         }
         else
         {
+            Log.e("GrubRestaurantMenu", "10");
             retrieveHtml();
         }
     }
 
     private void allRestaurantInfoParsed()
     {
-        Log.e("UberEatsMainMenu", "Number of Food Items - " + _foodItems.size());
+        Log.e("GrubhubMainMenu", "Number of Food Items - " + _foodItems.size());
 
         int random = (int) (Math.random() * _foodItems.size());
 
         _selectedFoodItem = _foodItems.get(random);
 
-        Log.e("UberEatsMainMenu", "_selectedFoodItem - " + _selectedFoodItem.name);
+        Log.e("GrubhubMainMenu", "_selectedFoodItem - " + _selectedFoodItem.name);
 
-        AppState.setUberEatsAppState(UberAppState.SearchComplete);
+        AppState.setGrubhubAppState(GrubAppState.SearchComplete);
 
-        uberActivity.onSearchComplete();
+        grubActivity.onSearchComplete();
     }
 
 
     public class FoodItem
     {
-        String href;
         String innerText;
         String name;
         String price;

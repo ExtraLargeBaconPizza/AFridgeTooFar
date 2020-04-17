@@ -56,6 +56,21 @@ public class Helpers
         view.setLayoutParams(layoutParams);
     }
 
+    public static void showKeyboard(Activity activity)
+    {
+        View view = activity.getCurrentFocus();
+
+        if (view != null)
+        {
+            InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+            if (imm != null)
+            {
+                imm.showSoftInput(view, 0);
+            }
+        }
+    }
+
     public static void hideKeyboard(Activity activity)
     {
         View view = activity.getCurrentFocus();
