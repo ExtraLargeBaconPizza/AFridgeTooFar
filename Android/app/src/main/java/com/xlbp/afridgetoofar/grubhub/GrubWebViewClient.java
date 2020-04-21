@@ -26,11 +26,10 @@ public class GrubWebViewClient extends WebViewClient
     {
         super.doUpdateVisitedHistory(webView, url, isReload);
 
-        Javascript.startDocumentReadyStateCheck(webView,
-                complete ->
-                {
-                    _activity.onDocumentComplete();
-                });
+        Javascript.startDocumentReadyStateCheck(webView, documentComplete ->
+        {
+            _activity.onDocumentComplete();
+        });
     }
 
 

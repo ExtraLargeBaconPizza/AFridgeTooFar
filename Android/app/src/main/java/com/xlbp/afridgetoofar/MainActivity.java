@@ -173,12 +173,13 @@ public class MainActivity extends AppCompatActivity
             case R.id.doorTextView:
                 intent = new Intent(getBaseContext(), DoorActivity.class);
                 intent.putExtra("SearchAddress", _fullDeliveryAddress);
-//                intent.putExtra("DebugMode", true);
+                intent.putExtra("DebugMode", false);
                 startActivity(intent);
                 break;
             case R.id.grubTextView:
                 intent = new Intent(getBaseContext(), GrubActivity.class);
                 intent.putExtra("SearchAddress", _fullDeliveryAddress);
+                intent.putExtra("DebugMode", false);
                 startActivity(intent);
                 break;
             case R.id.postTextView:

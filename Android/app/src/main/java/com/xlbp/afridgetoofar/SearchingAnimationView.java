@@ -5,13 +5,12 @@ import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 import com.xlbp.afridgetoofar.helpers.Animation;
-import com.xlbp.afridgetoofar.helpers.Helpers;
 
-import java.util.ArrayList;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 public class SearchingAnimationView extends FrameLayout
 {
@@ -37,77 +36,61 @@ public class SearchingAnimationView extends FrameLayout
     private void init()
     {
         initViews();
+
+        initViewPositions();
     }
 
     private void initViews()
     {
         LayoutInflater.from(getContext()).inflate(R.layout.searching_animation, this, true);
 
-        _loadingBars = new ArrayList<>();
+        _searchAnimationView = findViewById(R.id.searchBarView);
+    }
 
-        LinearLayout loadingBarsLinearLayout = findViewById(R.id.loadingBarsLinearLayout);
+    private void initViewPositions()
+    {
+        _searchAnimationView.setTranslationX(-_searchAnimationView.getWidth());
 
-        for (int i = 0; i < loadingBarsLinearLayout.getChildCount(); i++)
+        ConstraintLayout layout = findViewById(R.id.layout);
+
+        // this is needed so we only get positions/heights after onLayout has happened
+        layout.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener()
         {
-            _loadingBars.add(loadingBarsLinearLayout.getChildAt(i));
-        }
+            @Override
+            public void onGlobalLayout()
+            {
+                _searchAnimationView.setTranslationX(-_searchAnimationView.getWidth());
 
-        _bottonPosition = Helpers.dpToPixels(150);
-        _topPoisiton = -_bottonPosition;
-
-        _delayTime = 25;
+                // we need to remove the listener so positions are only set once
+                layout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+            }
+        });
     }
 
     private void runAnimation()
     {
-        for (View loadingBar : _loadingBars)
-        {
-            loadingBar.setAlpha(0);
-            loadingBar.setTranslationY(_bottonPosition);
-        }
+        _searchAnimationView.setTranslationX(-_searchAnimationView.getWidth());
 
         animateToMiddle();
     }
 
     private void animateToMiddle()
     {
-        for (int i = 0; i < _loadingBars.size(); i++)
-        {
-            View loadingBar = _loadingBars.get(i);
-
-            new Animation(loadingBar)
-                    .alpha(1)
-                    .translationY(0)
-                    .startDelay(i * _delayTime)
-                    .start();
-        }
-
-        int fullAnimationTime = (_loadingBars.size() * _delayTime) + 800;
+        new Animation(_searchAnimationView)
+                .translationX(0)
+                .start();
 
         new Handler().postDelayed(() ->
         {
-            if (_loopAnimation)
-            {
-                animateToTop();
-            }
-        }, fullAnimationTime);
+            animateToEnd();
+        }, 1800);
     }
 
-    private void animateToTop()
+    private void animateToEnd()
     {
-        for (int i = 0; i < _loadingBars.size(); i++)
-        {
-            View loadingBar = _loadingBars.get(i);
-
-            new Animation(loadingBar)
-                    .alpha(0)
-                    .translationY(_topPoisiton)
-                    .easeIn()
-                    .startDelay(i * _delayTime)
-                    .start();
-        }
-
-        int fullAnimationTime = (_loadingBars.size() * _delayTime) + 800;
+        new Animation(_searchAnimationView)
+                .translationX(_searchAnimationView.getWidth())
+                .start();
 
         new Handler().postDelayed(() ->
         {
@@ -115,16 +98,11 @@ public class SearchingAnimationView extends FrameLayout
             {
                 runAnimation();
             }
-        }, fullAnimationTime);
+        }, 1200);
     }
 
 
-    private ArrayList<View> _loadingBars;
-
-    private int _topPoisiton;
-    private int _bottonPosition;
-
-    private int _delayTime;
+    private View _searchAnimationView;
 
     private boolean _loopAnimation;
 }

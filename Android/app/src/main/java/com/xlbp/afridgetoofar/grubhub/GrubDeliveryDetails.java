@@ -28,6 +28,8 @@ public class GrubDeliveryDetails extends GrubBase
         {
             AppState.setGrubhubAppState(GrubAppState.DeliveryDetailsReady);
 
+            stopWebViewReload();
+
             _activeElementPlaceHolderTextRetrieved = true;
 
             retrieveActiveElementPlaceHolderText();
@@ -71,7 +73,7 @@ public class GrubDeliveryDetails extends GrubBase
                 char[] addressFullChars = _searchAddress.toCharArray();
 
                 // need a KeyCharacterMap in order to call getEvents
-                KeyCharacterMap fullKeyMap = KeyCharacterMap.load(KeyCharacterMap.FULL);
+                KeyCharacterMap fullKeyMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD);
 
                 // map the chars into key event
                 KeyEvent[] keySequence = fullKeyMap.getEvents(addressFullChars);
@@ -85,6 +87,7 @@ public class GrubDeliveryDetails extends GrubBase
                 AppState.setGrubhubAppState(GrubAppState.MainMenuLoading);
 
                 KeyEvent enterKeyEventDown = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER);
+                grubActivity.dispatchKeyEvent(enterKeyEventDown);
                 grubActivity.dispatchKeyEvent(enterKeyEventDown);
 
                 Helpers.hideKeyboard(grubActivity);

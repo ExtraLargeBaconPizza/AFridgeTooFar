@@ -29,6 +29,12 @@ public class Animation
         return this;
     }
 
+    public Animation translationX(float translationX)
+    {
+        _translationX = translationX;
+        return this;
+    }
+
     public Animation translationY(float translationY)
     {
         _translationY = translationY;
@@ -72,6 +78,7 @@ public class Animation
         {
             _view.animate()
                     .alpha(_alpha)
+                    .translationX(_translationX)
                     .translationY(_translationY)
                     .setDuration(f_animationTime)
                     .setInterpolator(_timeInterpolator)
@@ -85,6 +92,7 @@ public class Animation
     private View _view;
     private float _alpha;
     private TimeInterpolator _timeInterpolator;
+    private float _translationX;
     private float _translationY;
     private long _startDelay;
     private Runnable _endAction;

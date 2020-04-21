@@ -30,6 +30,10 @@ public class GrubRestaurantMenu extends GrubBase
         {
             if (!_allMenuHeadersClicked)
             {
+                AppState.setGrubhubAppState(GrubAppState.RestaurantMenuReady);
+
+                stopWebViewReload();
+
                 Javascript.grubHubClickAllMenuHeaders(webView, this::allMenuHeadersExpanded);
             }
             else
@@ -75,7 +79,7 @@ public class GrubRestaurantMenu extends GrubBase
             foodItems.add(foodItem);
         }
 
-        if (foodItems.size() > 9)
+        if (foodItems.size() > 0)
         {
             _foodItems = foodItems;
 
@@ -107,6 +111,7 @@ public class GrubRestaurantMenu extends GrubBase
                 {
                     // remove anything non currency
                     foodItem.price = values[j].replace("\"", "");
+                    foodItem.price = values[j].replace("\\+", "");
                     foodItem.price = values[j].replace("[^\\d.]", "");
 
                     String currencyOnly = foodItem.price.replace("$", "");
@@ -136,10 +141,8 @@ public class GrubRestaurantMenu extends GrubBase
             }
         }
 
-        if (_foodItems.size() > 5)
+        if (_foodItems.size() > 0)
         {
-            AppState.setGrubhubAppState(GrubAppState.RestaurantMenuReady);
-
             allRestaurantInfoParsed();
         }
         else

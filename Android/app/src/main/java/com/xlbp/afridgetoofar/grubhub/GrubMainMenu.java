@@ -27,6 +27,10 @@ public class GrubMainMenu extends GrubBase
         }
         else if (html.contains("Most popular near you"))
         {
+            AppState.setGrubhubAppState(GrubAppState.MainMenuReady);
+
+            stopWebViewReload();
+
             Javascript.getGrubHubMainMenuHrefsInnerText(webView, this::parseHrefsAndInnerText);
         }
         else
@@ -69,11 +73,17 @@ public class GrubMainMenu extends GrubBase
                 Restaurant restaurant = new Restaurant();
 
                 restaurant.href = href;
-                restaurant.name = innerText.split("\\\\n")[1];
+                restaurant.name = "";
 
-                if (!restaurant.name.isEmpty() && restaurant.name != null)
+                String[] innerTextItems = innerText.split("\\\\n");
+
+                for (String innerTextItem : innerTextItems)
                 {
-                    restaurants.add(restaurant);
+                    if (!innerTextItem.isEmpty() && restaurant.name.isEmpty())
+                    {
+                        restaurant.name = innerTextItem;
+                        restaurants.add(restaurant);
+                    }
                 }
             }
         }
@@ -84,8 +94,6 @@ public class GrubMainMenu extends GrubBase
             if (!_mainMenuComplete)
             {
                 _mainMenuComplete = true;
-
-                AppState.setGrubhubAppState(GrubAppState.MainMenuReady);
 
                 _restaurants = restaurants;
 

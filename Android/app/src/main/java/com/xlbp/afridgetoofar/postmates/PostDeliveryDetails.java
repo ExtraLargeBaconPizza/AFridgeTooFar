@@ -48,7 +48,7 @@ public class PostDeliveryDetails extends PostBase
                 char[] addressFullChars = _searchAddress.toCharArray();
 
                 // need a KeyCharacterMap in order to call getEvents
-                KeyCharacterMap fullKeyMap = KeyCharacterMap.load(KeyCharacterMap.FULL);
+                KeyCharacterMap fullKeyMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD);
 
                 // map the chars into key event
                 KeyEvent[] keySequence = fullKeyMap.getEvents(addressFullChars);
