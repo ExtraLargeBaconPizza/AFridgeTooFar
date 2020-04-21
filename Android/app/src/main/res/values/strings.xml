@@ -11,5 +11,5 @@
     <string name="Search_Again">Search Again</string>
     <string name="Back">Back</string>
     <string name="Donate">Donate</string>
-    <string name="Address_not_available">Address not available on Uber Eats.\nPlease try a different address or app</string>
+    <string name="Address_not_available">That address is not available on your selected app</string>
 </resources>

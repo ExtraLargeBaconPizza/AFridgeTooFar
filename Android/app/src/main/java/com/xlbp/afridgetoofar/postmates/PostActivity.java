@@ -84,7 +84,7 @@ public class PostActivity extends DeliveryAppBaseActivity
     {
         if (AppState.getPostmatesAppState() == PostAppState.SearchComplete)
         {
-            launchUberEats();
+            launchPostmates();
         }
     }
 
@@ -176,7 +176,7 @@ public class PostActivity extends DeliveryAppBaseActivity
 
         _view.setSearchCompleteText(foodItem.name, selectedRestaurant.name + "\n" + foodItem.price);
 
-        Log.e("UberView", "Search Complete: selectedRestaurant - " + selectedRestaurant.name + " - food item - " + foodItem.name + " - food price - " + foodItem.price);
+        Log.e("PostActivity", "Search Complete: selectedRestaurant - " + selectedRestaurant.name + " - food item - " + foodItem.name + " - food price - " + foodItem.price);
 
         _view.animateSearchComplete(() ->
         {
@@ -186,13 +186,18 @@ public class PostActivity extends DeliveryAppBaseActivity
         });
     }
 
-    private void launchUberEats()
+    private void launchPostmates()
     {
-        String url = _postmatesMainMenu.getSelectedRestaurant().href;
+        String postPackageName = "com.postmates.android";
+        boolean postmatesAppInstalled = Helpers.isAppInstalled(this, postPackageName);
 
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        String url = postmatesAppInstalled ?
+                _postmatesRestaurantMenu.getDeepLink() :
+                _postmatesMainMenu.getSelectedRestaurant().href;
 
-        startActivity(browserIntent);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 
     private void navigateBack()

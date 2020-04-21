@@ -188,11 +188,14 @@ public class UberActivity extends DeliveryAppBaseActivity
 
     private void launchUberEats()
     {
-        String url = _uberEatsRestaurantMenu.getSelectedFoodItem().href;
+        // TODO - figure out ubereats deep link schema
+        String uberPackageName = "com.ubercab.eats";
 
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        String url = _uberEatsMainMenu.getSelectedRestaurant().href;
 
-        startActivity(browserIntent);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 
     private void navigateBack()

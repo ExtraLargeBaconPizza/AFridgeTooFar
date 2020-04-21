@@ -1,6 +1,5 @@
 package com.xlbp.afridgetoofar.grubhub;
 
-import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
@@ -26,8 +25,6 @@ public class GrubWebViewClient extends WebViewClient
     public void doUpdateVisitedHistory(WebView webView, String url, boolean isReload)
     {
         super.doUpdateVisitedHistory(webView, url, isReload);
-
-        Log.e("GrubWebViewClient", "doUpdateVisitedHistory " + url);
 
         Javascript.startDocumentReadyStateCheck(webView,
                 complete ->

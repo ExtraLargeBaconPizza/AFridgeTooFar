@@ -1,6 +1,5 @@
 package com.xlbp.afridgetoofar.ubereats;
 
-import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 

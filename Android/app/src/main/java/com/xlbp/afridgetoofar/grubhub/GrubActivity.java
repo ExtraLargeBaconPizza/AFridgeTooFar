@@ -84,7 +84,7 @@ public class GrubActivity extends DeliveryAppBaseActivity
     {
         if (AppState.getGrubhubAppState() == GrubAppState.SearchComplete)
         {
-            launchUberEats();
+            launchGrubhub();
         }
     }
 
@@ -176,7 +176,7 @@ public class GrubActivity extends DeliveryAppBaseActivity
 
         _view.setSearchCompleteText(foodItem.name, selectedRestaurant.name + "\n" + foodItem.price);
 
-        Log.e("UberView", "Search Complete: selectedRestaurant - " + selectedRestaurant.name + " - food item - " + foodItem.name + " - food price - " + foodItem.price);
+        Log.e("GrubActivity", "Search Complete: selectedRestaurant - " + selectedRestaurant.name + " - food item - " + foodItem.name + " - food price - " + foodItem.price);
 
         _view.animateSearchComplete(() ->
         {
@@ -186,13 +186,21 @@ public class GrubActivity extends DeliveryAppBaseActivity
         });
     }
 
-    private void launchUberEats()
+    private void launchGrubhub()
     {
+        String grubPackageName = "com.grubhub.android";
+        boolean grubhubAppInstalled = Helpers.isAppInstalled(this, grubPackageName);
+
         String url = _grubhubMainMenu.getSelectedRestaurant().href;
 
-        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+        if (grubhubAppInstalled)
+        {
+            url.replace("https://www.grubhub.com/", "grubhubapp://");
+        }
 
-        startActivity(browserIntent);
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setData(Uri.parse(url));
+        startActivity(intent);
     }
 
     private void navigateBack()

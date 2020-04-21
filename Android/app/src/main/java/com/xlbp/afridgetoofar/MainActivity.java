@@ -97,8 +97,6 @@ public class MainActivity extends AppCompatActivity
         initMainScreen();
 
         initAutoCompleteTextView();
-
-        initIsAppInstalled();
     }
 
     private void initView()
@@ -166,24 +164,6 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private void initIsAppInstalled()
-    {
-        String doorPackageName = "com.dd.doordash";
-        String grubPackageName = "com.grubhub.android";
-        String postPackageName = "com.postmates.android";
-        String uberPackageName = "com.ubercab.eats";
-
-        boolean[] isAppInstalled = new boolean[4];
-
-        // TODO doordash shelved door due to strange loading sequence. possibly caused by slow internet
-        isAppInstalled[0] = Helpers.isAppInstalled(this, doorPackageName);
-        isAppInstalled[1] = Helpers.isAppInstalled(this, grubPackageName);
-        isAppInstalled[2] = Helpers.isAppInstalled(this, postPackageName);
-        isAppInstalled[3] = Helpers.isAppInstalled(this, uberPackageName);
-
-        _view.initInstalledApps(isAppInstalled);
-    }
-
     private void navigateToSearching(View view)
     {
         Intent intent;
@@ -193,7 +173,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.doorTextView:
                 intent = new Intent(getBaseContext(), DoorActivity.class);
                 intent.putExtra("SearchAddress", _fullDeliveryAddress);
-                intent.putExtra("DebugMode", true);
+//                intent.putExtra("DebugMode", true);
                 startActivity(intent);
                 break;
             case R.id.grubTextView:

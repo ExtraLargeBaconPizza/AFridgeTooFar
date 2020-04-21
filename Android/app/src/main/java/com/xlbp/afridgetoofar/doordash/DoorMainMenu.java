@@ -75,7 +75,7 @@ public class DoorMainMenu extends DoorBase
                         restaurant.href = href;
                         restaurant.name = getRestaurantName(innerText.split("\\\\n"));
 
-                        if (!restaurant.name.isEmpty())
+                        if (!restaurant.name.isEmpty() && restaurant.name != null)
                         {
                             restaurants.add(restaurant);
                         }

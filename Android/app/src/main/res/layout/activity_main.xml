@@ -83,6 +83,7 @@
             android:onClick="appClicked"
             android:padding="10dp"
             android:text="@string/DoorDash"
+            android:visibility="gone"
             style="@style/appSelectionTextView" />
 
         <TextView

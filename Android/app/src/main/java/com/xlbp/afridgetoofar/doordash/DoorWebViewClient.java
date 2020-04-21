@@ -1,14 +1,10 @@
 package com.xlbp.afridgetoofar.doordash;
 
 import android.util.Log;
-import android.webkit.WebResourceError;
-import android.webkit.WebResourceRequest;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.xlbp.afridgetoofar.DeliveryAppBaseActivity;
-import com.xlbp.afridgetoofar.helpers.Javascript;
 
 public class DoorWebViewClient extends WebViewClient
 {
@@ -17,64 +13,52 @@ public class DoorWebViewClient extends WebViewClient
         _activity = activity;
     }
 
-    // need this for debugging, otherwise the webview would just be a blank white screen
     @Override
-    public boolean shouldOverrideUrlLoading(WebView view, String url)
+    public void onLoadResource(WebView view, String url)
     {
-//        Log.e("XlbpWebViewClient", "shouldOverrideUrlLoading" + url);
-        view.loadUrl(url);
-        return true;
+        super.onLoadResource(view, url);
+
+        Log.e("DoorWebViewClient", "onLoadResource" + url);
+//        view.evaluateJavascript("document.querySelector('meta[name=\"viewport\"]').setAttribute('content', 'width=1024px, initial-scale=' + (document.documentElement.clientWidth / 1024));", null);
     }
 
+    // need this for debugging, otherwise the webview would just be a blank white screen
 //    @Override
-//    public void onPageStarted(WebView view, String url, Bitmap favicon)
+//    public boolean shouldOverrideUrlLoading(WebView view, String url)
 //    {
-//        super.onPageStarted(view, url, favicon);
-//        Log.e("XlbpWebViewClient", "onPageStarted " + url);
+//        view.loadUrl(url);
+//        return true;
 //    }
-
+//
     @Override
     public void onPageFinished(WebView webView, String url)
     {
         super.onPageFinished(webView, url);
-        Log.e("XlbpWebViewClient", "onPageFinished " + url);
-
-        Javascript.startDocumentReadyStateCheck(webView,
-                complete ->
-                {
-                    Log.e("XlbpWebViewClient", "onPageFinished document ready state = complete");
-                    _activity.onDocumentComplete();
-                });
+        Log.e("DoorWebViewClient", "onPageFinished" + url);
     }
-
-    @Override
-    public void doUpdateVisitedHistory(WebView webView, String url, boolean isReload)
-    {
-        super.doUpdateVisitedHistory(webView, url, isReload);
-        Log.e("XlbpWebViewClient", "doUpdateVisitedHistory " + url);
-//        Javascript.startDocumentReadyStateCheck(webView,
-//                complete ->
-//                {
-//                    Log.e("XlbpWebViewClient", "doUpdateVisitedHistory document ready state = complete");
-//                    _activity.onDocumentComplete();
-//                });
-    }
-
-    @Override
-    public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error)
-    {
-        Toast.makeText(_activity, "Your Internet Connection May not be active Or " + error, Toast.LENGTH_LONG).show();
-        Log.e("XlbpWebViewClient", "onReceivedError " + error);
-    }
-
-    @Override
-    public void onReceivedError(WebView view, int errorCode, String description, String failingUrl)
-    {
-        Log.e("XlbpWebViewClient", "errorCode " + errorCode);
-        Log.e("XlbpWebViewClient", "description " + description);
-        Log.e("XlbpWebViewClient", "failingUrl " + failingUrl);
-    }
-
+//
+//    @Override
+//    public void doUpdateVisitedHistory(WebView webView, String url, boolean isReload)
+//    {
+//        super.doUpdateVisitedHistory(webView, url, isReload);
+////        Log.e("XlbpWebViewClient", "doUpdateVisitedHistory " + url);
+////        Log.e("XlbpWebViewClient", "isReload " + isReload);
+////
+////        if (!url.contains("blank"))
+////        {
+////            Log.e("XlbpWebViewClient", "doUpdateVisitedHistory " + url);
+////            _activity.onDocumentComplete();
+////        }
+////
+////        if (!isReload)
+////        {
+////            Javascript.startDocumentReadyStateCheck(webView,
+////                    complete ->
+////                    {
+////                        _activity.onDocumentComplete();
+////                    });
+////        }
+//    }
 
     private DeliveryAppBaseActivity _activity;
 }

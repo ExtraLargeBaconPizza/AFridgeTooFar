@@ -1,11 +1,11 @@
 package com.xlbp.afridgetoofar.doordash;
 
+import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.webkit.WebView;
 
-import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.DoorAppState;
+import com.xlbp.afridgetoofar.helpers.Helpers;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 
 
@@ -22,56 +22,50 @@ public class DoorDeliveryDetails extends DoorBase
     @Override
     public void parseHtml(String html)
     {
-        if (html.contains("Continue in browser") && !_continueInBrowserClicked)
-        {
-            AppState.setDoorDashAppState(DoorAppState.DeliveryDetailsReady);
+//        asdf();
 
-            _continueInBrowserClicked = true;
-
-            clickContinueInBrowser();
-
-            retrieveHtml();
-        }
-        else if (html.contains("Your favorite restaurants, delivered") && !_clickEnterDeliveryAddress)
-        {
-            _clickEnterDeliveryAddress = true;
-
-            clickEnterDeliveryAddress();
-
-            retrieveHtml();
-        }
-//        else if (html.contains("Enter") && !_enteredDeliveryAddress)
+//        if (html.contains("Continue in browser"))
 //        {
-//            InputMethodManager imm = (InputMethodManager) doorActivity.getSystemService(Context.INPUT_METHOD_SERVICE);
+//            AppState.setDoorDashAppState(DoorAppState.DeliveryDetailsReady);
 //
-//            if (imm != null)
+//            if (!_continueInBrowserClicked)
 //            {
-//                // We need to loop until the keyboard shows. Otherwise the input value will get messed up
-//                // by Uber's code
-//                if (!imm.isAcceptingText())
-//                {
-//                    webView.requestFocus();
+//                _continueInBrowserClicked = true;
 //
-//                    retrieveHtml();
-//                }
-//                else
-//                {
-//                    _enteredDeliveryAddress = true;
-//
-//                    enterDeliveryAddress();
-//                }
+//                asdf();
 //            }
 //        }
-        else
-        {
-            retrieveHtml();
-        }
+//        else
+//        {
+//            retrieveHtml();
+//        }
     }
 
-    private void clickContinueInBrowser()
+    public void clickContinueInBrowser()
     {
-        Javascript.clickElementByKeyword(webView, "span", "Continue in browser");
+//        asdf();
+        Javascript.removeDoorDashSplash(webView);
+//        Javascript.clickElementByKeyword(webView, "span", "Continue in browser");
+
+//        new Handler().postDelayed(() ->
+//        {
+//            Javascript.removeDoorDashSplash(webView);
+//            Javascript.clickElementByKeyword(webView, "span", "Continue in browser");
+//        }, 2000);
     }
+
+    private void asdf()
+    {
+        Javascript.getActiveElementPlaceHolderText(webView, this::askldj);
+    }
+
+    private void askldj(String asd)
+    {
+        Log.e("DoorDeliveryDetails", "getActiveElementPlaceHolderText " + asd);
+
+        asdf();
+    }
+
 
     private void clickEnterDeliveryAddress()
     {
@@ -104,7 +98,7 @@ public class DoorDeliveryDetails extends DoorBase
         doorActivity.dispatchKeyEvent(enterKeyEventDown);
         doorActivity.dispatchKeyEvent(enterKeyEventUp);
 
-//        Helpers.hideKeyboard(doorActivity);
+        Helpers.hideKeyboard(doorActivity);
     }
 
 

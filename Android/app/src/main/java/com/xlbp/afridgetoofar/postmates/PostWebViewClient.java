@@ -26,6 +26,7 @@ public class PostWebViewClient extends WebViewClient
     {
         super.doUpdateVisitedHistory(webView, url, isReload);
 
+        // if this url is loaded twice, it means the address was not found
         if (url.equals("https://postmates.com/"))
         {
             if (!_alreadyLoadedHomepage)

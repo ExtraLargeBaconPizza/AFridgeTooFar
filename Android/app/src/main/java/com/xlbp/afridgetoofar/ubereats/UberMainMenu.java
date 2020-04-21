@@ -4,9 +4,8 @@ import android.util.Log;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.MainScreenState;
-import com.xlbp.afridgetoofar.helpers.Javascript;
 import com.xlbp.afridgetoofar.enums.UberAppState;
+import com.xlbp.afridgetoofar.helpers.Javascript;
 
 import java.util.ArrayList;
 
@@ -73,7 +72,7 @@ public class UberMainMenu extends UberBase
                         restaurant.href = href;
                         restaurant.name = getRestaurantName(innerText.split("\\\\n"));
 
-                        if (!restaurant.name.isEmpty())
+                        if (!restaurant.name.isEmpty() && restaurant.name != null)
                         {
                             restaurants.add(restaurant);
                         }

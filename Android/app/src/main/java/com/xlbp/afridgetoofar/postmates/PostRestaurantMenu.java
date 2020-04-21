@@ -18,6 +18,11 @@ public class PostRestaurantMenu extends PostBase
         init();
     }
 
+    public String getDeepLink()
+    {
+        return _deepLink;
+    }
+
     public FoodItem getSelectedFoodItem()
     {
         return _selectedFoodItem;
@@ -43,7 +48,14 @@ public class PostRestaurantMenu extends PostBase
 
     private void retrieveFoodItemInfo()
     {
+        Javascript.getPostMatesDeepLink(webView, this::setPostMatesDeepLink);
         Javascript.getPostMatesRestaurantMenuInnerText(webView, this::parseInnerText);
+    }
+
+    private void setPostMatesDeepLink(String deepLink)
+    {
+        _deepLink = deepLink.replace("\"", "");
+        Log.e("PostRestaurantMenu", "setPostMatesDeepLink " + _deepLink);
     }
 
     private void parseInnerText(String allInnerTexts)
@@ -158,6 +170,7 @@ public class PostRestaurantMenu extends PostBase
     }
 
 
+    private String _deepLink;
     private ArrayList<FoodItem> _foodItems;
     private FoodItem _selectedFoodItem;
 }

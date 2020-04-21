@@ -71,7 +71,7 @@ public class GrubMainMenu extends GrubBase
                 restaurant.href = href;
                 restaurant.name = innerText.split("\\\\n")[1];
 
-                if (!restaurant.name.isEmpty())
+                if (!restaurant.name.isEmpty() && restaurant.name != null)
                 {
                     restaurants.add(restaurant);
                 }

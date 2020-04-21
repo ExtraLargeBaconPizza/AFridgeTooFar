@@ -71,7 +71,7 @@ public class GrubDeliveryDetails extends GrubBase
                 char[] addressFullChars = _searchAddress.toCharArray();
 
                 // need a KeyCharacterMap in order to call getEvents
-                KeyCharacterMap fullKeyMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD);
+                KeyCharacterMap fullKeyMap = KeyCharacterMap.load(KeyCharacterMap.FULL);
 
                 // map the chars into key event
                 KeyEvent[] keySequence = fullKeyMap.getEvents(addressFullChars);

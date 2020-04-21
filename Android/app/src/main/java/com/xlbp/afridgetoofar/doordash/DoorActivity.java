@@ -6,12 +6,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
-import android.webkit.CookieManager;
-import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.DeliveryAppBaseActivity;
-import com.xlbp.afridgetoofar.ubereats.UberWebViewClient;
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.enums.DoorAppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
@@ -25,6 +22,11 @@ public class DoorActivity extends DeliveryAppBaseActivity
         super.onCreate(savedInstanceState);
 
         init();
+    }
+
+    public void clickContinueInBrowser(View view)
+    {
+        _doorDashDeliveryDetails.clickContinueInBrowser();
     }
 
     @Override
@@ -158,14 +160,30 @@ public class DoorActivity extends DeliveryAppBaseActivity
     private void initWebView()
     {
         _webView.getSettings().setJavaScriptEnabled(true);
-        _webView.setWebViewClient(new UberWebViewClient(this));
-        _webView.setWebChromeClient(new WebChromeClient());
+//        _webView.setWebViewClient(new DoorWebViewClient(this));
+//        _webView.setWebChromeClient(new WebChromeClient());
+//        _webView.getSettings().setUserAgentString("Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36");
+
+//        _webView.getSettings().setUserAgentString("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/57.0.2987.132 Safari/537.36");
+
+//        String newUA= "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.4) Gecko/20100101 Firefox/4.0";
+//        _webView.getSettings().setUserAgentString(newUA);
+
+//        _webView.getSettings().setLoadWithOverviewMode(true);
+//        _webView.getSettings().setUseWideViewPort(true);
+//
+//        _webView.getSettings().setSupportZoom(true);
+//        _webView.getSettings().setBuiltInZoomControls(true);
+//        _webView.getSettings().setDisplayZoomControls(false);
+//
+//        _webView.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
+//        _webView.setScrollbarFadingEnabled(false);
 
 //        // The follow two lines remove te webview's cookies
-        CookieManager.getInstance().removeAllCookies(null);
-        CookieManager.getInstance().flush();
+//        CookieManager.getInstance().removeAllCookies(null);
+//        CookieManager.getInstance().flush();
 
-        _webView.loadUrl("https://www.doordash.com/en-US");
+        _webView.loadUrl("https://www.doordash.com/");
     }
 
     private void handleSearchComplete()
@@ -187,6 +205,8 @@ public class DoorActivity extends DeliveryAppBaseActivity
 
     private void launchDoorDash()
     {
+        String doorPackageName = "com.dd.doordash";
+
         String url = _doorDashRestaurantMenu.getSelectedFoodItem().href;
 
         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));

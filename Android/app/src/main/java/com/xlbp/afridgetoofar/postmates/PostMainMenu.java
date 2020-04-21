@@ -74,7 +74,7 @@ public class PostMainMenu extends PostBase
                 restaurant.href = href;
                 restaurant.name = innerText.split("\\\\n")[0];
 
-                if (!restaurant.name.isEmpty())
+                if (!restaurant.name.isEmpty() && restaurant.name != null)
                 {
                     restaurants.add(restaurant);
                 }
