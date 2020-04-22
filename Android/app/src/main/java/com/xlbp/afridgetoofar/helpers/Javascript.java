@@ -66,6 +66,13 @@ public class Javascript
         webView.evaluateJavascript(javascript, valueCallBack);
     }
 
+    public static void removeDoorDashSplash(WebView webView)
+    {
+        String javascript = "javascript: (function(){ document.getElementsByClassName('mobile-splash')[0].style.display = 'none'; })();";
+
+        webView.loadUrl(javascript);
+    }
+
     public static void getGrubHubMainMenuHrefsInnerText(WebView webView, ValueCallback<String> valueCallBack)
     {
         String javascript = "(function(){ var result = ''; var elem = document.getElementsByTagName('ghs-restaurant-card'); for (var i = 0; i < elem.length; i++) { result += 'element'; result += elem[i].getElementsByTagName('a')[1]; result += 'innerText' + elem[i].innerText; } return result; })();";
@@ -106,12 +113,5 @@ public class Javascript
         String javascript = "(function(){ var result = ''; var elem = document.getElementsByClassName('product-container'); for (var i = 0; i < elem.length; i++) { result += elem[i].innerText + 'element';  } return result; })();";
 
         webView.evaluateJavascript(javascript, valueCallBack);
-    }
-
-    public static void removeDoorDashSplash(WebView webView)
-    {
-        String javascript = "javascript : (function(){ document.getElementsByClassName('mobile-splash')[0].style.display = 'none'; })();";
-
-        webView.loadUrl(javascript);
     }
 }

@@ -19,70 +19,27 @@ public class AppState
         }
     }
 
-    public static DoorAppState getDoorDashAppState()
+    public static AppScreenState getAppScreenState()
     {
-        return _doorAppState;
+        return _appScreenState;
     }
 
-    public static void setDoorDashAppState(DoorAppState doorAppState)
+    public static void setAppScreenState(AppScreenState appScreenState)
     {
-        if (_doorAppState != doorAppState)
+        if (_appScreenState != appScreenState)
         {
-            _doorAppState = doorAppState;
+            _appScreenState = appScreenState;
 
-            Log.e("DoorAppState", "" + _doorAppState);
-        }
-    }
+            StackTraceElement stackTraceElement = Thread.currentThread().getStackTrace()[3];
 
-    public static GrubAppState getGrubhubAppState()
-    {
-        return _grubAppState;
-    }
+            String fileName = stackTraceElement.getFileName();
+            String methodName = stackTraceElement.getMethodName();
 
-    public static void setGrubhubAppState(GrubAppState grubAppState)
-    {
-        if (_grubAppState != grubAppState)
-        {
-            _grubAppState = grubAppState;
-
-            Log.e("GrubAppState", "" + _grubAppState);
-        }
-    }
-
-    public static PostAppState getPostmatesAppState()
-    {
-        return _postAppState;
-    }
-
-    public static void setPostmatesAppState(PostAppState postAppState)
-    {
-        if (_postAppState != postAppState)
-        {
-            _postAppState = postAppState;
-
-            Log.e("PostAppState", "" + _postAppState);
-        }
-    }
-
-    public static UberAppState getUberEatsAppState()
-    {
-        return _uberAppState;
-    }
-
-    public static void setUberEatsAppState(UberAppState uberAppState)
-    {
-        if (_uberAppState != uberAppState)
-        {
-            _uberAppState = uberAppState;
-
-            Log.e("UberAppState", "" + _uberAppState);
+            Log.e("AppScreenState", _appScreenState + " - " + fileName + " - " + methodName);
         }
     }
 
 
     private static MainScreenState _mainScreenState;
-    private static DoorAppState _doorAppState;
-    private static GrubAppState _grubAppState;
-    private static PostAppState _postAppState;
-    private static UberAppState _uberAppState;
+    private static AppScreenState _appScreenState;
 }

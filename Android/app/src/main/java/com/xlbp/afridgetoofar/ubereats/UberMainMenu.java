@@ -3,8 +3,8 @@ package com.xlbp.afridgetoofar.ubereats;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.UberAppState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ public class UberMainMenu extends UberBase
         {
             uberActivity.onAddressNotFound();
         }
-        else
+        else if (!_mainMenuComplete)
         {
             Javascript.getAllHrefsAndInnerText(webView, this::parseHrefsAndInnerText);
         }
@@ -88,7 +88,7 @@ public class UberMainMenu extends UberBase
             {
                 _mainMenuComplete = true;
 
-                AppState.setUberEatsAppState(UberAppState.MainMenuReady);
+                AppState.setAppScreenState(AppScreenState.MainMenuReady);
 
                 _restaurants = restaurants;
 
@@ -143,7 +143,7 @@ public class UberMainMenu extends UberBase
 
             Log.e("UberEatsMainMenu", "_selectedRestaurant - " + _selectedRestaurant.name + " href - " + _selectedRestaurant.href);
 
-            AppState.setUberEatsAppState(UberAppState.RestaurantMenuLoading);
+            AppState.setAppScreenState(AppScreenState.RestaurantMenuLoading);
 
             webView.loadUrl(_selectedRestaurant.href);
         }

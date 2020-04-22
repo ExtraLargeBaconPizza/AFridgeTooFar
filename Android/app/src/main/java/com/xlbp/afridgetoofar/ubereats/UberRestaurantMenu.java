@@ -3,9 +3,9 @@ package com.xlbp.afridgetoofar.ubereats;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
-import com.xlbp.afridgetoofar.enums.UberAppState;
 
 import java.util.ArrayList;
 
@@ -138,7 +138,7 @@ public class UberRestaurantMenu extends UberBase
 
         if (_foodItems.size() > 0)
         {
-            AppState.setUberEatsAppState(UberAppState.RestaurantMenuReady);
+            AppState.setAppScreenState(AppScreenState.RestaurantMenuReady);
 
             allRestaurantInfoParsed();
         }
@@ -158,7 +158,7 @@ public class UberRestaurantMenu extends UberBase
 
         Log.e("UberEatsMainMenu", "_selectedFoodItem - " + _selectedFoodItem.name);
 
-        AppState.setUberEatsAppState(UberAppState.SearchComplete);
+        AppState.setAppScreenState(AppScreenState.SearchComplete);
 
         uberActivity.onSearchComplete();
     }

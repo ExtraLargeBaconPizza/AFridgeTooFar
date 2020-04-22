@@ -9,8 +9,8 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.DeliveryAppBaseActivity;
+import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.DoorAppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
 import com.xlbp.afridgetoofar.helpers.Helpers;
 
@@ -41,9 +41,9 @@ public class DoorActivity extends DeliveryAppBaseActivity
     @Override
     public void onBackPressed()
     {
-        if (AppState.getDoorDashAppState() != DoorAppState.Animating)
+        if (AppState.getAppScreenState() != AppScreenState.Animating)
         {
-            if (AppState.getDoorDashAppState() == DoorAppState.SearchComplete)
+            if (AppState.getAppScreenState() == AppScreenState.SearchComplete)
             {
                 _view.animateNavigateBackAfterSearchComplete(this::navigateBack);
             }
@@ -56,7 +56,7 @@ public class DoorActivity extends DeliveryAppBaseActivity
 
     public void onDocumentComplete()
     {
-        switch (AppState.getDoorDashAppState())
+        switch (AppState.getAppScreenState())
         {
             case DeliveryDetailsLoading:
                 _doorDashDeliveryDetails.onDocumentComplete();
@@ -83,7 +83,7 @@ public class DoorActivity extends DeliveryAppBaseActivity
 
     public void onViewOnAppClicked(View view)
     {
-        if (AppState.getDoorDashAppState() == DoorAppState.SearchComplete)
+        if (AppState.getAppScreenState() == AppScreenState.SearchComplete)
         {
             launchDoorDash();
         }
@@ -91,13 +91,13 @@ public class DoorActivity extends DeliveryAppBaseActivity
 
     public void onSearchAgainClicked(View view)
     {
-        if (AppState.getDoorDashAppState() != DoorAppState.Animating)
+        if (AppState.getAppScreenState() != AppScreenState.Animating)
         {
             AppState.setMainScreenState(MainScreenState.SearchingApp);
 
             _view.animateSearchAgainAnimation(() ->
             {
-                AppState.setDoorDashAppState(DoorAppState.MainMenuReady);
+                AppState.setAppScreenState(AppScreenState.MainMenuReady);
 
                 _doorDashMainMenu.selectRestaurant();
             });
@@ -106,7 +106,7 @@ public class DoorActivity extends DeliveryAppBaseActivity
 
     public void onDonateClicked(View view)
     {
-        if (AppState.getDoorDashAppState() != DoorAppState.Animating)
+        if (AppState.getAppScreenState() != AppScreenState.Animating)
         {
             AppState.setMainScreenState(MainScreenState.SearchingApp);
 
@@ -139,7 +139,7 @@ public class DoorActivity extends DeliveryAppBaseActivity
 
     private void initDoorDash()
     {
-        AppState.setDoorDashAppState(DoorAppState.DeliveryDetailsLoading);
+        AppState.setAppScreenState(AppScreenState.DeliveryDetailsLoading);
 
         Bundle extras = getIntent().getExtras();
         String searchAddress = extras.getString("SearchAddress");
@@ -199,7 +199,7 @@ public class DoorActivity extends DeliveryAppBaseActivity
         {
             AppState.setMainScreenState(MainScreenState.SearchComplete);
 
-            AppState.setDoorDashAppState(DoorAppState.SearchComplete);
+            AppState.setAppScreenState(AppScreenState.SearchComplete);
         });
     }
 

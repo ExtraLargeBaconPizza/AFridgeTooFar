@@ -6,8 +6,8 @@ import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 
+import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.PostAppState;
 import com.xlbp.afridgetoofar.helpers.Helpers;
 
 
@@ -23,16 +23,7 @@ public class PostDeliveryDetails extends PostBase
     @Override
     public void parseHtml(String html)
     {
-        if (html.contains("Use Current Location"))
-        {
-            AppState.setPostmatesAppState(PostAppState.DeliveryDetailsReady);
-
-            enterAddress();
-        }
-        else
-        {
-            retrieveHtml();
-        }
+        enterAddress();
     }
 
     private void enterAddress()
@@ -44,6 +35,8 @@ public class PostDeliveryDetails extends PostBase
             // We need to loop until the keyboard shows. Otherwise the input value will get messed up
             if (imm.isAcceptingText())
             {
+                AppState.setAppScreenState(AppScreenState.DeliveryDetailsReady);
+
                 // convert the string to a char array
                 char[] addressFullChars = _searchAddress.toCharArray();
 
@@ -59,11 +52,9 @@ public class PostDeliveryDetails extends PostBase
                     postActivity.dispatchKeyEvent(keyEvent);
                 }
 
-                AppState.setPostmatesAppState(PostAppState.MainMenuLoading);
+                AppState.setAppScreenState(AppScreenState.MainMenuLoading);
 
-                // need to press enter twice
                 KeyEvent enterKeyEventDown = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER);
-                postActivity.dispatchKeyEvent(enterKeyEventDown);
                 postActivity.dispatchKeyEvent(enterKeyEventDown);
 
                 Helpers.hideKeyboard(postActivity);
@@ -72,6 +63,8 @@ public class PostDeliveryDetails extends PostBase
             }
             else
             {
+                webView.requestFocus();
+
                 retrieveHtml();
             }
         }

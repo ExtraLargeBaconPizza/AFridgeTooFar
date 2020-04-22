@@ -1,6 +1,6 @@
 package com.xlbp.afridgetoofar.enums;
 
-public enum DoorAppState
+public enum AppScreenState
 {
     Animating,
     DeliveryDetailsLoading,

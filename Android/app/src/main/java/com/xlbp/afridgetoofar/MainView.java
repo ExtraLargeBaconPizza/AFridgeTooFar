@@ -311,16 +311,15 @@ public class MainView extends FrameLayout
             @Override
             public void onGlobalLayout()
             {
-                Helpers.initTopMargin(getContext());
-                Helpers.adjustViewTopMarginForNotch(_titleTextView);
-                Helpers.adjustViewTopMarginForNotch(_searchingTextView);
+                Helpers.initTopPadding(getContext());
+                Helpers.initMainLayoutPadding(getContext(), _layout);
 
-                _titleOffset = -_titleTextView.getHeight() - Helpers.topMargin;
-                _autoCompleteOffset1 = -_autoCompleteTextView.getY() + Helpers.topMargin;
-                _autoCompleteOffset2 = -_autoCompleteTextView.getY() - _autoCompleteTextView.getHeight();
-                _installedAppsLinearLayoutOffset = Helpers.getScreenHeight() - _installedAppsLinearLayout.getY() + Helpers.topMargin;
-                _searchingOffset = -_searchingTextView.getHeight() - Helpers.topMargin;
-                _addressNotFoundOffset = _autoCompleteTextView.getHeight() + Helpers.topMargin;
+                _titleOffset = -_titleTextView.getHeight() - Helpers.topPadding;
+                _autoCompleteOffset1 = -_autoCompleteTextView.getY() + _autoCompleteTextView.getHeight() + Helpers.topPadding;
+                _autoCompleteOffset2 = -_autoCompleteTextView.getY();
+                _installedAppsLinearLayoutOffset = Helpers.getScreenHeight() - _installedAppsLinearLayout.getY() + Helpers.topPadding;
+                _searchingOffset = -_searchingTextView.getHeight() - Helpers.topPadding;
+                _addressNotFoundOffset = _autoCompleteTextView.getHeight() + Helpers.topPadding;
 
                 _searchingTextView.setTranslationY(_searchingOffset);
                 _addressNotFoundTextView.setTranslationY(_addressNotFoundOffset);
@@ -341,7 +340,7 @@ public class MainView extends FrameLayout
         int[] location = new int[2];
         view.getLocationOnScreen(location);
 
-        return -location[1] + _searchingTextView.getHeight() + Helpers.topMargin - Helpers.dpToPixels(10);
+        return -location[1] + _searchingTextView.getHeight() + Helpers.topPadding - Helpers.dpToPixels(10);
     }
 
 

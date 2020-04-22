@@ -11,15 +11,13 @@
     android:clipToPadding="false"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    android:onClick="backgroundClicked">
+    android:onClick="onBackgroundClicked"
+    android:padding="50dp">
 
     <TextView
         android:id="@+id/titleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/top_margin"
-        android:layout_marginStart="@dimen/side_margin"
-        android:layout_marginEnd="@dimen/side_margin"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -30,9 +28,6 @@
         android:id="@+id/autoCompleteTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/bottom_margin"
-        android:layout_marginStart="@dimen/side_margin"
-        android:layout_marginEnd="@dimen/side_margin"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,8 +43,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:layout_marginStart="55dp"
-        android:layout_marginEnd="55dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         app:layout_constraintTop_toTopOf="@+id/titleTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,8 +55,6 @@
         android:id="@+id/searchingTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/top_margin"
-        android:layout_marginEnd="@dimen/side_margin"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:text="@string/SEARCHING"
@@ -71,8 +64,7 @@
         android:id="@+id/installedAppsLinearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/bottom_margin"
-        android:layout_marginEnd="40dp"
+        android:layout_marginEnd="-10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:orientation="vertical">
 
@@ -80,7 +72,7 @@
             android:id="@+id/doorTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="appClicked"
+            android:onClick="onAppClicked"
             android:padding="10dp"
             android:text="@string/DoorDash"
             android:visibility="gone"
@@ -90,7 +82,7 @@
             android:id="@+id/grubTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="appClicked"
+            android:onClick="onAppClicked"
             android:padding="10dp"
             android:text="@string/Grubhub"
             style="@style/appSelectionTextView" />
@@ -99,7 +91,7 @@
             android:id="@+id/postTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="appClicked"
+            android:onClick="onAppClicked"
             android:padding="10dp"
             android:text="@string/Postmates"
             style="@style/appSelectionTextView" />
@@ -108,7 +100,7 @@
             android:id="@+id/uberTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:onClick="appClicked"
+            android:onClick="onAppClicked"
             android:padding="10dp"
             android:text="@string/Uber_Eats"
             style="@style/appSelectionTextView" />

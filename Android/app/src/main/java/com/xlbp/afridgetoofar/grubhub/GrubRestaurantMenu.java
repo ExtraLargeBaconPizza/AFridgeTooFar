@@ -3,8 +3,8 @@ package com.xlbp.afridgetoofar.grubhub;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.GrubAppState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 
 import java.util.ArrayList;
@@ -30,9 +30,7 @@ public class GrubRestaurantMenu extends GrubBase
         {
             if (!_allMenuHeadersClicked)
             {
-                AppState.setGrubhubAppState(GrubAppState.RestaurantMenuReady);
-
-                stopWebViewReload();
+                AppState.setAppScreenState(AppScreenState.RestaurantMenuReady);
 
                 Javascript.grubHubClickAllMenuHeaders(webView, this::allMenuHeadersExpanded);
             }
@@ -164,7 +162,7 @@ public class GrubRestaurantMenu extends GrubBase
 
         Log.e("GrubhubMainMenu", "_selectedFoodItem - " + _selectedFoodItem.name);
 
-        AppState.setGrubhubAppState(GrubAppState.SearchComplete);
+        AppState.setAppScreenState(AppScreenState.SearchComplete);
 
         grubActivity.onSearchComplete();
     }

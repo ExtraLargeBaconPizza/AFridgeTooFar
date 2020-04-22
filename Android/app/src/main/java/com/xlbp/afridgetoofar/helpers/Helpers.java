@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.view.DisplayCutout;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 
 import java.util.ArrayList;
@@ -16,11 +15,11 @@ import java.util.Arrays;
 
 public class Helpers
 {
-    public static int topMargin;
+    public static int topPadding;
 
-    public static void initTopMargin(Context context)
+    public static void initTopPadding(Context context)
     {
-        topMargin = Helpers.dpToPixels(50) + getSafeInsetTop(context);
+        topPadding = Helpers.dpToPixels(50) + getSafeInsetTop(context);
     }
 
     public static int getSafeInsetTop(Context context)
@@ -47,13 +46,12 @@ public class Helpers
         return safeInsetTop;
     }
 
-    public static void adjustViewTopMarginForNotch(View view)
+    public static void initMainLayoutPadding(Context context, View view)
     {
-        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
+        int sidePadding = Helpers.dpToPixels(50);
+        int bottomPadding = Helpers.dpToPixels(98);
 
-        layoutParams.topMargin = topMargin;
-
-        view.setLayoutParams(layoutParams);
+        view.setPadding(sidePadding, topPadding, sidePadding, bottomPadding);
     }
 
     public static void showKeyboard(Activity activity)

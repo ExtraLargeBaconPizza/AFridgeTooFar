@@ -1,5 +1,6 @@
 package com.xlbp.afridgetoofar.postmates;
 
+import android.os.Handler;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.helpers.Javascript;
@@ -14,12 +15,17 @@ public abstract class PostBase
 
     protected void onDocumentComplete()
     {
-        retrieveHtml();
+        Javascript.getBodyInnerHtml(webView, this::parseHtml);
     }
 
     protected void retrieveHtml()
     {
-        Javascript.getBodyInnerHtml(webView, this::parseHtml);
+        int random = (int) (Math.random() * 75 + 75);
+
+        new Handler().postDelayed(() ->
+        {
+            Javascript.getBodyInnerHtml(webView, this::parseHtml);
+        }, random);
     }
 
     abstract void parseHtml(String html);

@@ -1,7 +1,6 @@
 package com.xlbp.afridgetoofar.grubhub;
 
 import android.os.Handler;
-import android.util.Log;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.helpers.Javascript;
@@ -16,26 +15,19 @@ public abstract class GrubBase
 
     protected void onDocumentComplete()
     {
-        retrieveHtml();
-
-        _webViewReloadHandler = new Handler();
-
-        _webViewReloadRunnable = () ->
-        {
-            webView.loadUrl("javascript:window.location.reload(true)");
-        };
-//        _webViewReloadHandler.postDelayed(_webViewReloadRunnable, 5000);
+        Javascript.getRootInnerHtml(webView, this::parseHtml);
     }
 
     protected void retrieveHtml()
     {
-        Javascript.getBodyInnerHtml(webView, this::parseHtml);
+        int random = (int) (Math.random() * 75 + 75);
+
+        new Handler().postDelayed(() ->
+        {
+            Javascript.getBodyInnerHtml(webView, this::parseHtml);
+        }, random);
     }
 
-    protected void stopWebViewReload()
-    {
-        _webViewReloadHandler.removeCallbacks(_webViewReloadRunnable);
-    }
 
     abstract void parseHtml(String html);
 

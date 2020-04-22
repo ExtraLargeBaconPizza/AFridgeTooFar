@@ -3,8 +3,8 @@ package com.xlbp.afridgetoofar.doordash;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.DoorAppState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 
 import java.util.ArrayList;
@@ -138,7 +138,7 @@ public class DoorRestaurantMenu extends DoorBase
 
         if (_foodItems.size() > 0)
         {
-            AppState.setDoorDashAppState(DoorAppState.RestaurantMenuReady);
+            AppState.setAppScreenState(AppScreenState.RestaurantMenuReady);
 
             allRestaurantInfoParsed();
         }
@@ -158,7 +158,7 @@ public class DoorRestaurantMenu extends DoorBase
 
         Log.e("DoorDashMainMenu", "_selectedFoodItem - " + _selectedFoodItem.name);
 
-        AppState.setDoorDashAppState(DoorAppState.SearchComplete);
+        AppState.setAppScreenState(AppScreenState.SearchComplete);
 
         doorActivity.onSearchComplete();
     }

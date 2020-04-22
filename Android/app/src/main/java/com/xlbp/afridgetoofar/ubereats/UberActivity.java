@@ -11,9 +11,9 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.DeliveryAppBaseActivity;
+import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
-import com.xlbp.afridgetoofar.enums.UberAppState;
 import com.xlbp.afridgetoofar.helpers.Helpers;
 
 public class UberActivity extends DeliveryAppBaseActivity
@@ -38,9 +38,9 @@ public class UberActivity extends DeliveryAppBaseActivity
     @Override
     public void onBackPressed()
     {
-        if (AppState.getUberEatsAppState() != UberAppState.Animating)
+        if (AppState.getAppScreenState() != AppScreenState.Animating)
         {
-            if (AppState.getUberEatsAppState() == UberAppState.SearchComplete)
+            if (AppState.getAppScreenState() == AppScreenState.SearchComplete)
             {
                 _view.animateNavigateBackAfterSearchComplete(this::navigateBack);
             }
@@ -53,7 +53,7 @@ public class UberActivity extends DeliveryAppBaseActivity
 
     public void onDocumentComplete()
     {
-        switch (AppState.getUberEatsAppState())
+        switch (AppState.getAppScreenState())
         {
             case DeliveryDetailsLoading:
                 _uberEatsDeliveryDetails.onDocumentComplete();
@@ -82,7 +82,7 @@ public class UberActivity extends DeliveryAppBaseActivity
 
     public void onViewOnAppClicked(View view)
     {
-        if (AppState.getUberEatsAppState() == UberAppState.SearchComplete)
+        if (AppState.getAppScreenState() == AppScreenState.SearchComplete)
         {
             launchUberEats();
         }
@@ -90,13 +90,18 @@ public class UberActivity extends DeliveryAppBaseActivity
 
     public void onSearchAgainClicked(View view)
     {
-        if (AppState.getUberEatsAppState() != UberAppState.Animating)
+        if (AppState.getAppScreenState() != AppScreenState.Animating)
         {
             AppState.setMainScreenState(MainScreenState.SearchingApp);
 
             _view.animateSearchAgainAnimation(() ->
             {
-                AppState.setUberEatsAppState(UberAppState.MainMenuReady);
+                AppState.setAppScreenState(AppScreenState.MainMenuReady);
+
+                if (_isDebugMode)
+                {
+                    _webView.setTranslationX(0);
+                }
 
                 _uberEatsMainMenu.selectRestaurant();
             });
@@ -105,7 +110,7 @@ public class UberActivity extends DeliveryAppBaseActivity
 
     public void onDonateClicked(View view)
     {
-        if (AppState.getUberEatsAppState() != UberAppState.Animating)
+        if (AppState.getAppScreenState() != AppScreenState.Animating)
         {
             AppState.setMainScreenState(MainScreenState.SearchingApp);
 
@@ -140,13 +145,13 @@ public class UberActivity extends DeliveryAppBaseActivity
 
     private void initUberEats()
     {
-        AppState.setUberEatsAppState(UberAppState.DeliveryDetailsLoading);
+        AppState.setAppScreenState(AppScreenState.DeliveryDetailsLoading);
 
         Bundle extras = getIntent().getExtras();
         String searchAddress = extras.getString("SearchAddress");
-        boolean isDebugMode = (extras != null) ? extras.getBoolean("DebugMode") : false;
+        _isDebugMode = (extras != null) ? extras.getBoolean("DebugMode") : false;
 
-        if (!isDebugMode)
+        if (!_isDebugMode)
         {
             _webView.setTranslationX(Helpers.getScreenWidth());
         }
@@ -178,11 +183,16 @@ public class UberActivity extends DeliveryAppBaseActivity
 
         Log.e("UberView", "Search Complete: selectedRestaurant - " + selectedRestaurant.name + " - food item - " + foodItem.name);
 
+        if (_isDebugMode)
+        {
+            _webView.setTranslationX(Helpers.getScreenWidth());
+        }
+
         _view.animateSearchComplete(() ->
         {
             AppState.setMainScreenState(MainScreenState.SearchComplete);
 
-            AppState.setUberEatsAppState(UberAppState.SearchComplete);
+            AppState.setAppScreenState(AppScreenState.SearchComplete);
         });
     }
 
@@ -209,6 +219,7 @@ public class UberActivity extends DeliveryAppBaseActivity
 
     private UberView _view;
     private WebView _webView;
+    private boolean _isDebugMode;
 
     private UberDeliveryDetails _uberEatsDeliveryDetails;
     private UberMainMenu _uberEatsMainMenu;

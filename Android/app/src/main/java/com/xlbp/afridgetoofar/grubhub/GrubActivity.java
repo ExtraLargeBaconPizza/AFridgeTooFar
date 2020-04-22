@@ -11,8 +11,8 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.DeliveryAppBaseActivity;
+import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.GrubAppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
 import com.xlbp.afridgetoofar.helpers.Helpers;
 
@@ -38,9 +38,9 @@ public class GrubActivity extends DeliveryAppBaseActivity
     @Override
     public void onBackPressed()
     {
-        if (AppState.getGrubhubAppState() != GrubAppState.Animating)
+        if (AppState.getAppScreenState() != AppScreenState.Animating)
         {
-            if (AppState.getGrubhubAppState() == GrubAppState.SearchComplete)
+            if (AppState.getAppScreenState() == AppScreenState.SearchComplete)
             {
                 _view.animateNavigateBackAfterSearchComplete(this::navigateBack);
             }
@@ -53,7 +53,7 @@ public class GrubActivity extends DeliveryAppBaseActivity
 
     public void onDocumentComplete()
     {
-        switch (AppState.getGrubhubAppState())
+        switch (AppState.getAppScreenState())
         {
             case DeliveryDetailsLoading:
                 _grubhubDeliveryDetails.onDocumentComplete();
@@ -82,7 +82,7 @@ public class GrubActivity extends DeliveryAppBaseActivity
 
     public void onViewOnAppClicked(View view)
     {
-        if (AppState.getGrubhubAppState() == GrubAppState.SearchComplete)
+        if (AppState.getAppScreenState() == AppScreenState.SearchComplete)
         {
             launchGrubhub();
         }
@@ -90,13 +90,18 @@ public class GrubActivity extends DeliveryAppBaseActivity
 
     public void onSearchAgainClicked(View view)
     {
-        if (AppState.getGrubhubAppState() != GrubAppState.Animating)
+        if (AppState.getAppScreenState() != AppScreenState.Animating)
         {
             AppState.setMainScreenState(MainScreenState.SearchingApp);
 
             _view.animateSearchAgainAnimation(() ->
             {
-                AppState.setGrubhubAppState(GrubAppState.MainMenuReady);
+                AppState.setAppScreenState(AppScreenState.MainMenuReady);
+
+                if (_isDebugMode)
+                {
+                    _webView.setTranslationX(0);
+                }
 
                 _grubhubMainMenu.selectRestaurant();
             });
@@ -105,7 +110,7 @@ public class GrubActivity extends DeliveryAppBaseActivity
 
     public void onDonateClicked(View view)
     {
-        if (AppState.getGrubhubAppState() != GrubAppState.Animating)
+        if (AppState.getAppScreenState() != AppScreenState.Animating)
         {
             AppState.setMainScreenState(MainScreenState.SearchingApp);
 
@@ -140,13 +145,13 @@ public class GrubActivity extends DeliveryAppBaseActivity
 
     private void initGrubhub()
     {
-        AppState.setGrubhubAppState(GrubAppState.DeliveryDetailsLoading);
+        AppState.setAppScreenState(AppScreenState.DeliveryDetailsLoading);
 
         Bundle extras = getIntent().getExtras();
         String searchAddress = extras.getString("SearchAddress");
-        boolean isDebugMode = (extras != null) ? extras.getBoolean("DebugMode") : false;
+        _isDebugMode = (extras != null) ? extras.getBoolean("DebugMode") : false;
 
-        if (!isDebugMode)
+        if (!_isDebugMode)
         {
             _webView.setTranslationX(Helpers.getScreenWidth());
         }
@@ -178,11 +183,16 @@ public class GrubActivity extends DeliveryAppBaseActivity
 
         Log.e("GrubActivity", "Search Complete: selectedRestaurant - " + selectedRestaurant.name + " - food item - " + foodItem.name + " - food price - " + foodItem.price);
 
+        if (_isDebugMode)
+        {
+            _webView.setTranslationX(Helpers.getScreenWidth());
+        }
+
         _view.animateSearchComplete(() ->
         {
             AppState.setMainScreenState(MainScreenState.SearchComplete);
 
-            AppState.setGrubhubAppState(GrubAppState.SearchComplete);
+            AppState.setAppScreenState(AppScreenState.SearchComplete);
         });
     }
 
@@ -214,6 +224,7 @@ public class GrubActivity extends DeliveryAppBaseActivity
 
     private GrubView _view;
     private WebView _webView;
+    private boolean _isDebugMode;
 
     private GrubDeliveryDetails _grubhubDeliveryDetails;
     private GrubMainMenu _grubhubMainMenu;

@@ -72,12 +72,12 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void backgroundClicked(View view)
+    public void onBackgroundClicked(View view)
     {
         clearFocus(_shortDeliveryAddress);
     }
 
-    public void appClicked(View selectedView)
+    public void onAppClicked(View selectedView)
     {
         if (AppState.getMainScreenState() != MainScreenState.Animating)
         {
@@ -172,27 +172,23 @@ public class MainActivity extends AppCompatActivity
         {
             case R.id.doorTextView:
                 intent = new Intent(getBaseContext(), DoorActivity.class);
-                intent.putExtra("SearchAddress", _fullDeliveryAddress);
-                intent.putExtra("DebugMode", false);
-                startActivity(intent);
                 break;
             case R.id.grubTextView:
                 intent = new Intent(getBaseContext(), GrubActivity.class);
-                intent.putExtra("SearchAddress", _fullDeliveryAddress);
-                intent.putExtra("DebugMode", false);
-                startActivity(intent);
                 break;
             case R.id.postTextView:
                 intent = new Intent(getBaseContext(), PostActivity.class);
-                intent.putExtra("SearchAddress", _fullDeliveryAddress);
-                startActivity(intent);
                 break;
             case R.id.uberTextView:
                 intent = new Intent(getBaseContext(), UberActivity.class);
-                intent.putExtra("SearchAddress", _fullDeliveryAddress);
-                startActivity(intent);
                 break;
+            default:
+                throw new IllegalStateException("Unexpected value: " + view.getId());
         }
+
+        intent.putExtra("SearchAddress", _fullDeliveryAddress);
+        intent.putExtra("DebugMode", true);
+        startActivity(intent);
     }
 
     private void clearFocus(String currentDeliveryAddress)

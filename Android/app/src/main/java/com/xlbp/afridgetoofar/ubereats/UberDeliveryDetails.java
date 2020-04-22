@@ -1,17 +1,15 @@
 package com.xlbp.afridgetoofar.ubereats;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
-import android.widget.Toast;
 
+import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.helpers.Helpers;
 import com.xlbp.afridgetoofar.helpers.Javascript;
-import com.xlbp.afridgetoofar.enums.UberAppState;
 
 
 public class UberDeliveryDetails extends UberBase
@@ -36,39 +34,32 @@ public class UberDeliveryDetails extends UberBase
             {
                 if (!_addressEntered)
                 {
-                    try
+                    AppState.setAppScreenState(AppScreenState.DeliveryDetailsReady);
+
+                    // convert the string to a char array
+                    char[] addressFullChars = _searchAddress.toCharArray();
+
+                    // need a KeyCharacterMap in order to call getEvents
+                    KeyCharacterMap fullKeyMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD);
+
+                    // map the chars into key event
+                    KeyEvent[] keySequence = fullKeyMap.getEvents(addressFullChars);
+
+                    // dispatch all the key events
+                    for (int i = 0; i < keySequence.length; i++)
                     {
-                        AppState.setUberEatsAppState(UberAppState.DeliveryDetailsReady);
-
-                        // convert the string to a char array
-                        char[] addressFullChars = _searchAddress.toCharArray();
-
-                        // need a KeyCharacterMap in order to call getEvents
-                        KeyCharacterMap fullKeyMap = KeyCharacterMap.load(KeyCharacterMap.VIRTUAL_KEYBOARD);
-
-                        // map the chars into key event
-                        KeyEvent[] keySequence = fullKeyMap.getEvents(addressFullChars);
-
-                        // dispatch all the key events
-                        for (int i = 0; i < keySequence.length; i++)
-                        {
-                            uberActivity.dispatchKeyEvent(keySequence[i]);
-                        }
-
-                        Helpers.hideKeyboard(uberActivity);
-
-                        _addressEntered = true;
-
-                        Log.e("UberDeliveryDetails", "_addressEntered");
+                        uberActivity.dispatchKeyEvent(keySequence[i]);
                     }
-                    catch (Exception e)
-                    {
-                        Toast.makeText(uberActivity, "Keyboard bullshit 1 " + e, Toast.LENGTH_LONG).show();
-                    }
+
+                    Helpers.hideKeyboard(uberActivity);
+
+                    _addressEntered = true;
                 }
             }
             else
             {
+                webView.requestFocus();
+
                 retrieveHtml();
             }
 
@@ -93,7 +84,7 @@ public class UberDeliveryDetails extends UberBase
                 {
                     _doneClicked = true;
 
-                    AppState.setUberEatsAppState(UberAppState.MainMenuLoading);
+                    AppState.setAppScreenState(AppScreenState.MainMenuLoading);
 
                     Javascript.clickElementByKeyword(webView, "button", "Done");
                 }

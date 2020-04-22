@@ -6,8 +6,8 @@ import android.view.KeyEvent;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 
+import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.GrubAppState;
 import com.xlbp.afridgetoofar.helpers.Helpers;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 
@@ -26,9 +26,7 @@ public class GrubDeliveryDetails extends GrubBase
     {
         if (html.contains("Let's get this right from the start") && !_activeElementPlaceHolderTextRetrieved)
         {
-            AppState.setGrubhubAppState(GrubAppState.DeliveryDetailsReady);
-
-            stopWebViewReload();
+            AppState.setAppScreenState(AppScreenState.DeliveryDetailsReady);
 
             _activeElementPlaceHolderTextRetrieved = true;
 
@@ -53,6 +51,8 @@ public class GrubDeliveryDetails extends GrubBase
         }
         else
         {
+            webView.requestFocus();
+
             KeyEvent tabKeyEventDown = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_TAB);
             grubActivity.dispatchKeyEvent(tabKeyEventDown);
 
@@ -84,7 +84,7 @@ public class GrubDeliveryDetails extends GrubBase
                     grubActivity.dispatchKeyEvent(keyEvent);
                 }
 
-                AppState.setGrubhubAppState(GrubAppState.MainMenuLoading);
+                AppState.setAppScreenState(AppScreenState.MainMenuLoading);
 
                 KeyEvent enterKeyEventDown = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER);
                 grubActivity.dispatchKeyEvent(enterKeyEventDown);

@@ -7,9 +7,9 @@
     <string name="Grubhub">Grubhub</string>
     <string name="Postmates">Postmates</string>
     <string name="SEARCHING">SEARCHING</string>
-    <string name="View_on">View on</string>
+    <string name="View_on">View On</string>
     <string name="Search_Again">Search Again</string>
     <string name="Back">Back</string>
-    <string name="Donate">Donate</string>
-    <string name="Address_not_available">That address is not available on your selected app</string>
+    <string name="Donate">Buy Me A Coffee</string>
+    <string name="Address_not_available">Address unavailable. Please change address or select a different app</string>
 </resources>

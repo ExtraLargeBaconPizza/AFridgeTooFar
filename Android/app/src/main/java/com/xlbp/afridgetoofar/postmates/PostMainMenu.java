@@ -1,11 +1,13 @@
 package com.xlbp.afridgetoofar.postmates;
 
+import android.os.Handler;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.webkit.WebView;
 
+import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
-import com.xlbp.afridgetoofar.enums.PostAppState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 
 import java.util.ArrayList;
@@ -28,13 +30,11 @@ public class PostMainMenu extends PostBase
 
             postActivity.onAddressNotFound();
         }
-        else if (html.contains("Only on Postmates"))
+        else if (!_mainMenuComplete)
         {
+            yeetClick();
+
             Javascript.getPostMatesMainMenuHrefsInnerText(webView, this::parseHrefsAndInnerText);
-        }
-        else
-        {
-            retrieveHtml();
         }
     }
 
@@ -52,6 +52,29 @@ public class PostMainMenu extends PostBase
     {
         _restaurants = new ArrayList<>();
         _restaurantsAlreadyPicked = new ArrayList<>();
+    }
+
+    private boolean _yeetClickRunning;
+
+    private void yeetClick()
+    {
+        if (!_yeetClickRunning)
+        {
+            _yeetClickRunning = true;
+
+            // if loading takes too long, yeet another enter press
+            new Handler().postDelayed(() ->
+            {
+                if (!_mainMenuComplete)
+                {
+                    KeyEvent enterKeyEventDown = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER);
+                    postActivity.dispatchKeyEvent(enterKeyEventDown);
+
+                    _yeetClickRunning = false;
+                    yeetClick();
+                }
+            }, 3000);
+        }
     }
 
     private void parseHrefsAndInnerText(String hrefsAndInnerText)
@@ -88,7 +111,7 @@ public class PostMainMenu extends PostBase
             {
                 _mainMenuComplete = true;
 
-                AppState.setPostmatesAppState(PostAppState.MainMenuReady);
+                AppState.setAppScreenState(AppScreenState.MainMenuReady);
 
                 _restaurants = restaurants;
 
@@ -115,7 +138,7 @@ public class PostMainMenu extends PostBase
 
             Log.e("PostmatesMainMenu", "_selectedRestaurant - " + _selectedRestaurant.name + " - href - " + _selectedRestaurant.href);
 
-            AppState.setPostmatesAppState(PostAppState.RestaurantMenuLoading);
+            AppState.setAppScreenState(AppScreenState.RestaurantMenuLoading);
 
             webView.loadUrl(_selectedRestaurant.href);
         }

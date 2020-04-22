@@ -9,8 +9,8 @@ import android.widget.TextView;
 
 import com.xlbp.afridgetoofar.R;
 import com.xlbp.afridgetoofar.SearchingAnimationView;
+import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.DoorAppState;
 import com.xlbp.afridgetoofar.helpers.Animation;
 import com.xlbp.afridgetoofar.helpers.Helpers;
 
@@ -45,7 +45,7 @@ public class DoorView extends FrameLayout
 
     public void animateSearchComplete(Runnable endAction)
     {
-        AppState.setDoorDashAppState(DoorAppState.Animating);
+        AppState.setAppScreenState(AppScreenState.Animating);
 
         // exit
         new Animation(_searchingTitleTextView)
@@ -71,7 +71,7 @@ public class DoorView extends FrameLayout
 
         // enter
         // we need to modify and reset _foodItemOffset because the textview heights are dynamic
-        _foodItemOffset = -_foodItemTextView.getHeight() - _foodItemDetailsTextView.getHeight() - Helpers.topMargin;
+        _foodItemOffset = -_foodItemTextView.getHeight() - _foodItemDetailsTextView.getHeight() - Helpers.topPadding;
 
         _foodItemTextView.setTranslationY(_foodItemOffset);
         _foodItemDetailsTextView.setTranslationY(_foodItemOffset);
@@ -90,7 +90,7 @@ public class DoorView extends FrameLayout
 
     public void animateSearchAgainAnimation(Runnable endAction)
     {
-        AppState.setDoorDashAppState(DoorAppState.Animating);
+        AppState.setAppScreenState(AppScreenState.Animating);
 
         // exit
         new Animation(_foodItemTextView)
@@ -137,7 +137,7 @@ public class DoorView extends FrameLayout
 
     public void animateNavigateBackAfterSearchComplete(Runnable endAction)
     {
-        AppState.setDoorDashAppState(DoorAppState.Animating);
+        AppState.setAppScreenState(AppScreenState.Animating);
 
         // exit
         new Animation(_foodItemTextView)
@@ -192,8 +192,7 @@ public class DoorView extends FrameLayout
         _searchAgainItems.add(_searchAgainTextView);
         _searchAgainItems.add(_donateTextView);
 
-        Helpers.adjustViewTopMarginForNotch(_searchingTitleTextView);
-        Helpers.adjustViewTopMarginForNotch(_foodItemTextView);
+        Helpers.initMainLayoutPadding(getContext(), findViewById(R.id.layout));
     }
 
     private void initViewAlphas()
@@ -220,10 +219,10 @@ public class DoorView extends FrameLayout
             @Override
             public void onGlobalLayout()
             {
-                _selectedAppOffset = -_selectedAppTextView.getY() + _searchingTitleTextView.getHeight() + Helpers.topMargin - Helpers.dpToPixels(10);
-                _searchingOffset = -_searchingTitleTextView.getHeight() - Helpers.topMargin;
+                _selectedAppOffset = -_selectedAppTextView.getY() + _searchingTitleTextView.getHeight() + Helpers.topPadding - Helpers.dpToPixels(10);
+                _searchingOffset = -_searchingTitleTextView.getHeight() - Helpers.topPadding;
                 _foodItemOffset = -_foodItemDetailsTextView.getY() - _foodItemDetailsTextView.getHeight();
-                _searchAgainArrayListOffset = Helpers.getScreenHeight() - _searchAgainItems.get(0).getY() + Helpers.topMargin + Helpers.dpToPixels(48);
+                _searchAgainArrayListOffset = Helpers.getScreenHeight() - _searchAgainItems.get(0).getY() + Helpers.topPadding + Helpers.dpToPixels(48);
 
                 for (TextView searchAgainItem : _searchAgainItems)
                 {

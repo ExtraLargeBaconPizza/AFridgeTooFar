@@ -3,8 +3,8 @@ package com.xlbp.afridgetoofar.postmates;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.PostAppState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 
 import java.util.ArrayList;
@@ -33,6 +33,7 @@ public class PostRestaurantMenu extends PostBase
     {
         if (html.contains("Popular"))
         {
+            retrievePostMatesDeepLink();
             retrieveFoodItemInfo();
         }
         else
@@ -46,16 +47,22 @@ public class PostRestaurantMenu extends PostBase
         _foodItems = new ArrayList<>();
     }
 
-    private void retrieveFoodItemInfo()
+    private void retrievePostMatesDeepLink()
     {
-        Javascript.getPostMatesDeepLink(webView, this::setPostMatesDeepLink);
-        Javascript.getPostMatesRestaurantMenuInnerText(webView, this::parseInnerText);
+        if (_deepLink == null)
+        {
+            Javascript.getPostMatesDeepLink(webView, this::setPostMatesDeepLink);
+        }
     }
 
     private void setPostMatesDeepLink(String deepLink)
     {
         _deepLink = deepLink.replace("\"", "");
-        Log.e("PostRestaurantMenu", "setPostMatesDeepLink " + _deepLink);
+    }
+
+    private void retrieveFoodItemInfo()
+    {
+        Javascript.getPostMatesRestaurantMenuInnerText(webView, this::parseInnerText);
     }
 
     private void parseInnerText(String allInnerTexts)
@@ -136,7 +143,7 @@ public class PostRestaurantMenu extends PostBase
 
         if (_foodItems.size() > 1)
         {
-            AppState.setPostmatesAppState(PostAppState.RestaurantMenuReady);
+            AppState.setAppScreenState(AppScreenState.RestaurantMenuReady);
 
             allRestaurantInfoParsed();
         }
@@ -156,7 +163,7 @@ public class PostRestaurantMenu extends PostBase
 
         Log.e("PostmatesMainMenu", "_selectedFoodItem - " + _selectedFoodItem.name);
 
-        AppState.setPostmatesAppState(PostAppState.SearchComplete);
+        AppState.setAppScreenState(AppScreenState.SearchComplete);
 
         postActivity.onSearchComplete();
     }

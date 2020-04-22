@@ -3,8 +3,8 @@ package com.xlbp.afridgetoofar.doordash;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.DoorAppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 
@@ -91,7 +91,7 @@ public class DoorMainMenu extends DoorBase
             {
                 _mainMenuComplete = true;
 
-                AppState.setDoorDashAppState(DoorAppState.MainMenuReady);
+                AppState.setAppScreenState(AppScreenState.MainMenuReady);
 
                 _restaurants = restaurants;
 
@@ -146,7 +146,7 @@ public class DoorMainMenu extends DoorBase
 
             Log.e("DoorDashMainMenu", "_selectedRestaurant - " + _selectedRestaurant.name + " href - " + _selectedRestaurant.href);
 
-            AppState.setDoorDashAppState(DoorAppState.RestaurantMenuLoading);
+            AppState.setAppScreenState(AppScreenState.RestaurantMenuLoading);
 
             webView.loadUrl(_selectedRestaurant.href);
         }

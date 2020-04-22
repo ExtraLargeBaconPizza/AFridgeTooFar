@@ -3,8 +3,8 @@ package com.xlbp.afridgetoofar.grubhub;
 import android.util.Log;
 import android.webkit.WebView;
 
+import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
-import com.xlbp.afridgetoofar.enums.GrubAppState;
 import com.xlbp.afridgetoofar.helpers.Javascript;
 
 import java.util.ArrayList;
@@ -25,17 +25,11 @@ public class GrubMainMenu extends GrubBase
         {
             grubActivity.onAddressNotFound();
         }
-        else if (html.contains("Most popular near you"))
+        else if (!_mainMenuComplete)
         {
-            AppState.setGrubhubAppState(GrubAppState.MainMenuReady);
-
-            stopWebViewReload();
+            AppState.setAppScreenState(AppScreenState.MainMenuReady);
 
             Javascript.getGrubHubMainMenuHrefsInnerText(webView, this::parseHrefsAndInnerText);
-        }
-        else
-        {
-            retrieveHtml();
         }
     }
 
@@ -120,7 +114,7 @@ public class GrubMainMenu extends GrubBase
 
             Log.e("GrubhubMainMenu", "_selectedRestaurant - " + _selectedRestaurant.name + " - href - " + _selectedRestaurant.href);
 
-            AppState.setGrubhubAppState(GrubAppState.RestaurantMenuLoading);
+            AppState.setAppScreenState(AppScreenState.RestaurantMenuLoading);
 
             webView.loadUrl(_selectedRestaurant.href);
         }
