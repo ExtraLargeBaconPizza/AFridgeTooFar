@@ -66,6 +66,9 @@ public class GrubRestaurantMenu extends GrubBase
     {
         ArrayList<FoodItem> foodItems = new ArrayList<>();
 
+        // need to remove the " at the start of the allInnerTexts string
+        allInnerTexts = allInnerTexts.substring(1);
+
         String[] innerTextElements = allInnerTexts.split("element");
 
         for (String innerText : innerTextElements)

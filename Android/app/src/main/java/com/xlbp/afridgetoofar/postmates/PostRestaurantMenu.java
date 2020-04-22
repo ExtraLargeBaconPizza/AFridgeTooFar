@@ -80,7 +80,7 @@ public class PostRestaurantMenu extends PostBase
             foodItems.add(foodItem);
         }
 
-        if (foodItems.size() > 1)
+        if (foodItems.size() > 0)
         {
             _foodItems = foodItems;
 
@@ -141,7 +141,7 @@ public class PostRestaurantMenu extends PostBase
             }
         }
 
-        if (_foodItems.size() > 1)
+        if (_foodItems.size() > 0)
         {
             AppState.setAppScreenState(AppScreenState.RestaurantMenuReady);
 
