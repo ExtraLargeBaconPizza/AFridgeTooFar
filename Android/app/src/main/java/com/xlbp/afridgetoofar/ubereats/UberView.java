@@ -7,12 +7,12 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.xlbp.afridgetoofar.SearchingAnimationView;
+import com.xlbp.afridgetoofar.R;
 import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
+import com.xlbp.afridgetoofar.google.AdMobView;
 import com.xlbp.afridgetoofar.helpers.Animation;
 import com.xlbp.afridgetoofar.helpers.Helpers;
-import com.xlbp.afridgetoofar.R;
 
 import java.util.ArrayList;
 
@@ -51,12 +51,6 @@ public class UberView extends FrameLayout
         new Animation(_searchingTitleTextView)
                 .alpha(0)
                 .translationY(_searchingOffset)
-                .start();
-
-        _searchingAnimationView.stopAnimation();
-
-        new Animation(_searchingAnimationView)
-                .alpha(0)
                 .start();
 
         // middle
@@ -119,11 +113,6 @@ public class UberView extends FrameLayout
         // middle
         new Animation(_selectedAppTextView)
                 .translationY(_selectedAppOffset)
-                .withEndAction(() ->
-                {
-                    _searchingAnimationView.setAlpha(1);
-                    _searchingAnimationView.startAnimation();
-                })
                 .start();
 
         // enter
@@ -166,8 +155,6 @@ public class UberView extends FrameLayout
         initViewAlphas();
 
         initViewPositions();
-
-        _searchingAnimationView.startAnimation();
     }
 
     private void initViews()
@@ -175,21 +162,19 @@ public class UberView extends FrameLayout
         LayoutInflater.from(getContext()).inflate(R.layout.activity_searching, this, true);
 
         _searchingTitleTextView = findViewById(R.id.searchingTitleTextView);
-        _searchingAnimationView = findViewById(R.id.searchingAnimationView);
+        _adMobView = findViewById(R.id.adMobView);
         _webView = findViewById(R.id.webview);
         _foodItemTextView = findViewById(R.id.foodItemTextView);
         _foodItemDetailsTextView = findViewById(R.id.foodItemDetailsTextView);
         _selectedAppTextView = findViewById(R.id.selectedAppTextView);
         _viewOnTextView = findViewById(R.id.viewOnTextView);
         _searchAgainTextView = findViewById(R.id.searchAgainTextView);
-        _donateTextView = findViewById(R.id.donateTextView);
 
         _searchAgainItems = new ArrayList<>();
 
         _searchAgainItems.add(_selectedAppTextView);
         _searchAgainItems.add(_viewOnTextView);
         _searchAgainItems.add(_searchAgainTextView);
-        _searchAgainItems.add(_donateTextView);
 
         Helpers.initMainLayoutPadding(getContext(), findViewById(R.id.layout));
     }
@@ -220,6 +205,7 @@ public class UberView extends FrameLayout
             {
                 _selectedAppOffset = -_selectedAppTextView.getY() + _searchingTitleTextView.getHeight() + Helpers.topPadding - Helpers.dpToPixels(10);
                 _searchingOffset = -_searchingTitleTextView.getHeight() - Helpers.topPadding;
+                _adMobViewOffset = (Helpers.getScreenHeight() / 2) + (_adMobView.getHeight() / 2);
                 _foodItemOffset = -_foodItemDetailsTextView.getY() - _foodItemDetailsTextView.getHeight();
                 _searchAgainArrayListOffset = Helpers.getScreenHeight() - _searchAgainItems.get(0).getY() + Helpers.topPadding + Helpers.dpToPixels(48);
 
@@ -229,6 +215,7 @@ public class UberView extends FrameLayout
                 }
 
                 _selectedAppTextView.setTranslationY(_selectedAppOffset);
+                _adMobView.setTranslationY(_adMobViewOffset);
                 _foodItemTextView.setTranslationY(_foodItemOffset);
                 _foodItemDetailsTextView.setTranslationY(_foodItemOffset);
 
@@ -240,7 +227,7 @@ public class UberView extends FrameLayout
 
 
     private TextView _searchingTitleTextView;
-    private SearchingAnimationView _searchingAnimationView;
+    private AdMobView _adMobView;
 
     private WebView _webView;
 
@@ -252,10 +239,10 @@ public class UberView extends FrameLayout
     private TextView _selectedAppTextView;
     private TextView _viewOnTextView;
     private TextView _searchAgainTextView;
-    private TextView _donateTextView;
 
     private float _selectedAppOffset;
     private float _searchingOffset;
+    private float _adMobViewOffset;
     private float _foodItemOffset;
     private float _searchAgainArrayListOffset;
 }

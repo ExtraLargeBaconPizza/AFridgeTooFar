@@ -28,16 +28,7 @@ public class GrubRestaurantMenu extends GrubBase
     {
         if (html.contains("Menu"))
         {
-            if (!_allMenuHeadersClicked)
-            {
-                AppState.setAppScreenState(AppScreenState.RestaurantMenuReady);
-
-                Javascript.grubHubClickAllMenuHeaders(webView, this::allMenuHeadersExpanded);
-            }
-            else
-            {
-                retrieveFoodItemInfo();
-            }
+            Javascript.grubHubClickAllMenuHeaders(webView, this::retrieveFoodItemInfo);
         }
         else
         {
@@ -50,14 +41,7 @@ public class GrubRestaurantMenu extends GrubBase
         _foodItems = new ArrayList<>();
     }
 
-    private void allMenuHeadersExpanded(String expansionComplete)
-    {
-        _allMenuHeadersClicked = true;
-
-        retrieveFoodItemInfo();
-    }
-
-    private void retrieveFoodItemInfo()
+    private void retrieveFoodItemInfo(String allMenuHeadersClicked)
     {
         Javascript.getGrubhubRestaurantMenuInnerText(webView, this::parseInnerText);
     }
@@ -144,6 +128,8 @@ public class GrubRestaurantMenu extends GrubBase
 
         if (_foodItems.size() > 0)
         {
+            AppState.setAppScreenState(AppScreenState.RestaurantMenuReady);
+
             allRestaurantInfoParsed();
         }
         else
@@ -155,9 +141,6 @@ public class GrubRestaurantMenu extends GrubBase
     private void allRestaurantInfoParsed()
     {
         Log.e("GrubhubMainMenu", "Number of Food Items - " + _foodItems.size());
-
-        // need to set this to false so that the menu headers can be expanded when we search again
-        _allMenuHeadersClicked = false;
 
         int random = (int) (Math.random() * _foodItems.size());
 
@@ -179,7 +162,6 @@ public class GrubRestaurantMenu extends GrubBase
     }
 
 
-    private boolean _allMenuHeadersClicked;
     private ArrayList<FoodItem> _foodItems;
     private FoodItem _selectedFoodItem;
 }

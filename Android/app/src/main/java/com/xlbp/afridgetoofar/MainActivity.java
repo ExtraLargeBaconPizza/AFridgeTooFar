@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.xlbp.afridgetoofar.doordash.DoorActivity;
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
 import com.xlbp.afridgetoofar.google.PlaceAutoSuggestAdapter;
@@ -170,9 +169,6 @@ public class MainActivity extends AppCompatActivity
 
         switch (view.getId())
         {
-            case R.id.doorTextView:
-                intent = new Intent(getBaseContext(), DoorActivity.class);
-                break;
             case R.id.grubTextView:
                 intent = new Intent(getBaseContext(), GrubActivity.class);
                 break;
@@ -187,7 +183,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         intent.putExtra("SearchAddress", _fullDeliveryAddress);
-        intent.putExtra("DebugMode", true);
+        intent.putExtra("DebugMode", false);
         startActivity(intent);
     }
 

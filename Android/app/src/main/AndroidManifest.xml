@@ -13,6 +13,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-9366961778606842~6208797190" />
+
         <activity
             android:configChanges="orientation|keyboardHidden"
             android:name="com.xlbp.afridgetoofar.MainActivity"
@@ -24,11 +28,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:configChanges="orientation|keyboardHidden"
-            android:name="com.xlbp.afridgetoofar.doordash.DoorActivity"
-            android:screenOrientation="portrait"
-            tools:ignore="LockedOrientationActivity" />
         <activity
             android:configChanges="orientation|keyboardHidden"
             android:name="com.xlbp.afridgetoofar.grubhub.GrubActivity"

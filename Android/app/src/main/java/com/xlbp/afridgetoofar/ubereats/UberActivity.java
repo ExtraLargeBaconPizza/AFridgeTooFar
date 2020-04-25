@@ -11,6 +11,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.DeliveryAppBaseActivity;
+import com.xlbp.afridgetoofar.SearchingView;
 import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
@@ -108,19 +109,6 @@ public class UberActivity extends DeliveryAppBaseActivity
         }
     }
 
-    public void onDonateClicked(View view)
-    {
-        if (AppState.getAppScreenState() != AppScreenState.Animating)
-        {
-            AppState.setMainScreenState(MainScreenState.SearchingApp);
-
-            // TODO - remove joke
-            Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=SIdxVR_7ikg"));
-
-            startActivity(browserIntent);
-        }
-    }
-
     private void init()
     {
         initView();
@@ -132,7 +120,7 @@ public class UberActivity extends DeliveryAppBaseActivity
 
     private void initView()
     {
-        _view = new UberView(this);
+        _view = new SearchingView(this);
         setContentView(_view);
 
         _view.setSelectedAppTextView("Uber Eats");
@@ -217,7 +205,7 @@ public class UberActivity extends DeliveryAppBaseActivity
     }
 
 
-    private UberView _view;
+    private SearchingView _view;
     private WebView _webView;
     private boolean _isDebugMode;
 
