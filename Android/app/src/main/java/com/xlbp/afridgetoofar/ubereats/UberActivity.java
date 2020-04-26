@@ -152,7 +152,6 @@ public class UberActivity extends DeliveryAppBaseActivity
     private void initWebView()
     {
         _webView.getSettings().setJavaScriptEnabled(true);
-        _webView.setWebViewClient(new UberWebViewClient(this));
         _webView.setWebChromeClient(new WebChromeClient());
 
         // The follow two lines remove te webview's cookies

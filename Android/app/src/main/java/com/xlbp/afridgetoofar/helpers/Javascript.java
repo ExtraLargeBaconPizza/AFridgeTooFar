@@ -52,13 +52,6 @@ public class Javascript
         webView.loadUrl(javascript);
     }
 
-    public static void getAllHrefsAndInnerText(WebView webView, ValueCallback<String> valueCallBack)
-    {
-        String javascript = "(function(){ var result = ''; var elem = document.getElementsByTagName('a'); for (var i = 0; i < elem.length; i++) { result += 'element'; result += elem[i].href; result += 'innerText' + elem[i].innerText; } return result; })();";
-
-        webView.evaluateJavascript(javascript, valueCallBack);
-    }
-
     public static void getActiveElementPlaceHolderText(WebView webView, ValueCallback<String> valueCallBack)
     {
         String javascript = "(function(){ return document.activeElement.placeholder })();";
@@ -111,6 +104,13 @@ public class Javascript
     public static void getPostMatesRestaurantMenuInnerText(WebView webView, ValueCallback<String> valueCallBack)
     {
         String javascript = "(function(){ var result = ''; var elem = document.getElementsByClassName('product-container'); for (var i = 0; i < elem.length; i++) { result += elem[i].innerText + 'element';  } return result; })();";
+
+        webView.evaluateJavascript(javascript, valueCallBack);
+    }
+
+    public static void getUberEatsAllHrefsAndInnerText(WebView webView, ValueCallback<String> valueCallBack)
+    {
+        String javascript = "(function(){ var result = ''; var elem = document.getElementsByTagName('a'); for (var i = 0; i < elem.length; i++) { result += 'element'; result += elem[i].href; result += 'innerText' + elem[i].innerText; } return result; })();";
 
         webView.evaluateJavascript(javascript, valueCallBack);
     }

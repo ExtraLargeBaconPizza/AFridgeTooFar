@@ -36,7 +36,7 @@ public class UberRestaurantMenu extends UberBase
 
     private void retrieveHrefAndFoodItemInfo()
     {
-        Javascript.getAllHrefsAndInnerText(webView, this::parseHrefsAndInnerText);
+        Javascript.getUberEatsAllHrefsAndInnerText(webView, this::parseHrefsAndInnerText);
     }
 
     private void parseHrefsAndInnerText(String hrefsAndInnerText)

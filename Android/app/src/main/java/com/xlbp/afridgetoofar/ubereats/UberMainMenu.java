@@ -27,7 +27,7 @@ public class UberMainMenu extends UberBase
         }
         else if (!_mainMenuComplete)
         {
-            Javascript.getAllHrefsAndInnerText(webView, this::parseHrefsAndInnerText);
+            Javascript.getUberEatsAllHrefsAndInnerText(webView, this::parseHrefsAndInnerText);
         }
     }
 
