@@ -11,6 +11,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.DeliveryAppBaseActivity;
+import com.xlbp.afridgetoofar.SearchingView;
 import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
@@ -132,7 +133,7 @@ public class GrubActivity extends DeliveryAppBaseActivity
 
     private void initView()
     {
-        _view = new GrubView(this);
+        _view = new SearchingView(this);
         setContentView(_view);
 
         _view.setSelectedAppTextView("Grubhub");
@@ -222,7 +223,7 @@ public class GrubActivity extends DeliveryAppBaseActivity
     }
 
 
-    private GrubView _view;
+    private SearchingView _view;
     private WebView _webView;
     private boolean _isDebugMode;
 

@@ -25,7 +25,7 @@ import com.xlbp.afridgetoofar.R;
 public class AdMobView extends FrameLayout
 {
     // Money me. Money me now. Me need a lot of money.
-    // this is just cut/paste from googles NativeAdvancedExample
+    // This is pretty much just cut/paste from Google's NativeAdvancedExample
     public AdMobView(Context context, AttributeSet attrs)
     {
         super(context, attrs);

@@ -168,7 +168,7 @@ public class UberActivity extends DeliveryAppBaseActivity
 
         _view.setSearchCompleteText(foodItem.name, selectedRestaurant.name + "\n" + foodItem.price);
 
-        Log.e("UberView", "Search Complete: selectedRestaurant - " + selectedRestaurant.name + " - food item - " + foodItem.name);
+        Log.e("UberActivity", "Search Complete: selectedRestaurant - " + selectedRestaurant.name + " - food item - " + foodItem.name);
 
         if (_isDebugMode)
         {
@@ -185,9 +185,6 @@ public class UberActivity extends DeliveryAppBaseActivity
 
     private void launchUberEats()
     {
-        // TODO - figure out ubereats deep link schema
-        String uberPackageName = "com.ubercab.eats";
-
         String url = _uberEatsMainMenu.getSelectedRestaurant().href;
 
         Intent intent = new Intent(Intent.ACTION_VIEW);

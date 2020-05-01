@@ -11,6 +11,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 
 import com.xlbp.afridgetoofar.DeliveryAppBaseActivity;
+import com.xlbp.afridgetoofar.SearchingView;
 import com.xlbp.afridgetoofar.enums.AppScreenState;
 import com.xlbp.afridgetoofar.enums.AppState;
 import com.xlbp.afridgetoofar.enums.MainScreenState;
@@ -132,7 +133,7 @@ public class PostActivity extends DeliveryAppBaseActivity
 
     private void initView()
     {
-        _view = new PostView(this);
+        _view = new SearchingView(this);
         setContentView(_view);
 
         _view.setSelectedAppTextView("Postmates");
@@ -219,7 +220,7 @@ public class PostActivity extends DeliveryAppBaseActivity
     }
 
 
-    private PostView _view;
+    private SearchingView _view;
     private WebView _webView;
     private boolean _isDebugMode;
 
