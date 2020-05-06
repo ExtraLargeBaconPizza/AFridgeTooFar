@@ -2,6 +2,7 @@ package com.xlbp.afridgetoofar.google;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -85,6 +86,11 @@ public class AdMobView extends FrameLayout
 
         AdLoader adLoader = builder.withAdListener(new AdListener()
         {
+            @Override
+            public void onAdFailedToLoad(int errorCode)
+            {
+                Log.e("Ad Failed: ", "" + errorCode);
+            }
         }).build();
 
         adLoader.loadAd(new AdRequest.Builder().build());
